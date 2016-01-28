@@ -1,4 +1,6 @@
 # infiniboard
+infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
+
 
 ## developing server
 
