@@ -17,7 +17,7 @@ build
 .gradle
 out
 target
-
+*/.idea
 
 client/node_modules/
 client/build/
