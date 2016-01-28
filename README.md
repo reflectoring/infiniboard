@@ -14,6 +14,15 @@ $ gradle bootRun
 
 Now all changes are reloaded live.
 
+## developing client
+
+```
+$ npm install
+$ npm install gulp
+$ gulp
+$ npm start
+```
+
 
 ## license
 
