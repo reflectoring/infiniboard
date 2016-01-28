@@ -19,7 +19,7 @@ gulp.task('serve', function () {
 
 // watch for changes and run the relevant task
 gulp.task('watch', function () {
-  gulp.watch('src/**/*.js', ['js']);
+  gulp.watch('src/**/*.ts', ['js']);
   gulp.watch('src/**/*.html', ['html']);
   gulp.watch('src/**/*.css', ['css']);
 });
@@ -38,7 +38,7 @@ gulp.task('dependencies', function () {
 
 // transpile & move js
 gulp.task('js', function () {
-  return gulp.src('src/**/*.js')
+  return gulp.src('src/**/*.ts')
     .pipe(rename({
       extname: ''
     }))
