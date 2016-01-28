@@ -8,12 +8,12 @@ infiniboard is a customizable, general purpose project dashboard to assist you i
 
 Open a terminal and start a gradle deamon that builds continuously:
 ```
-$ gradle -t classes
+$ ./gradlew -t classes
 ```
 
 Open another terminal and start the application:
 ```
-$ gradle bootRun
+$ ./gradlew bootRun
 ```
 
 Now all changes are reloaded live.
