@@ -21,8 +21,7 @@ Now all changes are reloaded live.
 ## developing client
 
 ```
-$ npm install
-$ npm install gulp
+$ ./gradlew npmInstall
 $ gulp
 $ npm start
 ```
