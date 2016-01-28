@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Sebastian Herbermann <sebastian.herbermann@adesso.de>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/reflectoring/infiniboard",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "AdminLTE": "admin-lte#^2.3.2"
+  }
+}

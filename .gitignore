@@ -21,4 +21,4 @@ target
 
 client/node_modules/
 client/build/
-
+client/bower_components/
