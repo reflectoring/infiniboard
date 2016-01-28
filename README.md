@@ -1,3 +1,5 @@
+[![Build Status](https://snap-ci.com/reflectoring/infiniboard/branch/master/build_image)](https://snap-ci.com/reflectoring/infiniboard/branch/master)
+
 # infiniboard
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
 
