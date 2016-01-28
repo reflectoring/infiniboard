@@ -12,7 +12,8 @@
     "traceur": "0.0.92"
   },
   "devDependencies": {
-    "gulp": "3.9.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
     "gulp-rename": "1.2.2",
     "gulp-traceur": "0.17.1",
     "gulp-webserver": "0.9.1"

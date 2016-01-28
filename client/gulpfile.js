@@ -1,13 +1,21 @@
 var gulp = require('gulp'),
     rename = require('gulp-rename'),
     traceur = require('gulp-traceur'),
-    webserver = require('gulp-webserver');
+    webserver = require('gulp-webserver'),
+    del = require('del');
 
 // run init tasks
 gulp.task('default', ['dependencies', 'js', 'html', 'css']);
 
 // run development task
-gulp.task('dev', ['watch', 'serve']);
+gulp.task('dev', ['default', 'watch', 'serve']);
+
+// cleans the output folder
+gulp.task('clean', function() {
+  del([
+    'build'
+  ])
+});
 
 // serve the build dir
 gulp.task('serve', function () {
