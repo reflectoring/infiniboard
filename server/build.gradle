@@ -16,8 +16,21 @@ jar {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-web'
-	
-    runtime 'com.h2database:h2'
-	
+
+    runtime 'org.hsqldb:hsqldb'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootRun {
+    // default application configuration for running application via bootRun in development mode
+    // (in production, these properties are defined in application.properties)
+    jvmArgs '-Xdebug',
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009',
+            '-Dserver.port=8080',
+//            '-Dspring.datasource.url=jdbc:hsqldb:file:~/infiniboard/infiniboard.db;shutdown=true;hsqldb.write_delay=false;',
+            '-Dspring.datasource.url=jdbc:hsqldb:mem:infiniboard',
+            '-Dspring.datasource.driverClassName=org.hsqldb.jdbcDriver',
+            '-Dspring.datasource.username=sa',
+            '-Dspring.datasource.password='
 }
