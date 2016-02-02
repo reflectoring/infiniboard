@@ -26,8 +26,6 @@ subprojects {
             minHeapSize = "128m"
             maxHeapSize = "1024m"
 
-            jvmArgs '-XX:MaxPermSize=256m'
-
             jacoco {
                 append = false
                 includes = [
