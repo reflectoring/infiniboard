@@ -1,12 +1,20 @@
+apply plugin: 'base'
+
 allprojects {
     group = 'com.github.reflectoring'
     version = '0.0.1-SNAPSHOT'
-}
+	
+	buildscript {
+		repositories {
+			jcenter()
+		}
+	}
 
+}
 
 // alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
 file('gradle.d').listFiles().sort().each {
-    if (it =~ /.*\.gradle$/ ) {
+    if (it =~ /.*\.gradle$/) {
         apply from: relativePath(it)
     }
 }

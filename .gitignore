@@ -1,10 +1,13 @@
 *.class
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
 
+# build dirs
+out
+target
 build
 .gradle
 
@@ -14,11 +17,19 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
+# IntelliJ
 *.iml
-out
-target
+*.ipr
+*.iws
 */.idea
 
+# temp
+*.*~
+
+# Mac OS X
+.DS_Store
+
+# local module cache
 client/node_modules/
 client/build/
 client/bower_components/

@@ -1,0 +1,43 @@
+subprojects {
+
+    if (file('src/main/java').exists()) {
+        apply plugin: 'jacoco'
+        apply plugin: 'java'
+
+        repositories {
+            jcenter()
+        }
+
+        jacoco {
+            toolVersion = version_jacoco
+        }
+
+        compileJava {
+            sourceCompatibility = version_java
+            targetCompatibility = version_java
+
+            options.fork = true
+        }
+
+        test {
+            useJUnit()
+
+            // set heap size for the test JVM(s)
+            minHeapSize = "128m"
+            maxHeapSize = "1024m"
+
+            jvmArgs '-XX:MaxPermSize=256m'
+
+            jacoco {
+                append = false
+                includes = [
+                        "com/github/**/*"
+                ]
+            }
+        }
+
+    } else {
+        apply plugin: 'base'
+    }
+
+}
