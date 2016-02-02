@@ -1,20 +1,27 @@
-package com.github.reflectoring.controller;
+package com.github.reflectoring.service;
 
 import com.github.reflectoring.model.Widget;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.github.reflectoring.repository.WidgetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/mock")
-@RestController
-public class MockController {
+@Service
+public class WidgetService {
 
-    @RequestMapping(value = "/buildWidget", method = RequestMethod.GET)
-    public Widget mockWidget() {
-        return getMockWidget();
+    private WidgetRepository widgetRepository;
+
+    @Autowired
+    public WidgetService(WidgetRepository widgetRepository) {
+        this.widgetRepository = widgetRepository;
+    }
+
+    public List<Widget> loadWidgets() {
+        return Arrays.asList(getMockWidget());
     }
 
     private Widget getMockWidget() {

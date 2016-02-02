@@ -4,11 +4,21 @@ import java.util.Map;
 
 public class Widget {
 
+    private Long id;
+
     private String name;
 
     private Map<String, Object> configuration;
 
     private Map<String, Object> value;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
