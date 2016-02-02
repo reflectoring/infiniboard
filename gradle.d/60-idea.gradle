@@ -34,7 +34,6 @@ subprojects {
                 def sourceFolder = it.asNode().component.content.sourceFolder
 
                 def mainResourceFolder = sourceFolder.find { it.@url == 'file://$MODULE_DIR$/src/main/resources' }
-                println mainResourceFolder
                 // in case there is no src/main/resources in this module
                 if (mainResourceFolder != null) {
                     def atts = mainResourceFolder.attributes()
@@ -43,15 +42,22 @@ subprojects {
                 }
 
                 def testResourceFolder = sourceFolder.find { it.@url == 'file://$MODULE_DIR$/src/test/resources' }
-                println testResourceFolder
                 // in case there is no src/test/resources in this module
                 if (testResourceFolder != null) {
                     def atts = testResourceFolder.attributes()
                     atts.remove('isTestSource')
                     atts.put('type', 'java-test-resource')
                 }
-            }
 
+                // spring facet
+                def springFacet = '''<component name="FacetManager">
+                <facet type="Spring" name="Spring">
+                  <configuration />
+                </facet>
+              </component>'''
+
+                it.asNode().append((new XmlParser()).parseText(springFacet))
+            }
         }
     }
 }
