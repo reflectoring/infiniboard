@@ -4,8 +4,14 @@
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
 
 
-## developing server
+## local development
 
+Remove all existing IntelliJ project configurations and create the latest one by running:
+```
+$ ./gradlew cleanIdea idea
+```
+
+### REST server
 Open a terminal and start a gradle deamon that builds continuously:
 ```
 $ ./gradlew -t classes
@@ -18,10 +24,14 @@ $ ./gradlew bootRun
 
 Now all changes are reloaded live.
 
-## developing client
-
+### AngularJS2 client
+If you do not have node/npm set up globally, setup a local installation by running:
 ```
 $ ./gradlew npmInstall
+```
+
+To start the client in development mode run:
+```
 $ gulp
 $ npm start
 ```
