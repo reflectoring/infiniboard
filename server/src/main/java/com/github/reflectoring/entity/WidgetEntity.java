@@ -1,44 +1,29 @@
 package com.github.reflectoring.entity;
 
-import javax.persistence.*;
 
-@Table(name = "WIDGET")
-@Entity
+import org.springframework.data.annotation.Id;
+
 public class WidgetEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    private String id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "configuration")
-    private String configuration;
+    private WidgetConfiguration configuration;
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getConfiguration() {
+    public WidgetConfiguration getConfiguration() {
         return configuration;
     }
 
-    public void setConfiguration(String configuration) {
+    public void setConfiguration(WidgetConfiguration configuration) {
         this.configuration = configuration;
     }
 }
