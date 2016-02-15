@@ -30,6 +30,6 @@ gradle-app.setting
 .DS_Store
 
 # local module cache
-client/node_modules/
-client/build/
-client/bower_components/
+node_modules
+build
+bower_components

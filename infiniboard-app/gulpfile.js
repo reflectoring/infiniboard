@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 gulp.task('default', ['dependencies', 'js', 'html', 'css']);
 
 // run development task
-gulp.task('dev', ['default', 'watch', 'serve']);
+gulp.task('dev', ['watch', 'serve']);
 
 // cleans the output folder
 gulp.task('clean', function() {
