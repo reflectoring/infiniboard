@@ -17,9 +17,13 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
 
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-	// add dependency to activate embedded mongo db
-    compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
-
+	
+	// disable embedded mongo
+	// ./gradlew -Pno_embedded_mongo ...
+	if (! project.hasProperty('no_embedded_mongo')) {
+		compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
+	}
+	
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 

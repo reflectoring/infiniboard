@@ -11,7 +11,7 @@ Remove all existing IntelliJ project configurations and create the latest one by
 $ ./gradlew cleanIdea idea
 ```
 
-### REST server
+### quartermaster
 Open a terminal and start a gradle deamon that builds continuously:
 ```
 $ ./gradlew -t classes
@@ -24,7 +24,14 @@ $ ./gradlew bootRun
 
 Now all changes are reloaded live.
 
-### AngularJS2 client
+#### disable embedded mongo db
+To disable the embedded mongo db use `-Pno_embedded_mongo` e.g.:
+```
+$ ./gradlew -Pno_embedded_mongo bootRun
+```
+
+
+### infiniboard-app
 If you do not have node/npm set up globally, setup a local installation by running:
 ```
 $ ./gradlew npmInstall
