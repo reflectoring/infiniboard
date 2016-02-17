@@ -1,2 +1,2 @@
-include 'server'
+include 'quartermaster'
 include 'infiniboard-app'
