@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run typings install && node_modules\\.bin\\bower install",
+    "postinstall": "npm run typings install && bower install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",
