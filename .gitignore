@@ -33,3 +33,8 @@ gradle-app.setting
 node_modules
 build
 bower_components
+typings
+
+# transpiled typescript
+app/*.js
+app/*.js.map

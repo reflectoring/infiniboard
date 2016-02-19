@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "infiniboard-app",
   "description": "",
   "main": "",
   "authors": [
@@ -17,6 +17,10 @@
     "tests"
   ],
   "dependencies": {
-    "AdminLTE": "admin-lte#^2.3.2"
+    "admin-lte": "^2.3.2",
+    "font-awesome": "^4.4.0",
+    "ionicons": "^2.0.1",
+    "html5shiv": "^3.7.3",
+    "respond": "^1.4.2"
   }
 }
