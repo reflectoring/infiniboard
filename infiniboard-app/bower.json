@@ -3,7 +3,8 @@
   "description": "",
   "main": "",
   "authors": [
-    "Sebastian Herbermann <sebastian.herbermann@adesso.de>"
+    "Sebastian Herbermann <sebastian.herbermann@gmail.com>",
+    "Matthias Balke <matthias.balke@gmail.com>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/reflectoring/infiniboard",

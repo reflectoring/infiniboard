@@ -10,6 +10,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>Infiniboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <!-- build:css /css/theme.css -->
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="bower_components/AdminLTE/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -23,8 +25,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="bower_components/AdminLTE/dist/css/skins/skin-blue.min.css">
+  <!-- endbuild -->
 
+  <!-- build:css /css/app.css -->
   <link rel="stylesheet" href="styles.css">
+  <!-- endbuild -->
+
+
   <!-- 1. Load libraries -->
   <!-- IE required polyfills, in this exact order -->
   <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -34,6 +41,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="node_modules/rxjs/bundles/Rx.js"></script>
   <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
 
+  <!-- build:js /js/app.js -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
+  <script src="bower_components/respond/dest/respond.min.js"></script>
+  <![endif]-->
+  <!-- endbuild -->
 
   <!-- 2. Configure SystemJS -->
   <script>
@@ -48,15 +63,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     System.import('app/main')
       .then(null, console.error.bind(console));
   </script>
-</head>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
-  <script src="bower_components/respond/dest/respond.min.js"></script>
-  <![endif]-->
-
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -387,12 +393,14 @@ desired effect
 
 <!-- REQUIRED JS SCRIPTS -->
 
+<!-- build:js /js/theme.js -->
 <!-- jQuery 2.1.4 -->
 <script src="bower_components/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="bower_components/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="bower_components/AdminLTE/dist/js/app.min.js"></script>
+<!-- endbuild -->
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
