@@ -36,5 +36,5 @@ bower_components
 typings
 
 # transpiled typescript
-app/*.js
-app/*.js.map
+infiniboard-app/app/*.js
+infiniboard-app/app/*.js.map
