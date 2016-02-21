@@ -37,10 +37,10 @@ gulp.task('serve', function () {
 
 // watch for changes and run the relevant task
 gulp.task('watch', function () {
+  gulp.watch('index.html', ['app_html']);
   gulp.watch('app/**/*.ts', ['js']);
   gulp.watch('app/**/*.html', ['components_html']);
-  gulp.watch('index.html', ['app_html']);
-  gulp.watch('app/**/*.css', ['components_css', 'app_html']);
+  gulp.watch('app/**/*.css', ['components_css']);
 });
 
 // move dependencies into build dir
@@ -65,6 +65,7 @@ gulp.task('app_html', function () {
       js: [uglify(), 'concat']
     }))
     .pipe(replace(/(node_modules[^"]*)\//g, 'lib/'))
+    .pipe(replace('bower_components', 'lib'))
     .pipe(gulp.dest('build'));
 });
 
