@@ -2,12 +2,12 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   traceur = require('gulp-traceur'),
   webserver = require('gulp-webserver'),
-  del = require('del');
-bower = require('gulp-bower');
-usemin = require('gulp-usemin');
-uglify = require('gulp-uglify');
-minifyCss = require('gulp-minify-css');
-replace = require('gulp-replace');
+  del = require('del'),
+  bower = require('gulp-bower'),
+  usemin = require('gulp-usemin'),
+  uglify = require('gulp-uglify'),
+  minifyCss = require('gulp-minify-css'),
+  replace = require('gulp-replace');
 
 gulp.task('bower', function () {
   return bower()
