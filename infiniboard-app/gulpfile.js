@@ -28,7 +28,7 @@ gulp.task('clean', function () {
 });
 
 // serve the build dir
-gulp.task('serve', function () {
+gulp.task('serve', ['default'], function () {
   gulp.src('build')
     .pipe(webserver({
       open: true
