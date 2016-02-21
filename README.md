@@ -39,7 +39,7 @@ $ ./gradlew npmInstall
 
 To start the client in development mode run:
 ```
-$ gulp
+$ bower install
 $ npm start
 ```
 
