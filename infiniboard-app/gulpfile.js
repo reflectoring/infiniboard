@@ -15,7 +15,7 @@ gulp.task('bower', function () {
 });
 
 // run init tasks
-gulp.task('default', ['bower', 'dependencies', 'js', 'components_html', 'css', 'app_html']);
+gulp.task('default', ['bower', 'dependencies', 'js', 'components_html', 'components_css', 'app_html']);
 
 // run development task
 gulp.task('dev', ['default', 'watch', 'serve']);
@@ -40,7 +40,7 @@ gulp.task('watch', function () {
   gulp.watch('app/**/*.ts', ['js']);
   gulp.watch('app/**/*.html', ['components_html']);
   gulp.watch('index.html', ['app_html']);
-  gulp.watch('app/**/*.css', ['css']);
+  gulp.watch('app/**/*.css', ['components_css', 'app_html']);
 });
 
 // move dependencies into build dir
@@ -60,7 +60,8 @@ gulp.task('app_html', function () {
   gulp.src('index.html')
     .pipe(usemin({
       assetsDir: '',
-      css: [minifyCss(), 'concat'],
+      css: [minifyCss()
+        .pipe(replace('fonts', 'lib/font-awesome/fonts')), 'concat'],
       js: [uglify(), 'concat']
     }))
     .pipe(replace(/(node_modules[^"]*)\//g, 'lib/'))
@@ -87,16 +88,6 @@ gulp.task('js', function () {
     .pipe(gulp.dest('build/app'));
 });
 
-gulp.task('replace_js_css', function () {
-  gulp.src('index.html')
-    .pipe(usemin({
-      assetsDir: '',
-      css: [minifyCss(), 'concat'],
-      js: [uglify(), 'concat']
-    }))
-    .pipe(gulp.dest('build'));
-});
-
 // move component html
 gulp.task('components_html', function () {
   return gulp.src('app/**/*.html')
@@ -104,7 +95,7 @@ gulp.task('components_html', function () {
 });
 
 // move component css
-gulp.task('css', function () {
+gulp.task('components_css', function () {
   return gulp.src('app/**/*.css')
     .pipe(gulp.dest('build/app'))
 });
