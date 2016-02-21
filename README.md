@@ -34,12 +34,12 @@ $ ./gradlew -Pno_embedded_mongo bootRun
 ### infiniboard-app
 If you do not have node/npm set up globally, setup a local installation by running:
 ```
-$ ./gradlew npmInstall
+$ ./gradlew npmSetup
 ```
 
 To start the client in development mode run:
 ```
-$ bower install
+$ npm install
 $ npm start
 ```
 
