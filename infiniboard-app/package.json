@@ -2,6 +2,10 @@
   "name": "infiniboard-app",
   "version": "0.1.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/reflectoring/infiniboard.git"
+  },
   "scripts": {
     "postinstall": "bower install && npm run typings install",
     "tsc": "tsc",
