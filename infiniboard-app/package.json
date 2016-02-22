@@ -15,7 +15,7 @@
     "typings": "typings"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.6",
+    "angular2": "2.0.0-beta.7",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
     "reflect-metadata": "0.1.2",
@@ -29,9 +29,8 @@
     "concurrently": "^1.0.0",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "gulp-bower": "0.0.13",
     "gulp-minify-css": "^1.2.3",
-    "gulp-rename": "1.2.2",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-traceur": "^0.17.2",
     "gulp-tslint": "^4.3.2",
