@@ -9,7 +9,9 @@ var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   minifyCss = require('gulp-minify-css'),
   replace = require('gulp-replace'),
-  gulpTypings = require("gulp-typings");
+  gulpTypings = require("gulp-typings"),
+  tslint = require('gulp-tslint');
+
 
 // run init tasks
 gulp.task('default', ['dependencies', 'js', 'components_html', 'components_css', 'app_html']);
@@ -85,7 +87,7 @@ gulp.task('app_html', function () {
 });
 
 // transpile & move js
-gulp.task('js', function () {
+gulp.task('js', ['tslint'], function () {
   return gulp.src('app/**/*.ts')
     .pipe(rename({
       extname: ''
@@ -101,6 +103,12 @@ gulp.task('js', function () {
       extname: '.js'
     }))
     .pipe(gulp.dest('build/app'));
+});
+
+gulp.task('tslint', function () {
+  return gulp.src('app/**/*.ts')
+    .pipe(tslint())
+    .pipe(tslint.report('verbose'));
 });
 
 // move component html
