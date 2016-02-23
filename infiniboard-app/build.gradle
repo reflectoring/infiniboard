@@ -2,6 +2,11 @@ plugins {
   id 'com.moowork.node' version '0.11'
 }
 
+ext {
+  node_dir = "${project.projectDir}/nodejs"
+}
+
+
 node {
   // Version of node to use.
   version = version_node
@@ -17,8 +22,13 @@ node {
   download = true
 
   // Set the work directory for unpacking node
-  workDir = file("${project.buildDir}/nodejs")
+  workDir = file(node_dir)
 
   // Set the work directory where node_modules should be located
   nodeModulesDir = file("${project.projectDir}")
 }
+
+task cleanNpm(type: Delete) {
+  delete node_dir
+}
+
