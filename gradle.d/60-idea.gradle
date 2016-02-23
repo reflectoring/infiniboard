@@ -57,6 +57,21 @@ subprojects {
               </component>'''
 
                 it.asNode().append((new XmlParser()).parseText(springFacet))
+
+                def disableSpelling = '''<component name="InspectionProjectProfileManager">
+                <profile version="1.0">
+                  <option name="myName" value="Project Default" />
+                  <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+                    <option name="processCode" value="true" />
+                    <option name="processLiterals" value="true" />
+                    <option name="processComments" value="true" />
+                  </inspection_tool>
+                </profile>
+                <option name="PROJECT_PROFILE" value="Project Default" />
+                <option name="USE_PROJECT_PROFILE" value="true" />
+                <version value="1.0" />
+              </component>'''
+                it.asNode().append((new XmlParser()).parseText(disableSpelling))
             }
         }
     }
