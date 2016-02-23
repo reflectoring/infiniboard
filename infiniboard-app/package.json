@@ -7,7 +7,7 @@
     "url": "git://github.com/reflectoring/infiniboard.git"
   },
   "scripts": {
-    "postinstall": "bower install && npm run typings install",
+    "postinstall": "bower install && npm run typings install && gulp",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",
