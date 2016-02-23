@@ -45,5 +45,11 @@ task copyClient(type: Copy) {
     into 'src/main/webapp'
 }
 
+// infiniboard-app must be build first
+processResources.dependsOn ":infiniboard-app:npmInstall"
+
+// clean should also clean webapp dir
 clean.dependsOn cleanWebappDir
+
+// processResources copies the client to webapp dir
 processResources.dependsOn copyClient
