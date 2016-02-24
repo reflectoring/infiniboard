@@ -44,6 +44,12 @@ $ npm install
 $ npm start
 ```
 
+To package the client for production usage run:
+```
+$ npm install
+$ gulp
+```
+The package client is located inside the `build` directory.
 
 ## license
 
