@@ -1,8 +1,18 @@
 apply plugin: 'base'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
 allprojects {
     group = 'com.github.reflectoring'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
 
     buildscript {
         repositories {
@@ -17,7 +27,6 @@ file('gradle.d').listFiles().sort().each {
         apply from: relativePath(it)
     }
 }
-
 
 task wrapper(type: Wrapper) {
     gradleVersion '2.9'

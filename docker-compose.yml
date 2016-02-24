@@ -1,0 +1,11 @@
+mongo:
+  image: "mongo:3.2"
+  ports:
+    - "27017:27017"
+
+quartermaster:
+  image: "reflectoring/quartermaster:0.0.1-SNAPSHOT"
+  ports:
+    - "8080:8080"
+  links:
+    - mongo:mongo

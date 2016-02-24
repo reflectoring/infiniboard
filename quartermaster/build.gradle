@@ -1,4 +1,5 @@
 apply plugin: 'spring-boot'
+apply plugin: 'docker'
 
 buildscript {
 
@@ -9,8 +10,8 @@ buildscript {
 }
 
 jar {
-    baseName = 'infiniboard'
-    version = '0.0.1-SNAPSHOT'
+    baseName = 'quartermaster'
+    version = '0.0.1'
 }
 
 dependencies {
@@ -21,10 +22,15 @@ dependencies {
     // disable embedded mongo
     // ./gradlew -Pno_embedded_mongo ...
     if (!project.hasProperty('no_embedded_mongo')) {
-        compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
+        testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
     }
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootRepackage {
+    mainClass = 'com.github.reflectoring.InfiniboardApplication'
+    executable = true
 }
 
 bootRun {
@@ -56,3 +62,19 @@ copyClient.dependsOn cleanWebappDir
 
 // processResources copies the client to webapp dir
 processResources.dependsOn copyClient
+
+task buildDocker(type: Docker, dependsOn: build) {
+//  push = true
+    tagVersion = project.version
+    tag = "${project.dockerGroup}/${jar.baseName}"
+
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from("${project.buildDir}/libs/") {
+                rename "${jar.baseName}-.*\\.jar", "${jar.baseName}.jar"
+            }
+            into stageDir
+        }
+    }
+}
