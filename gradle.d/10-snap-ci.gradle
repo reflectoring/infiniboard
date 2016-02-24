@@ -34,8 +34,8 @@ ext {
     buildNumber = getEnv('SNAP_PIPELINE_COUNTER', null)
     gitCommit = getEnv('SNAP_COMMIT', null)
     gitCommitShort = getEnv('SNAP_COMMIT_SHORT', null)
-    isPullRequst = !getBoolEnv('SNAP_INTEGRATION_PIPELINE', false)
     pullRequestNumber = getEnv('SNAP_PULL_REQUEST_NUMBER', null)
+    isPullRequest = pullRequestNumber != null
 
     // export method as closure to make it available for all projects
     getBuildVersion = this.&getBuildVersion
@@ -46,6 +46,6 @@ println "isCiBuild        : ${isCiBuild}"
 println "buildNumber      : ${buildNumber}"
 println "gitCommit        : ${gitCommit}"
 println "gitCommitShort   : ${gitCommitShort}"
-println "isPullRequst     : ${isPullRequst}"
+println "isPullRequest    : ${isPullRequest}"
 println "pullRequestNumber: ${pullRequestNumber}"
 println ""
