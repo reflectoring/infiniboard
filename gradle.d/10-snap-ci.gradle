@@ -16,7 +16,7 @@ def getBuildVersion(String baseVersion) {
     def version = baseVersion;
 
     if (project.isCiBuild) {
-        if (project.isPullRequst) {
+        if (project.isPullRequest) {
             version += "-PR${project.pullRequestNumber}"
         }
         version += "-${project.buildNumber}"
