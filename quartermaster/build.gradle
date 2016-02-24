@@ -10,7 +10,7 @@ buildscript {
 
 jar {
     baseName = 'infiniboard'
-    version = '0.0.1-SNAPSHOT'
+    version = project.getBuildVersion('0.0.1')
 }
 
 dependencies {

@@ -1,0 +1,51 @@
+def getEnv(String envVarName, Object defaultValue) {
+
+    Map<String, String> env = System.getenv();
+    if (env.containsKey(envVarName)) {
+        return env.get(envVarName)
+    }
+
+    return defaultValue
+}
+
+boolean getBoolEnv(String envVarName, boolean defaultValue) {
+    Boolean.valueOf(getEnv(envVarName, defaultValue))
+}
+
+def getBuildVersion(String baseVersion) {
+    def version = baseVersion;
+
+    if (project.isCiBuild) {
+        if (project.isPullRequst) {
+            version += "-PR${project.pullRequestNumber}"
+        }
+        version += "-${project.buildNumber}"
+        version += "-${project.gitCommitShort}"
+
+    } else {
+        version += "-local"
+    }
+}
+
+ext {
+// reads environment variables when running on snap-ci.com
+    isCiBuild = getBoolEnv('CI', false)
+
+    buildNumber = getEnv('SNAP_PIPELINE_COUNTER', null)
+    gitCommit = getEnv('SNAP_COMMIT', null)
+    gitCommitShort = getEnv('SNAP_COMMIT_SHORT', null)
+    isPullRequst = !getBoolEnv('SNAP_INTEGRATION_PIPELINE', false)
+    pullRequestNumber = getEnv('SNAP_PULL_REQUEST_NUMBER', null)
+
+    // export method as closure to make it available for all projects
+    getBuildVersion = this.&getBuildVersion
+}
+
+
+println "isCiBuild        : ${isCiBuild}"
+println "buildNumber      : ${buildNumber}"
+println "gitCommit        : ${gitCommit}"
+println "gitCommitShort   : ${gitCommitShort}"
+println "isPullRequst     : ${isPullRequst}"
+println "pullRequestNumber: ${pullRequestNumber}"
+println ""
