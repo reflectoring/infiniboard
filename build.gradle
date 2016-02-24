@@ -1,30 +1,20 @@
 apply plugin: 'base'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath('se.transmode.gradle:gradle-docker:1.2')
+// alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
+file('gradle.d').listFiles().sort().each {
+    if (it =~ /.*\.gradle$/) {
+        apply from: relativePath(it)
     }
 }
 
 allprojects {
     group = 'com.github.reflectoring'
-    version = '0.0.1'
+    version = project.getBuildVersion('0.0.1')
 
     buildscript {
         repositories {
             jcenter()
         }
-    }
-}
-
-// alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
-file('gradle.d').listFiles().sort().each {
-    if (it =~ /.*\.gradle$/) {
-        apply from: relativePath(it)
     }
 }
 

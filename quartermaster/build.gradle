@@ -6,12 +6,13 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
 jar {
     baseName = 'quartermaster'
-    version = '0.0.1'
+    version = project.getBuildVersion('0.0.1')
 }
 
 dependencies {
