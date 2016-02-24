@@ -39,3 +39,6 @@ typings
 # transpiled typescript
 infiniboard-app/app/*.js
 infiniboard-app/app/*.js.map
+
+# repacked client
+quartermaster/src/main/webapp
