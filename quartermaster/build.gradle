@@ -74,15 +74,16 @@ processResources.dependsOn copyClient
 task buildDocker(type: Docker, dependsOn: build) {
 //  push = true
     tagVersion = project.version
-    tag = "${project.dockerGroup}/${jar.baseName}"
+    tag = "${project.dockerGroup}/${war.baseName}"
 
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
             from("${project.buildDir}/libs/") {
-                rename "${jar.baseName}-.*\\.jar", "${jar.baseName}.jar"
+                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
             }
             into stageDir
+            exclude '*.original'
         }
     }
 }

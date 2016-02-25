@@ -4,10 +4,10 @@ MAINTAINER Matthias Balke <mathias.balke@gmail.com>
 
 VOLUME /tmp
 
-ADD quartermaster.jar app.jar
+ADD quartermaster.war app.war
 
-RUN bash -c 'touch /app.jar'
+RUN bash -c 'touch /app.war'
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.data.mongodb.host=mongo","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.data.mongodb.host=mongo","-jar","/app.war"]
