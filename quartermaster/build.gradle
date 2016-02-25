@@ -1,5 +1,6 @@
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
+apply plugin: 'war'
 
 buildscript {
 
@@ -10,15 +11,21 @@ buildscript {
     }
 }
 
-jar {
+war {
     baseName = 'quartermaster'
     version = project.getBuildVersion('0.0.1')
 }
 
+configurations {
+    providedRuntime
+}
+
+
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     // disable embedded mongo
     // ./gradlew -Pno_embedded_mongo ...
