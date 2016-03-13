@@ -8,11 +8,6 @@ buildscript {
     }
 }
 
-jar {
-    baseName = 'infiniboard'
-    version = project.getBuildVersion('0.0.1')
-}
-
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
 

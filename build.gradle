@@ -9,7 +9,7 @@ file('gradle.d').listFiles().sort().each {
 
 allprojects {
     group = 'com.github.reflectoring'
-    version = project.getBuildVersion('0.0.1')
+    version = '0.0.1'
 
     buildscript {
         repositories {

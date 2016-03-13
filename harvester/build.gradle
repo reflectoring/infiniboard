@@ -1,0 +1,33 @@
+buildscript {
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
+        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.11.0'
+    }
+
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'mongo'
+
+dependencies {
+    compile(
+            'org.springframework.boot:spring-boot-starter',
+            'org.springframework.boot:spring-boot-starter-data-mongodb'
+    )
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnit {
+        excludeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+    }
+}
+
+task integrationTest(type: Test) {
+    runWithMongoDb = true
+    useJUnit {
+        includeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+    }
+}
