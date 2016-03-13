@@ -1,4 +1,4 @@
-[![Build Status](https://snap-ci.com/reflectoring/infiniboard/branch/master/build_image)](https://snap-ci.com/reflectoring/infiniboard/branch/master)
+[![Build Status](https://snap-ci.com/reflectoring/infiniboard/branch/master/build_image)](https://snap-ci.com/reflectoring/infiniboard/branch/master)[![Gradle Status](https://gradleupdate.appspot.com/matthiasbalke/infiniboard/status.svg?branch=master)](https://gradleupdate.appspot.com/matthiasbalke/infiniboard/status)
 
 # infiniboard
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
