@@ -21,7 +21,7 @@ gradle-app.setting
 *.iml
 *.ipr
 *.iws
-*/.idea
+.idea
 
 # temp
 *.*~
@@ -32,7 +32,6 @@ gradle-app.setting
 # local module cache
 node_modules
 nodejs
-build
 bower_components
 typings
 

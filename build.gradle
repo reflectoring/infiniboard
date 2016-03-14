@@ -9,6 +9,8 @@ file('gradle.d').listFiles().sort().each {
 
 allprojects {
     group = 'com.github.reflectoring'
+	// creates the continuous delivery release version
+	// s. gradle.d/10-snap-ci.gradle
     version = project.getBuildVersion('0.0.1')
 
     buildscript {
@@ -19,5 +21,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion '2.11'
+    gradleVersion '2.12'
 }

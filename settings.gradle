@@ -1,2 +1,3 @@
 include 'quartermaster'
 include 'infiniboard-app'
+include 'harvester'
