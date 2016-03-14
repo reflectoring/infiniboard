@@ -4,8 +4,13 @@ mongo:
     - "27017:27017"
 
 quartermaster:
-  image: "reflectoring/quartermaster:0.0.1-SNAPSHOT"
+  image: "reflectoring/quartermaster:latest"
   ports:
     - "8080:8080"
+  links:
+    - mongo:mongo
+
+harvester:
+  image: "reflectoring/harvester:latest"
   links:
     - mongo:mongo
