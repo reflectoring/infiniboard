@@ -1,7 +1,7 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
 import com.github.reflectoring.infiniboard.harvester.HarvesterApplication;
-import com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests;
+import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
