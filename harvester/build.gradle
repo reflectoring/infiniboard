@@ -26,13 +26,13 @@ dependencies {
 
 test {
     useJUnit {
-        excludeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+        excludeCategories 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
     }
 }
 
 task integrationTest(type: Test) {
     runWithMongoDb = true
     useJUnit {
-        includeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+        includeCategories 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
     }
 }
