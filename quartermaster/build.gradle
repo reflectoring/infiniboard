@@ -1,25 +1,30 @@
-apply plugin: 'spring-boot'
-
 buildscript {
-
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
+        classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
     }
 }
 
+apply plugin: 'spring-boot'
+apply plugin: 'mongo'
+
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile (
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-data-mongodb'
+    )
 
-    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+    testCompile (
+            'org.springframework.boot:spring-boot-starter-test',
+    )
+}
 
-    // disable embedded mongo
-    // ./gradlew -Pno_embedded_mongo ...
-    if (!project.hasProperty('no_embedded_mongo')) {
-        compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
+task integrationTest(type: Test) {
+    runWithMongoDb = true // activates mongo plugin to start embedded MongoDB
+    useJUnit {
+        includeCategories project.MongoIntegrationTests
     }
-
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 bootRun {

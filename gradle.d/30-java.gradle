@@ -1,3 +1,7 @@
+project.ext {
+    MongoIntegrationTests = 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
+}
+
 subprojects {
 
     if (file('src/main/java').exists()) {
@@ -6,6 +10,12 @@ subprojects {
 
         repositories {
             jcenter()
+        }
+
+        dependencies {
+            testCompile (
+                    project(':test-base'),
+            )
         }
 
         jacoco {
@@ -20,7 +30,10 @@ subprojects {
         }
 
         test {
-            useJUnit()
+            useJUnit {
+                // exclude all categories as default
+                excludeCategories project.MongoIntegrationTests
+            }
 
             // set heap size for the test JVM(s)
             minHeapSize = "128m"
