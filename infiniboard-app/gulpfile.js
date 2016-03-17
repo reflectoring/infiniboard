@@ -6,7 +6,7 @@ var gulp = require('gulp'),
   del = require('del'),
   usemin = require('gulp-usemin'),
   uglify = require('gulp-uglify'),
-  minifyCss = require('gulp-minify-css'),
+  cleanCss = require('gulp-clean-css'),
   replace = require('gulp-replace'),
   gulpTypings = require("gulp-typings"),
   tslint = require('gulp-tslint');
@@ -80,7 +80,7 @@ gulp.task('app_html', function () {
   return gulp.src('index.html')
     .pipe(usemin({
       assetsDir: '',
-      css: [minifyCss()
+      css: [cleanCss()
         .pipe(replace('fonts', 'lib/font-awesome/fonts')), 'concat'],
       js: [uglify(), 'concat']
     }))
