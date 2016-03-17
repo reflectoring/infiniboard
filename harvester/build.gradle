@@ -15,15 +15,20 @@ apply plugin: 'docker'
 dependencies {
     compile(
             'org.springframework.boot:spring-boot-starter',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-actuator',
             'org.springframework.boot:spring-boot-starter-data-mongodb'
     )
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile(
+            project(':test-base'),
+            'org.springframework.boot:spring-boot-starter-test'
+    )
 }
 
 test {
     useJUnit {
-        excludeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+        excludeCategories 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
     }
 }
 
@@ -35,7 +40,7 @@ bootRepackage {
 task integrationTest(type: Test) {
     runWithMongoDb = true
     useJUnit {
-        includeCategories 'com.github.reflectoring.infiniboard.harvester.MongoIntegrationTests'
+        includeCategories 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
     }
 }
 
