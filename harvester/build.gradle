@@ -2,11 +2,14 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
+        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
     }
+
 }
 
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
+apply plugin: 'docker'
 
 dependencies {
     compile (
@@ -21,9 +24,31 @@ dependencies {
     )
 }
 
+bootRepackage {
+    mainClass = 'com.github.reflectoring.infiniboard.harvester.HarvesterApplication'
+    executable = true
+}
+
 task integrationTest(type: Test) {
     runWithMongoDb = true // activates mongo plugin to start embedded MongoDB
     useJUnit {
         includeCategories project.MongoIntegrationTests
+    }
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+//  push = true
+    tagVersion = project.version
+    tag = "${project.dockerGroup}/${jar.baseName}"
+
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from("${project.buildDir}/libs/") {
+                rename "${jar.baseName}-.*\\.jar", "${jar.baseName}.jar"
+            }
+            into stageDir
+            exclude '*.original'
+        }
     }
 }

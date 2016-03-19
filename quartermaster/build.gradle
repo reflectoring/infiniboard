@@ -2,17 +2,27 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
-        classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
+        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
     }
 }
 
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
+apply plugin: 'docker'
+apply plugin: 'war'
+
+configurations {
+    providedRuntime
+}
 
 dependencies {
     compile (
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-mongodb'
+    )
+
+    providedRuntime(
+            "org.springframework.boot:spring-boot-starter-tomcat"
     )
 
     testCompile (
@@ -25,6 +35,10 @@ task integrationTest(type: Test) {
     useJUnit {
         includeCategories project.MongoIntegrationTests
     }
+
+bootRepackage {
+    mainClass = 'com.github.reflectoring.InfiniboardApplication'
+    executable = true
 }
 
 bootRun {
@@ -56,3 +70,20 @@ copyClient.dependsOn cleanWebappDir
 
 // processResources copies the client to webapp dir
 processResources.dependsOn copyClient
+
+task buildDocker(type: Docker, dependsOn: build) {
+//  push = true
+    tagVersion = project.version
+    tag = "${project.dockerGroup}/${war.baseName}"
+
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from("${project.buildDir}/libs/") {
+                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
+            }
+            into stageDir
+            exclude '*.original'
+        }
+    }
+}
