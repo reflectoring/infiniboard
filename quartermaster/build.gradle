@@ -3,6 +3,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
         classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
+        classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
     }
 }
 
