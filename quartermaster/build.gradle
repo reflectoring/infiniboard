@@ -1,25 +1,39 @@
 apply plugin: 'spring-boot'
+apply plugin: 'docker'
+apply plugin: 'war'
 
 buildscript {
 
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
+        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
     }
 }
 
+configurations {
+    providedRuntime
+}
+
+
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     // disable embedded mongo
     // ./gradlew -Pno_embedded_mongo ...
     if (!project.hasProperty('no_embedded_mongo')) {
-        compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
+        testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2')
     }
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootRepackage {
+    mainClass = 'com.github.reflectoring.InfiniboardApplication'
+    executable = true
 }
 
 bootRun {
@@ -51,3 +65,20 @@ copyClient.dependsOn cleanWebappDir
 
 // processResources copies the client to webapp dir
 processResources.dependsOn copyClient
+
+task buildDocker(type: Docker, dependsOn: build) {
+//  push = true
+    tagVersion = project.version
+    tag = "${project.dockerGroup}/${war.baseName}"
+
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from("${project.buildDir}/libs/") {
+                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
+            }
+            into stageDir
+            exclude '*.original'
+        }
+    }
+}

@@ -49,3 +49,4 @@ println "gitCommitShort   : ${gitCommitShort}"
 println "isPullRequest    : ${isPullRequest}"
 println "pullRequestNumber: ${pullRequestNumber}"
 println ""
+
