@@ -35,6 +35,7 @@ task integrationTest(type: Test) {
     useJUnit {
         includeCategories project.MongoIntegrationTests
     }
+}
 
 bootRepackage {
     mainClass = 'com.github.reflectoring.InfiniboardApplication'
