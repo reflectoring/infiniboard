@@ -66,10 +66,11 @@ clean.dependsOn cleanWebappDir
 // clean old webapp first
 copyClient.dependsOn cleanWebappDir
 
-// wenn copyClient und npmInstall ausgeführt werden muss npmInstall zuerst ausgeführt werden
+// Der client kann erst kopiert werden, nachdem er gebaut wurde
 copyClient.mustRunAfter ':infiniboard-app:npmInstall'
-// wenn build und copyClient ausgeführt werden muss copyClient zuerst ausgeführt werden
-build.mustRunAfter copyClient
+
+// der client muss kopiert werden, bevor die quartermaster WAR gebaut wird
+processResources.mustRunAfter copyClient
 
 task buildWithClient {
     dependsOn ':infiniboard-app:npmInstall', copyClient, build
