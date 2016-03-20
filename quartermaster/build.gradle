@@ -17,7 +17,7 @@ configurations {
 }
 
 dependencies {
-    compile (
+    compile(
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-mongodb'
     )
@@ -26,7 +26,7 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-tomcat"
     )
 
-    testCompile (
+    testCompile(
             'org.springframework.boot:spring-boot-starter-test',
     )
 }
@@ -55,14 +55,10 @@ task cleanWebappDir(type: Delete) {
     delete 'src/main/webapp'
 }
 
-
 task copyClient(type: Copy) {
     from '../infiniboard-app/build'
     into 'src/main/webapp'
 }
-
-// infiniboard-app must be build first
-processResources.dependsOn ":infiniboard-app:npmInstall"
 
 // clean should also clean webapp dir
 clean.dependsOn cleanWebappDir
@@ -70,10 +66,16 @@ clean.dependsOn cleanWebappDir
 // clean old webapp first
 copyClient.dependsOn cleanWebappDir
 
-// processResources copies the client to webapp dir
-processResources.dependsOn copyClient
+// wenn copyClient und npmInstall ausgeführt werden muss npmInstall zuerst ausgeführt werden
+copyClient.mustRunAfter ':infiniboard-app:npmInstall'
+// wenn build und copyClient ausgeführt werden muss copyClient zuerst ausgeführt werden
+build.mustRunAfter copyClient
 
-task buildDocker(type: Docker, dependsOn: build) {
+task buildWithClient {
+    dependsOn ':infiniboard-app:npmInstall', copyClient, build
+}
+
+task buildDocker(type: Docker, dependsOn: buildWithClient) {
 //  push = true
     tagVersion = project.version
     tag = "${project.dockerGroup}/${war.baseName}"
