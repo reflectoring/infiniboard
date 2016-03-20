@@ -1,0 +1,53 @@
+machine:
+  java:
+    version: oraclejdk8
+  node:
+    version: 4.4.0
+
+  services:
+    - docker
+    - mongodb
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+    - "~/.npm"
+  override:
+    - docker info
+    - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
+    - if [[ -e ~/docker/quartermaster.tar ]]; then docker load --input ~/docker/quartermaster.tar; fi
+    - if [[ -e ~/docker/harvester.tar ]]; then docker load --input ~/docker/harvester.tar; fi
+
+    - ./gradlew --console=plain buildDocker -Pno_embedded_mongo
+
+    # pull image here to cache it and speed up the test
+    - docker pull mongo:3.2
+    - docker images
+
+    - mkdir -p ~/docker
+    - docker save mongo > ~/docker/mongo.tar
+    - docker save matthiasbalke/quartermaster > ~/docker/quartermaster.tar
+    - docker save matthiasbalke/harvester > ~/docker/harvester.tar
+
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+    - mkdir -p $CIRCLE_ARTIFACTS/build-artifacts
+    - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
+    - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
+
+test:
+  override:
+    - docker run -d              mongo:3.2;
+    - docker run -d -p 8080:8080 matthiasbalke/quartermaster --link mongo:mongo;
+    - docker run -d              matthiasbalke/harvester     --link mongo:mongo; sleep 30
+    - curl --retry 10 --retry-delay 5 -v http://localhost:8080
+
+deployment:
+  hub:
+    branch: circleci
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push matthiasbalke/quartermaster
+      - docker push matthiasbalke/harvester
