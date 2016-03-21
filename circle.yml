@@ -15,8 +15,7 @@ dependencies:
   override:
     - docker info
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
-    - if [[ -e ~/docker/quartermaster.tar ]]; then docker load --input ~/docker/quartermaster.tar; fi
-    - if [[ -e ~/docker/harvester.tar ]]; then docker load --input ~/docker/harvester.tar; fi
+    - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
     - ./gradlew --console=plain buildDocker -Pno_embedded_mongo
 
@@ -26,8 +25,7 @@ dependencies:
 
     - mkdir -p ~/docker
     - docker save mongo > ~/docker/mongo.tar
-    - docker save matthiasbalke/quartermaster > ~/docker/quartermaster.tar
-    - docker save matthiasbalke/harvester > ~/docker/harvester.tar
+    - docker save java:8 > ~/docker/java.tar
 
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
