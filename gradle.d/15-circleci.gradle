@@ -31,10 +31,10 @@ ext {
 // reads environment variables when running on snap-ci.com
     isCiBuild = getBoolEnv('CI', false)
 
-    buildNumber = getEnv('SNAP_PIPELINE_COUNTER', null)
-    gitCommit = getEnv('SNAP_COMMIT', null)
-    gitCommitShort = getEnv('SNAP_COMMIT_SHORT', null)
-    pullRequestNumber = getEnv('SNAP_PULL_REQUEST_NUMBER', null)
+    buildNumber = getEnv('CIRCLE_BUILD_NUM', null)
+    gitCommit = getEnv('CIRCLE_SHA1', null)
+    gitCommitShort = getEnv('CIRCLE_SHA1', null)
+    pullRequestNumber = getEnv('CIRCLE_PR_NUMBER', null)
     isPullRequest = pullRequestNumber != null
 
     // export method as closure to make it available for all projects
@@ -49,4 +49,3 @@ println "gitCommitShort   : ${gitCommitShort}"
 println "isPullRequest    : ${isPullRequest}"
 println "pullRequestNumber: ${pullRequestNumber}"
 println ""
-

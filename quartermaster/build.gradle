@@ -77,8 +77,8 @@ task buildWithClient {
 }
 
 task buildDocker(type: Docker, dependsOn: buildWithClient) {
-//  push = true
-    tagVersion = project.version
+    push = false
+    tagVersion = 'latest'
     tag = "${project.dockerGroup}/${war.baseName}"
 
     dockerfile = file('src/main/docker/Dockerfile')
