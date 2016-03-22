@@ -47,6 +47,6 @@ deployment:
   hub:
     branch: master
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push reflectoring/quartermaster
-      - docker push reflectoring/harvester
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi
