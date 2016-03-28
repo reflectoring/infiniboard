@@ -6,31 +6,21 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = HarvesterApplication.class)
-@Category(MongoIntegrationTests.class)
 public class UrlDataRetrieveJobTest {
-
-    @Autowired
-    private UrlDataRetrieveJob job;
-
-    @Autowired
-    private UrlDataRepository repository;
 
     @Test
     public void saveToDB() {
-        String url = "http://www.github.com/reflectoring/infiniboard";
-        String content = "runs";
-        job.updateDB(new UrlData(url, new Date(), content));
 
-        Assert.assertTrue(repository.exists(url));
-        Assert.assertEquals(content, repository.findOne(url).getContent());
     }
 
 }

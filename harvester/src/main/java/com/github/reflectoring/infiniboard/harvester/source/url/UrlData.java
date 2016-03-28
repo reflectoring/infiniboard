@@ -11,13 +11,18 @@ public class UrlData {
 
     @Id
     private String url;
+
     private Date lastFetched;
+
     private String content;
 
-    public UrlData(String url, Date lastFetched, String content) {
+    private Integer statuscode;
+
+    public UrlData(String url, Date lastFetched, String content, Integer statuscode) {
         this.url = url;
         this.lastFetched = lastFetched;
         this.content = content;
+        this.statuscode = statuscode;
     }
 
     public String getUrl() {
@@ -30,5 +35,9 @@ public class UrlData {
 
     public String getContent() {
         return content;
+    }
+
+    public Integer getStatuscode() {
+        return statuscode;
     }
 }
