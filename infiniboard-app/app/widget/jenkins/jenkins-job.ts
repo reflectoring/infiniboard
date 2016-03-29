@@ -1,21 +1,21 @@
 export class JenkinsJob {
-  name:string;
-  result:string;
+  public name: string;
+  public result: string;
 
-  constructor(name:string, result:string) {
+  constructor(name: string, result: string) {
     this.name = name;
     this.result = result;
   }
 
-  isSuccessfull() {
-    return this.result == "Success"
+  public isSuccessfull() {
+    return this.result === "Success";
   }
 
-  isUnstable() {
-    return this.result == "Unstable"
+  public isUnstable() {
+    return this.result === "Unstable";
   }
 
-  isFailing() {
-    return this.result == "Failure"
+  public isFailing() {
+    return this.result === "Failure";
   }
 }

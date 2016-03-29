@@ -9,13 +9,14 @@ import {JenkinsJob} from "./jenkins-job";
 
 export class JenkinsJobWidgetComponent implements OnInit {
 
-  job:JenkinsJob;
+  public job: JenkinsJob;
+  public _jenkinsService: JenkinsService;
 
-  constructor(private _jenkinsService:JenkinsService) {
-
+  public constructor(_jenkinsService: JenkinsService) {
+    this._jenkinsService = _jenkinsService;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this._jenkinsService.getJob("Infiniboard").then(
       job => this.job = job
     );
