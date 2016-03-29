@@ -7,7 +7,7 @@ var minifyCss = require('gulp-minify-css');
 gulp.task('default', ['replace_js_css']);
 
 
-gulp.task('replace_js_css', function() {
+gulp.task('replace_js_css', function () {
   gulp.src('index.html')
     .pipe(usemin({
       assetsDir: '',
