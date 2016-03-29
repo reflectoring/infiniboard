@@ -33,15 +33,15 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-traceur": "^0.17.2",
-    "gulp-tslint": "^4.3.2",
+    "gulp-tslint": "^4.3.3",
     "gulp-typings": "^1.1.0",
     "gulp-uglify": "^1.5.2",
     "gulp-usemin": "^0.3.21",
     "gulp-webserver": "^0.9.1",
     "lite-server": "^2.0.1",
     "npm": "^3.5.3",
-    "tslint": "^3.4.0",
-    "typescript": "^1.8.2",
+    "tslint": "^3.6.0",
+    "typescript": "^1.8.9",
     "typings": "^0.6.8"
   },
   "engines": {
