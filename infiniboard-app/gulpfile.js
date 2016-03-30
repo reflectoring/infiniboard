@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
   rename = require('gulp-rename'),
-  traceur = require('gulp-traceur'),
+  ts = require('gulp-typescript'),
   webserver = require('gulp-webserver'),
   browserSync = require('browser-sync').create(),
   del = require('del'),
@@ -9,7 +9,11 @@ var gulp = require('gulp'),
   cleanCss = require('gulp-clean-css'),
   replace = require('gulp-replace'),
   gulpTypings = require("gulp-typings"),
-  tslint = require('gulp-tslint');
+  tslint = require('gulp-tslint'),
+
+var tsProject = ts.createProject('tsconfig.json', {
+  typescript: require('typescript')
+});
 
 
 // run init tasks
@@ -44,7 +48,8 @@ gulp.task('dependencies', ['bower'], function () {
     'node_modules/angular2/bundles/angular2-polyfills.js',
     'node_modules/systemjs/dist/system.src.js',
     'node_modules/rxjs/bundles/Rx.js',
-    'node_modules/angular2/bundles/angular2.dev.js'
+    'node_modules/angular2/bundles/angular2.dev.js',
+    'node_modules/angular2/bundles/router.dev.js'
   ]).pipe(gulp.dest('build/lib'));
 });
 
@@ -91,21 +96,11 @@ gulp.task('app_html', function () {
 
 // transpile & move js
 gulp.task('ts', ['tslint'], function () {
-  return gulp.src('app/**/*.ts')
-    .pipe(rename({
-      extname: ''
-    }))
-    .pipe(traceur({
-      modules: 'instantiate',
-      moduleName: true,
-      annotations: true,
-      types: true,
-      memberVariables: true
-    }))
-    .pipe(rename({
-      extname: '.js'
-    }))
-    .pipe(gulp.dest('build/app'));
+  var tsResult = tsProject.src()
+    .pipe(ts(tsProject, undefined, ts.reporter.fullReporter()));
+
+  return tsResult.js
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('tslint', function () {
