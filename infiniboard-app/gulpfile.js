@@ -112,6 +112,8 @@ gulp.task('tslint', function () {
 // move component html
 gulp.task('components_html', function () {
   return gulp.src('app/**/*.html')
+    .pipe(replace(/(node_modules[^"]*)\//g, 'lib/'))
+    .pipe(replace('bower_components', 'lib'))
     .pipe(gulp.dest('build/app'));
 });
 
