@@ -8,14 +8,14 @@ export class JenkinsJob {
   }
 
   public isSuccessfull() {
-    return this.result === "Success";
+    return this.result === 'Success';
   }
 
   public isUnstable() {
-    return this.result === "Unstable";
+    return this.result === 'Unstable';
   }
 
   public isFailing() {
-    return this.result === "Failure";
+    return this.result === 'Failure';
   }
 }

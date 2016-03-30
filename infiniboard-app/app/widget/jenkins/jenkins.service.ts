@@ -1,5 +1,5 @@
-import {Injectable} from "angular2/core";
-import {JOBS} from "./mock-jobs";
+import {Injectable} from 'angular2/core';
+import {JOBS} from './mock-jobs';
 
 @Injectable()
 export class JenkinsService {
