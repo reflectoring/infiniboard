@@ -9,7 +9,7 @@ var gulp = require('gulp'),
   cleanCss = require('gulp-clean-css'),
   replace = require('gulp-replace'),
   gulpTypings = require("gulp-typings"),
-  tslint = require('gulp-tslint'),
+  tslint = require('gulp-tslint');
 
 var tsProject = ts.createProject('tsconfig.json', {
   typescript: require('typescript')
