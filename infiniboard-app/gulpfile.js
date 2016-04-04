@@ -100,7 +100,7 @@ gulp.task('ts', ['tslint'], function () {
     .pipe(ts(tsProject, undefined, ts.reporter.fullReporter()));
 
   return tsResult.js
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/app'));
 });
 
 gulp.task('tslint', function () {
