@@ -15,13 +15,13 @@
     "typings": "typings"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.11",
-    "systemjs": "0.19.24",
+    "angular2": "2.0.0-beta.13",
+    "systemjs": "0.19.25",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
-    "zone.js": "0.6.4"
+    "zone.js": "0.6.6"
   },
   "devDependencies": {
     "bower": "^1.7.7",
@@ -42,7 +42,7 @@
     "npm": "^3.5.3",
     "tslint": "^3.4.0",
     "typescript": "^1.8.9",
-    "typings":"^0.7.9"
+    "typings":"^0.7.11"
   },
   "engines": {
     "node": "5.5.0",
