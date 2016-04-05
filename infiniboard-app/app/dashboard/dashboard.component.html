@@ -3,12 +3,12 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      placeholder
-      <small>developers paradise</small>
+      {{dashboard?.name}}
+      <small>{{dashboard?.description}}</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      <li class="active">Development</li>
+      <li class="active">{{dashboard?.name}}</li>
     </ol>
   </section>
 
@@ -16,7 +16,7 @@
   <section class="content">
 
     <!-- Your Page Content Here -->
-    <h1 *ngIf="dashboard">{{dashboard.name}}</h1>
+    <h1></h1>
 
   </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
