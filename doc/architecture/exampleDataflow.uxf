@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>696</x>
+      <y>424</y>
+      <w>16</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>616</x>
+      <y>400</y>
+      <w>184</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>
+bg=blue
+The Internet
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
