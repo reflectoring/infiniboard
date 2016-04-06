@@ -5,7 +5,7 @@
     <id>UMLUseCase</id>
     <coordinates>
       <x>696</x>
-      <y>424</y>
+      <y>408</y>
       <w>16</w>
       <h>16</h>
     </coordinates>
@@ -17,7 +17,7 @@ bg=red</panel_attributes>
     <id>UMLUseCase</id>
     <coordinates>
       <x>616</x>
-      <y>400</y>
+      <y>384</y>
       <w>184</w>
       <h>112</h>
     </coordinates>
@@ -26,5 +26,16 @@ bg=blue
 The Internet
 layer=-1</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>408</y>
+      <w>272</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;180.0;10.0;120.0;50.0;320.0;30.0</additional_attributes>
   </element>
 </diagram>
