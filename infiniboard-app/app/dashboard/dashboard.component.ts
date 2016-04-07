@@ -1,10 +1,13 @@
-import {Component, Input, OnInit} from 'angular2/core';
+import {Component, Input, OnInit, DynamicComponentLoader, ElementRef} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {Dashboard} from './dashboard';
 import {DashboardService} from './dashboard.service';
+import {PlatformStatusWidgetComponent} from '../widget/platform-status/platform-status-widget.component';
+import {WidgetConfig} from './widget-config';
 
 @Component({
   selector: 'dashboard',
+  directives: [PlatformStatusWidgetComponent],
   templateUrl: 'app/dashboard/dashboard.component.html'
 })
 
@@ -13,12 +16,19 @@ export class DashboardComponent implements OnInit {
   @Input()
   public dashboard: Dashboard;
 
+  private elementRef: ElementRef;
+  private dynamicComponentLoader: DynamicComponentLoader;
+
   private _dashboardService: DashboardService;
   private _routeParams: RouteParams;
 
-  constructor(_dashboardService: DashboardService, _routeParams: RouteParams) {
-    this._dashboardService = _dashboardService;
-    this._routeParams = _routeParams;
+  constructor(dynamicComponentLoader: DynamicComponentLoader, elementRef: ElementRef,
+              dashboardService: DashboardService, routeParams: RouteParams) {
+
+    this.dynamicComponentLoader = dynamicComponentLoader;
+    this.elementRef = elementRef;
+    this._dashboardService = dashboardService;
+    this._routeParams = routeParams;
   }
 
   ngOnInit() {
@@ -27,6 +37,29 @@ export class DashboardComponent implements OnInit {
     let id = +this._routeParams.get('id');
 
     this._dashboardService.getDashboard(id)
-      .then(dashboard => this.dashboard = dashboard);
+      .then(dashboard => this.initializeDashboard(dashboard));
+  }
+
+  private initializeDashboard(dashboard: Dashboard) {
+    this.dashboard = dashboard;
+
+    this.initializeWidgets();
+  }
+
+  private initializeWidgets() {
+    let widgetConfigs = this.dashboard.widgetConfigs;
+    widgetConfigs.forEach(widget => this.initializeWidget(widget));
+  }
+
+  private initializeWidget(widgetConfig: WidgetConfig) {
+    let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
+    this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
+  }
+
+  private getWidgetComponentByType(widgetType: string) {
+    switch (widgetType) {
+      case 'platform-status':
+        return PlatformStatusWidgetComponent;
+    }
   }
 }
