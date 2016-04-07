@@ -11,26 +11,6 @@ Remove all existing IntelliJ project configurations and create the latest one by
 $ ./gradlew cleanIdea idea
 ```
 
-### quartermaster
-Open a terminal and start a gradle deamon that builds continuously:
-```
-$ ./gradlew -t classes
-```
-
-Open another terminal and start the application:
-```
-$ ./gradlew bootRun
-```
-
-Now all changes are reloaded live.
-
-#### disable embedded mongo db
-To disable the embedded mongo db use `-Pno_embedded_mongo` e.g.:
-```
-$ ./gradlew -Pno_embedded_mongo bootRun
-```
-
-
 ### infiniboard-app
 If you do not have node/npm set up globally, setup a local installation by running:
 ```
@@ -38,18 +18,39 @@ $ ./gradlew -Pdownload_node npmSetup
 $ ./gradlew -Pdownload_node npmInstall
 ```
 
-To start the client in development mode run:
+otherwise just run:
 ```
 $ npm install
-$ npm start
+```
+
+To start the client in development mode run:
+```
+$ node node_modules/.bin/gulp dev
 ```
 
 To package the client for production usage run:
 ```
-$ npm install
-$ gulp
+$ node node_modules/.bin/gulp
 ```
+
 The package client is located inside the `build` directory.
+
+
+### quartermaster
+Open a terminal and start a gradle deamon that builds continuously:
+```
+$ cd quartermaster
+$ ../gradlew buildWithClient
+$ ../gradlew -t classes
+```
+
+Open another terminal and start the application:
+```
+$ cd quartermaster
+$ ../gradlew bootRun
+```
+
+Now all changes are reloaded live.
 
 ## license
 
