@@ -1,4 +1,4 @@
-import {WidgetConfig} from 'widget-config';
+import {WidgetConfig} from './widget-config';
 
 export class Dashboard {
 
