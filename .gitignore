@@ -35,9 +35,5 @@ nodejs
 bower_components
 typings
 
-# transpiled typescript
-infiniboard-app/**/*.js
-infiniboard-app/**/*.js.map
-
 # repacked client
 quartermaster/src/main/webapp
