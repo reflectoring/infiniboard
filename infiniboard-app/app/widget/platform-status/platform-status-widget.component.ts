@@ -1,4 +1,4 @@
-import {Component, ElementRef} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {WidgetComponent} from '../widget-component';
 
 @Component({
