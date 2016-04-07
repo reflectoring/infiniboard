@@ -1,9 +1,11 @@
 import {Component, Input, OnInit, DynamicComponentLoader, ElementRef} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
+import {Type} from 'angular2/src/facade/lang';
 import {Dashboard} from './dashboard';
 import {DashboardService} from './dashboard.service';
-import {PlatformStatusWidgetComponent} from '../widget/platform-status/platform-status-widget.component';
 import {WidgetConfig} from './widget-config';
+import {PlatformStatusWidgetComponent} from '../widget/platform-status/platform-status-widget.component';
+import {JenkinsJobWidgetComponent} from '../widget/jenkins/jenkins-job-widget.component';
 
 @Component({
   selector: 'dashboard',
@@ -53,13 +55,17 @@ export class DashboardComponent implements OnInit {
 
   private initializeWidget(widgetConfig: WidgetConfig) {
     let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
-    this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
+    let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
+    Promise.resolve(promise).then(component => component.instance.setId(widgetConfig.id));
   }
 
-  private getWidgetComponentByType(widgetType: string) {
+  private getWidgetComponentByType(widgetType: string): Type {
     switch (widgetType) {
       case 'platform-status':
         return PlatformStatusWidgetComponent;
+
+      case 'jenkins-job':
+        return JenkinsJobWidgetComponent;
     }
   }
 }
