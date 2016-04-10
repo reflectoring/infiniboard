@@ -9,6 +9,7 @@ import {WidgetService} from '../widget.service';
 export class JenkinsJobWidgetComponent extends WidgetComponent {
 
   public name: string;
+  public duration: string;
   public status: string;
 
   public constructor(widgetService: WidgetService) {
@@ -17,6 +18,7 @@ export class JenkinsJobWidgetComponent extends WidgetComponent {
 
   public updateData(data: any) {
     this.name = data.name;
+    this.duration = data.duration;
     this.status = data.status;
   }
 
