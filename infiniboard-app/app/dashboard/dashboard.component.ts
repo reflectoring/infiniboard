@@ -56,7 +56,11 @@ export class DashboardComponent implements OnInit {
   private initializeWidget(widgetConfig: WidgetConfig) {
     let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
     let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
-    Promise.resolve(promise).then(component => component.instance.setId(widgetConfig.id));
+    Promise.resolve(promise).then(
+      component => {
+        component.instance.setId(widgetConfig.id);
+        component.instance.updateWidgetData();
+      });
   }
 
   private getWidgetComponentByType(widgetType: string): Type {
