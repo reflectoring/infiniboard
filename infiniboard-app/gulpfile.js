@@ -9,7 +9,8 @@ var gulp = require('gulp'),
   cleanCss = require('gulp-clean-css'),
   replace = require('gulp-replace'),
   gulpTypings = require("gulp-typings"),
-  tslint = require('gulp-tslint');
+  tslint = require('gulp-tslint'),
+  historyApiFallback = require('connect-history-api-fallback');
 
 var tsProject = ts.createProject('tsconfig.json', {
   typescript: require('typescript')
@@ -67,7 +68,8 @@ gulp.task("install_typings", ['dependencies'], function () {
 gulp.task('serve', ['bower', 'dependencies'], function () {
     browserSync.init({
       server: {
-        baseDir: "build"
+        baseDir: "build",
+        middleware: [historyApiFallback()]
       }
     });
   }

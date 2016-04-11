@@ -38,6 +38,7 @@
     "tslint": "^3.6.0",
     "typescript": "^1.8.9",
     "typings":"^0.7.11"
+    "connect-history-api-fallback": "1.2.0",
   },
   "engines": {
     "node": "4.4.0",
