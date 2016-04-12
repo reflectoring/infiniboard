@@ -42,6 +42,7 @@ test:
     - docker run -d -p 8080:8080 reflectoring/quartermaster --link mongo:mongo;
     - docker run -d              reflectoring/harvester     --link mongo:mongo; sleep 30
     - curl --retry 10 --retry-delay 5 -v http://localhost:8080
+    - bash <(curl -s https://codecov.io/bash)
 
 deployment:
   hub:
