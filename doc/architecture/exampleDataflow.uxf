@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.1.1">
-  <zoom_level>7</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>728</x>
-      <y>791</y>
-      <w>224</w>
-      <h>84</h>
+      <x>708</x>
+      <y>654</y>
+      <w>192</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>Quartermaster
 </panel_attributes>
@@ -16,10 +16,10 @@
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>987</x>
-      <y>651</y>
-      <w>28</w>
-      <h>14</h>
+      <x>930</x>
+      <y>534</y>
+      <w>24</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>type=decision
 </panel_attributes>
@@ -28,10 +28,10 @@
   <element>
     <id>Text</id>
     <coordinates>
-      <x>938</x>
-      <y>553</y>
-      <w>119</w>
-      <h>154</h>
+      <x>888</x>
+      <y>450</y>
+      <w>102</w>
+      <h>132</h>
     </coordinates>
     <panel_attributes>customelement=
 // Text Elemnt
@@ -50,10 +50,10 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>749</x>
-      <y>259</y>
-      <w>308</w>
-      <h>175</h>
+      <x>726</x>
+      <y>198</y>
+      <w>264</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>Harvester</panel_attributes>
     <additional_attributes/>
@@ -61,10 +61,10 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>826</x>
-      <y>644</y>
-      <w>175</w>
-      <h>161</h>
+      <x>792</x>
+      <y>528</y>
+      <w>150</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 save(widget)
@@ -74,10 +74,10 @@ save(widget)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>805</x>
-      <y>616</y>
-      <w>196</w>
-      <h>189</h>
+      <x>774</x>
+      <y>504</y>
+      <w>168</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 save(source)
@@ -87,10 +87,10 @@ save(source)
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>728</x>
-      <y>959</y>
-      <w>224</w>
-      <h>112</h>
+      <x>708</x>
+      <y>798</y>
+      <w>192</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>Plattform
 </panel_attributes>
@@ -99,10 +99,10 @@ save(source)
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>245</x>
-      <y>280</y>
-      <w>217</w>
-      <h>105</h>
+      <x>294</x>
+      <y>216</y>
+      <w>186</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>the internet
 bg=blue
@@ -112,10 +112,10 @@ layer=-2</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>343</x>
-      <y>294</y>
-      <w>14</w>
-      <h>14</h>
+      <x>378</x>
+      <y>228</y>
+      <w>12</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>bg=red</panel_attributes>
     <additional_attributes/>
@@ -123,10 +123,10 @@ layer=-2</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>742</x>
-      <y>868</y>
-      <w>28</w>
-      <h>105</h>
+      <x>720</x>
+      <y>720</y>
+      <w>24</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 0</panel_attributes>
@@ -135,10 +135,10 @@ layer=-2</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1001</x>
-      <y>938</y>
-      <w>343</w>
-      <h>133</h>
+      <x>942</x>
+      <y>780</y>
+      <w>294</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>bg=blue
 0)GET /dashboards
@@ -157,10 +157,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>756</x>
-      <y>868</y>
-      <w>21</w>
-      <h>105</h>
+      <x>732</x>
+      <y>720</y>
+      <w>18</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -168,10 +168,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>784</x>
-      <y>868</y>
-      <w>21</w>
-      <h>105</h>
+      <x>756</x>
+      <y>720</y>
+      <w>18</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 1</panel_attributes>
@@ -180,10 +180,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>798</x>
-      <y>868</y>
-      <w>21</w>
-      <h>105</h>
+      <x>768</x>
+      <y>720</y>
+      <w>18</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -191,10 +191,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>826</x>
-      <y>868</y>
-      <w>28</w>
-      <h>105</h>
+      <x>792</x>
+      <y>720</y>
+      <w>24</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 2</panel_attributes>
@@ -203,10 +203,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>840</x>
-      <y>868</y>
-      <w>21</w>
-      <h>105</h>
+      <x>804</x>
+      <y>720</y>
+      <w>18</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -214,10 +214,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>889</x>
-      <y>868</y>
-      <w>28</w>
-      <h>105</h>
+      <x>846</x>
+      <y>720</y>
+      <w>24</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 3</panel_attributes>
@@ -226,10 +226,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>903</x>
-      <y>868</y>
-      <w>21</w>
-      <h>105</h>
+      <x>858</x>
+      <y>720</y>
+      <w>18</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -237,10 +237,10 @@ get a concret widget. response as JSON
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>945</x>
-      <y>994</y>
-      <w>70</w>
-      <h>28</h>
+      <x>894</x>
+      <y>828</y>
+      <w>60</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -249,10 +249,10 @@ get a concret widget. response as JSON
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>742</x>
-      <y>1155</y>
-      <w>133</w>
-      <h>49</h>
+      <x>468</x>
+      <y>894</y>
+      <w>174</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Example Widget
 --
@@ -263,37 +263,28 @@ version: 5.10.11.12
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>798</x>
-      <y>1064</y>
-      <w>21</w>
-      <h>105</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=*</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1092</x>
-      <y>595</y>
-      <w>147</w>
-      <h>49</h>
+      <x>1020</x>
+      <y>486</y>
+      <w>126</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>bg=blue
 holds widget configurations
-there source and the values</panel_attributes>
+there source and the values.
+The values consist of 2 parts. 
+1. dynamic values
+2. static values </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1050</x>
-      <y>609</y>
-      <w>56</w>
-      <h>28</h>
+      <x>984</x>
+      <y>498</y>
+      <w>48</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -302,10 +293,10 @@ there source and the values</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>987</x>
-      <y>623</y>
-      <w>28</w>
-      <h>14</h>
+      <x>930</x>
+      <y>510</y>
+      <w>24</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>type=decision
 </panel_attributes>
@@ -314,10 +305,10 @@ there source and the values</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>819</x>
-      <y>350</y>
-      <w>28</w>
-      <h>14</h>
+      <x>786</x>
+      <y>276</y>
+      <w>24</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=red</panel_attributes>
@@ -326,10 +317,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>994</x>
-      <y>357</y>
-      <w>98</w>
-      <h>280</h>
+      <x>936</x>
+      <y>282</y>
+      <w>84</w>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 (JOB) get sources</panel_attributes>
@@ -338,10 +329,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>987</x>
-      <y>350</y>
-      <w>28</w>
-      <h>14</h>
+      <x>930</x>
+      <y>276</y>
+      <w>24</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=red</panel_attributes>
@@ -350,22 +341,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>819</x>
-      <y>364</y>
-      <w>28</w>
-      <h>14</h>
-    </coordinates>
-    <panel_attributes>type=decision
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLSpecialState</id>
-    <coordinates>
-      <x>819</x>
-      <y>357</y>
-      <w>28</w>
-      <h>14</h>
+      <x>786</x>
+      <y>282</y>
+      <w>24</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>type=decision
 bg=red</panel_attributes>
@@ -374,10 +353,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>805</x>
-      <y>322</y>
-      <w>63</w>
-      <h>63</h>
+      <x>774</x>
+      <y>252</y>
+      <w>54</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>sources</panel_attributes>
     <additional_attributes/>
@@ -385,10 +364,10 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>861</x>
-      <y>343</y>
-      <w>140</w>
-      <h>35</h>
+      <x>822</x>
+      <y>270</y>
+      <w>120</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.
 (JOB) generate
@@ -398,10 +377,10 @@ sources</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>567</x>
-      <y>301</y>
-      <w>252</w>
-      <h>56</h>
+      <x>570</x>
+      <y>234</y>
+      <w>216</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;30.0;120.0;50.0;80.0;10.0;340.0;60.0</additional_attributes>
@@ -409,10 +388,10 @@ sources</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>574</x>
-      <y>154</y>
-      <w>147</w>
-      <h>35</h>
+      <x>576</x>
+      <y>108</y>
+      <w>126</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>bg=blue
 connects to a url 
@@ -422,10 +401,10 @@ and saves the resulting value</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
-      <y>182</y>
-      <w>84</w>
-      <h>154</h>
+      <x>612</x>
+      <y>132</y>
+      <w>72</w>
+      <h>132</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -434,10 +413,10 @@ and saves the resulting value</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1092</x>
-      <y>273</y>
-      <w>147</w>
-      <h>42</h>
+      <x>1020</x>
+      <y>210</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>bg=blue
 a job generates a another 
@@ -447,10 +426,10 @@ job for each widget-Source</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>294</y>
-      <w>98</w>
-      <h>77</h>
+      <x>948</x>
+      <y>228</y>
+      <w>84</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -459,10 +438,10 @@ job for each widget-Source</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>798</x>
-      <y>49</y>
-      <w>245</w>
-      <h>70</h>
+      <x>768</x>
+      <y>18</y>
+      <w>210</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>bg=blue
 for each source will be a job generated.
@@ -474,10 +453,10 @@ be loaded</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>826</x>
-      <y>112</y>
-      <w>28</w>
-      <h>224</h>
+      <x>792</x>
+      <y>72</y>
+      <w>24</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -486,10 +465,10 @@ be loaded</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1155</x>
-      <y>490</y>
-      <w>63</w>
-      <h>35</h>
+      <x>1074</x>
+      <y>396</y>
+      <w>54</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>bg=blue
 Source for
@@ -499,10 +478,10 @@ each widget</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>518</y>
-      <w>161</w>
-      <h>126</h>
+      <x>948</x>
+      <y>420</y>
+      <w>138</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -511,10 +490,10 @@ each widget</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1127</x>
-      <y>707</y>
-      <w>77</w>
-      <h>42</h>
+      <x>1050</x>
+      <y>582</y>
+      <w>66</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>bg=blue
 Source for 
@@ -524,10 +503,10 @@ each widget</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>651</y>
-      <w>133</w>
-      <h>98</h>
+      <x>948</x>
+      <y>534</y>
+      <w>114</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=-
 </panel_attributes>
@@ -536,10 +515,10 @@ each widget</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>574</x>
-      <y>343</y>
-      <w>259</w>
-      <h>49</h>
+      <x>576</x>
+      <y>270</y>
+      <w>222</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;210.0;50.0;170.0;20.0;350.0;20.0</additional_attributes>
@@ -547,10 +526,10 @@ each widget</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>483</x>
-      <y>308</y>
-      <w>98</w>
-      <h>21</h>
+      <x>498</x>
+      <y>240</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>url: platformstatus</panel_attributes>
     <additional_attributes/>
@@ -558,10 +537,10 @@ each widget</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>483</x>
-      <y>343</y>
-      <w>98</w>
-      <h>21</h>
+      <x>498</x>
+      <y>270</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>url: version</panel_attributes>
     <additional_attributes/>
@@ -569,10 +548,10 @@ each widget</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>952</x>
-      <y>581</y>
-      <w>28</w>
-      <h>14</h>
+      <x>900</x>
+      <y>474</y>
+      <w>36</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>type=decision
 </panel_attributes>
@@ -581,26 +560,182 @@ each widget</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>833</x>
-      <y>378</y>
-      <w>147</w>
-      <h>217</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-&gt;
-  save (data)</panel_attributes>
-    <additional_attributes>190.0;290.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>784</x>
-      <y>581</y>
-      <w>182</w>
-      <h>224</h>
+      <x>720</x>
+      <y>474</y>
+      <w>192</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 loat to widget
 </panel_attributes>
-    <additional_attributes>10.0;300.0;10.0;10.0;240.0;10.0</additional_attributes>
+    <additional_attributes>10.0;300.0;10.0;10.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>720</x>
+      <y>822</y>
+      <w>96</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Example 
+Widget</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>822</x>
+      <y>822</y>
+      <w>66</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Example 
+Widget</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>822</x>
+      <y>858</y>
+      <w>66</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Example 
+Widget</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>468</x>
+      <y>786</y>
+      <w>174</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>bg=green
+Each Widget owns a Configpart 
+by which the Widget can be controlled
+Config:
+id:42
+name:DEV01
+url(status...)
+url(version...)
+widget_refresh_intervall:10sec
+source_refresh_intervall:10sec
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>636</x>
+      <y>834</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>636</x>
+      <y>864</y>
+      <w>96</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;130.0;70.0;130.0;70.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>762</x>
+      <y>300</y>
+      <w>168</w>
+      <h>186</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+(JOB)store 
+dynamic data </panel_attributes>
+    <additional_attributes>260.0;290.0;10.0;170.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>534</x>
+      <y>378</y>
+      <w>72</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>bg=green
+(data)
+data:[
+
+widgetid:...
+sourceId:...
+data{...},{...}
+}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>384</y>
+      <w>186</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;70.0;290.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>828</x>
+      <y>288</y>
+      <w>126</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+(JOB) store 
+static data</panel_attributes>
+    <additional_attributes>150.0;310.0;10.0;90.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1152</x>
+      <y>276</y>
+      <w>72</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>bg=green
+(source)
+
+sources:[
+{type:url
+url:http//:...},
+{type:url
+url:http//:...}
+]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>936</x>
+      <y>318</y>
+      <w>228</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>360.0;10.0;10.0;90.0</additional_attributes>
   </element>
 </diagram>
