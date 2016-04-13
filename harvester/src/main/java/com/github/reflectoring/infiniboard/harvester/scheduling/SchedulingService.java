@@ -1,6 +1,6 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import com.github.reflectoring.infiniboard.overseer.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

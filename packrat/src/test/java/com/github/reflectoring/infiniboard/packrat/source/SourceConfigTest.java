@@ -1,6 +1,6 @@
-package com.github.reflectoring.infiniboard.overseer.source;
+package com.github.reflectoring.infiniboard.packrat.source;
 
-import com.github.reflectoring.infiniboard.overseer.OverseerTestApplication;
+import com.github.reflectoring.infiniboard.packrat.OverseerTestApplication;
 import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

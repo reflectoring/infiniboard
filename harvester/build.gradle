@@ -11,7 +11,7 @@ apply plugin: 'docker'
 
 dependencies {
     compile (
-            project(':overseer'),
+            project(':packrat'),
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-actuator',
             'org.quartz-scheduler:quartz:2.2.2',

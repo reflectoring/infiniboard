@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.overseer;
+package com.github.reflectoring.infiniboard.packrat;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

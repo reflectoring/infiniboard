@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.overseer.source;
+package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
 
