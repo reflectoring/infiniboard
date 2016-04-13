@@ -29,8 +29,8 @@ bootRepackage {
 }
 
 task buildDocker(type: Docker, dependsOn: build) {
-//  push = true
-    tagVersion = project.version
+    push = false
+    tagVersion = 'latest'
     tag = "${project.dockerGroup}/${jar.baseName}"
 
     dockerfile = file('src/main/docker/Dockerfile')
