@@ -37,7 +37,7 @@ public class SourceConfigTest {
 
         repository.save(config);
 
-        List<SourceConfig> configList = repository.findByPluginId("bar");
+        List<SourceConfig> configList = repository.findBySourceId("bar");
         assertThat(configList).hasSize(1);
         SourceConfig sourceConfig = configList.get(0);
         assertThat(sourceConfig.getConfigData()).containsKeys("alpha", "beta", "gamma");

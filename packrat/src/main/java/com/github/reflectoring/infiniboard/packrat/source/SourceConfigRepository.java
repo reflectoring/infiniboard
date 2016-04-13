@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface SourceConfigRepository extends MongoRepository<SourceConfig, String> {
 
-    List<SourceConfig> findByPluginId(String pluginId);
+    List<SourceConfig> findBySourceId(String sourceId);
 
     List<SourceConfig> findByWidgetId(String widgetId);
 
