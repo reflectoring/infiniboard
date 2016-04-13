@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
 
-public class UrlDataRetrieveJobTest {
+public class UrlSourceRetrieveJobTest {
 
     @Test
     public void saveToDB() {

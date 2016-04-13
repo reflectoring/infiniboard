@@ -19,13 +19,13 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * job to retrieve UrlData (configured via DB)
+ * job to retrieve UrlSource (configured via DB)
  */
-public class UrlDataRetrieveJob implements Job {
+public class UrlSourceRetrieveJob implements Job {
 
-    private final static Logger LOG = LoggerFactory.getLogger(UrlDataRetrieveJob.class);
+    private final static Logger LOG = LoggerFactory.getLogger(UrlSourceRetrieveJob.class);
 
-    void retrieve(String url, UrlDataRepository repository) throws IOException {
+    void retrieve(String url, UrlSourceRepository repository) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -35,17 +35,17 @@ public class UrlDataRetrieveJob implements Job {
             return;
         }
         String content = IOUtils.toString(response.getEntity().getContent());
-        repository.save(new UrlData(url, new Date(), content, statusCode));
+        repository.save(new UrlSource(url, new Date(), content, statusCode));
     }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         JobDataMap configuration = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
-        UrlDataRepository urlDataRepository = applicationContext.getBean(UrlDataRepository.class);
+        UrlSourceRepository urlSourceRepository = applicationContext.getBean(UrlSourceRepository.class);
         String url = configuration.get("url").toString();
         try {
-            retrieve(url, urlDataRepository);
+            retrieve(url, urlSourceRepository);
         } catch (IOException e) {
             LOG.error("could not fetch url {} because {}", url, e);
         }

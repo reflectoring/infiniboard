@@ -16,7 +16,7 @@ public class SourceConfig {
 
     private String widgetId;
 
-    private String pluginId;
+    private String sourceId;
 
     private Date lastModified;
 
@@ -24,9 +24,9 @@ public class SourceConfig {
 
     private Map<String, Object> configData;
 
-    public SourceConfig(String widgetId, String pluginId, Date lastModified, Integer interval, Map<String, Object> configData) {
+    public SourceConfig(String widgetId, String sourceId, Date lastModified, Integer interval, Map<String, Object> configData) {
         this.widgetId = widgetId;
-        this.pluginId = pluginId;
+        this.sourceId = sourceId;
         this.lastModified = lastModified;
         this.interval = interval;
         this.configData = configData;
@@ -48,12 +48,12 @@ public class SourceConfig {
         this.widgetId = widgetId;
     }
 
-    public String getPluginId() {
-        return pluginId;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setPluginId(String pluginId) {
-        this.pluginId = pluginId;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     public Date getLastModified() {

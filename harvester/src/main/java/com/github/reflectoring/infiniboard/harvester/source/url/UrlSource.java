@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * information about an url request
  */
-public class UrlData {
+public class UrlSource {
 
     @Id
     private String url;
@@ -16,13 +16,13 @@ public class UrlData {
 
     private String content;
 
-    private Integer statuscode;
+    private Integer statusCode;
 
-    public UrlData(String url, Date lastFetched, String content, Integer statuscode) {
+    public UrlSource(String url, Date lastFetched, String content, Integer statusCode) {
         this.url = url;
         this.lastFetched = lastFetched;
         this.content = content;
-        this.statuscode = statuscode;
+        this.statusCode = statusCode;
     }
 
     public String getUrl() {
@@ -37,7 +37,7 @@ public class UrlData {
         return content;
     }
 
-    public Integer getStatuscode() {
-        return statuscode;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 }
