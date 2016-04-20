@@ -1,6 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
+import com.github.reflectoring.infiniboard.packrat.source.UrlSource;
+import com.github.reflectoring.infiniboard.packrat.source.UrlSourceRepository;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;

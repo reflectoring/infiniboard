@@ -6,12 +6,14 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.annotation.PostConstruct;
 
 /**
  * application class for harvester service
  */
+@EnableMongoRepositories(basePackages = "com.github.reflectoring.infiniboard.packrat.source")
 @SpringBootApplication
 public class HarvesterApplication {
 

@@ -14,8 +14,8 @@ dependencies {
             project(':packrat'),
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-actuator',
-            'org.quartz-scheduler:quartz:2.2.2',
-            'org.apache.httpcomponents:httpclient:4.5.2',
+            "org.quartz-scheduler:quartz:${version_quartz}",
+            "org.apache.httpcomponents:httpclient:${version_httpclient}",
     )
 
     testCompile (

@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.harvester.source.url;
+package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
