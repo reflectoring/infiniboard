@@ -19,7 +19,8 @@ configurations {
 dependencies {
     compile(
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-data-mongodb'
+            'org.springframework.boot:spring-boot-starter-data-mongodb',
+            'org.tuckey:urlrewritefilter:4.0.4'
     )
 
     providedRuntime(
