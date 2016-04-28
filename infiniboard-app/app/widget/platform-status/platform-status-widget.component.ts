@@ -20,5 +20,7 @@ export class PlatformStatusWidgetComponent extends WidgetComponent {
     this.name = data.name;
     this.version = data.version;
     this.status = data.status;
+
+    console.log('[PlatformStatusWidgetComponent] updateData(): interval ' + this.getUpdateInterval());
   }
 }

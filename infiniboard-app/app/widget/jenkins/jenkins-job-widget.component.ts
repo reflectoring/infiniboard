@@ -20,6 +20,8 @@ export class JenkinsJobWidgetComponent extends WidgetComponent {
     this.name = data.name;
     this.duration = data.duration;
     this.status = data.status;
+
+    console.log('[JenkinsJobWidgetComponent] updateData(): interval ' + this.getUpdateInterval());
   }
 
   public isSuccessfull() {
