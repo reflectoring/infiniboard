@@ -1,7 +1,8 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import com.github.reflectoring.infiniboard.packrat.OverseerTestApplication;
+import com.github.reflectoring.infiniboard.packrat.PackratTestApplication;
 import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -20,15 +21,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  * testing the source configurations
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = OverseerTestApplication.class)
+@SpringApplicationConfiguration(classes = PackratTestApplication.class)
 @Category(MongoIntegrationTests.class)
 public class SourceConfigTest {
 
     @Autowired
     private SourceConfigRepository repository;
 
-    @Test
-    public void variableConfig() {
+    @Before
+    public void setup() {
         HashMap<String, Object> attributes = new HashMap<>();
         attributes.put("alpha", "one");
         attributes.put("beta", "two");
@@ -36,9 +37,17 @@ public class SourceConfigTest {
         SourceConfig config = new SourceConfig("foo", "bar", new Date(), 5 * 60, attributes);
 
         repository.save(config);
+    }
 
+    @Test
+    public void configWasSaved() {
         List<SourceConfig> configList = repository.findBySourceId("bar");
         assertThat(configList).hasSize(1);
+    }
+
+    @Test
+    public void variableConfig() {
+        List<SourceConfig> configList = repository.findBySourceId("bar");
         SourceConfig sourceConfig = configList.get(0);
         assertThat(sourceConfig.getConfigData()).containsKeys("alpha", "beta", "gamma");
     }

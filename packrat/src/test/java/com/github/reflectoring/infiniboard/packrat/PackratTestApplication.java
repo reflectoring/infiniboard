@@ -3,9 +3,9 @@ package com.github.reflectoring.infiniboard.packrat;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Spring Boot application for overseer tests
+ * Spring Boot application for packrat tests
  */
 @SpringBootApplication
-public class OverseerTestApplication {
+public class PackratTestApplication {
 
 }

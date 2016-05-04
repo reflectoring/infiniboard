@@ -20,11 +20,11 @@ public class SourceConfig {
 
     private Date lastModified;
 
-    private Integer interval;
+    private int interval;
 
     private Map<String, Object> configData;
 
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, Integer interval, Map<String, Object> configData) {
+    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<String, Object> configData) {
         this.widgetId = widgetId;
         this.sourceId = sourceId;
         this.lastModified = lastModified;
@@ -64,11 +64,11 @@ public class SourceConfig {
         this.lastModified = lastModified;
     }
 
-    public Integer getInterval() {
+    public int getInterval() {
         return interval;
     }
 
-    public void setInterval(Integer interval) {
+    public void setInterval(int interval) {
         this.interval = interval;
     }
 

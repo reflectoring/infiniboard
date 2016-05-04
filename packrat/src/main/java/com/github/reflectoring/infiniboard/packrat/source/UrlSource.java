@@ -16,9 +16,9 @@ public class UrlSource {
 
     private String content;
 
-    private Integer statusCode;
+    private int statusCode;
 
-    public UrlSource(String url, Date lastFetched, String content, Integer statusCode) {
+    public UrlSource(String url, Date lastFetched, String content, int statusCode) {
         this.url = url;
         this.lastFetched = lastFetched;
         this.content = content;
@@ -37,7 +37,7 @@ public class UrlSource {
         return content;
     }
 
-    public Integer getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 }
