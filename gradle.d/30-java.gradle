@@ -13,6 +13,10 @@ subprojects {
         }
 
         dependencies {
+            compile (
+                    "org.apache.commons:commons-lang3:${version_commons_lang}",
+                    "commons-io:commons-io:${version_commons_io}",
+            )
             testCompile (
                     project(':test-base'),
             )

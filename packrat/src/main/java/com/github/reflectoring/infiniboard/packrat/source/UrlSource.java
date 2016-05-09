@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.harvester.source.url;
+package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
 
@@ -7,17 +7,22 @@ import java.util.Date;
 /**
  * information about an url request
  */
-public class UrlData {
+public class UrlSource {
 
     @Id
     private String url;
+
     private Date lastFetched;
+
     private String content;
 
-    public UrlData(String url, Date lastFetched, String content) {
+    private int statusCode;
+
+    public UrlSource(String url, Date lastFetched, String content, int statusCode) {
         this.url = url;
         this.lastFetched = lastFetched;
         this.content = content;
+        this.statusCode = statusCode;
     }
 
     public String getUrl() {
@@ -30,5 +35,9 @@ public class UrlData {
 
     public String getContent() {
         return content;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
     }
 }
