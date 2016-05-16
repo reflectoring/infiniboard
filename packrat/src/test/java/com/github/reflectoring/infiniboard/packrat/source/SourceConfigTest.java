@@ -30,10 +30,11 @@ public class SourceConfigTest {
 
     @Before
     public void setup() {
-        HashMap<String, Object> attributes = new HashMap<>();
-        attributes.put("alpha", "one");
-        attributes.put("beta", "two");
-        attributes.put("gamma", "three");
+        HashMap<Integer, ConfigSource> attributes = new HashMap<>();
+        attributes.put(new Integer(1), new UrlSource("http://www.foo.de", new Date(), null, 0, 5));
+        attributes.put(new Integer(2), new UrlSource("http://www.foo.de", new Date(), null, 0, 5));
+        attributes.put(new Integer(3), new UrlSource("http://www.foo.de", new Date(), null, 0, 5));
+
         SourceConfig config = new SourceConfig("foo", "bar", new Date(), 5 * 60, attributes);
 
         repository.save(config);
@@ -49,7 +50,7 @@ public class SourceConfigTest {
     public void variableConfig() {
         List<SourceConfig> configList = repository.findBySourceId("bar");
         SourceConfig sourceConfig = configList.get(0);
-        assertThat(sourceConfig.getConfigData()).containsKeys("alpha", "beta", "gamma");
+        assertThat(sourceConfig.getConfigData()).containsKeys(new Integer(1), new Integer(2), new Integer(3));
     }
 
 }

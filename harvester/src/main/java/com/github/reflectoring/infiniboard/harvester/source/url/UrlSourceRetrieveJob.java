@@ -27,17 +27,23 @@ public class UrlSourceRetrieveJob implements Job {
 
     private final static Logger LOG = LoggerFactory.getLogger(UrlSourceRetrieveJob.class);
 
-    void retrieve(String url, UrlSourceRepository repository) throws IOException {
+    void retrieve(UrlSource urlSource, UrlSourceRepository repository) throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(url);
+        HttpGet httpGet = new HttpGet(urlSource.getUrl());
         CloseableHttpResponse response = httpClient.execute(httpGet);
         int statusCode = response.getStatusLine().getStatusCode();
+
         if (HttpStatus.SC_OK != statusCode) {
-            LOG.error("could not fetch url {} / status {} / reason {}", url, statusCode, response.getStatusLine().getReasonPhrase());
+            LOG.error("could not fetch url {} / status {} / because of {}", urlSource.getUrl(), statusCode, response.getStatusLine().getReasonPhrase());
             return;
         }
         String content = IOUtils.toString(response.getEntity().getContent());
-        repository.save(new UrlSource(url, new Date(), content, statusCode));
+
+        //Save modified urlSource
+        urlSource.setLastFetched(new Date());
+        urlSource.setContent(content);
+        urlSource.setStatusCode(statusCode);
+        repository.save(urlSource);
     }
 
     @Override
@@ -45,11 +51,12 @@ public class UrlSourceRetrieveJob implements Job {
         JobDataMap configuration = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         UrlSourceRepository urlSourceRepository = applicationContext.getBean(UrlSourceRepository.class);
-        String url = configuration.get("url").toString();
+        String sourceConfigId = configuration.get("id").toString();
+        UrlSource urlSource = urlSourceRepository.findOne(sourceConfigId);
         try {
-            retrieve(url, urlSourceRepository);
+            retrieve(urlSource, urlSourceRepository);
         } catch (IOException e) {
-            LOG.error("could not fetch url {} because {}", url, e);
+            //TODO
         }
     }
 }
