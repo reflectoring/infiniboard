@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 
+import java.util.Map;
+
 /**
  * job scheduling service using quartz
  */
@@ -43,7 +45,7 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, SourceConfig config) throws SchedulerException {
+    public void scheduleJob(String name, String group, Class<? extends Job> clazz, SourceConfig config, Map<String, Object> test) throws SchedulerException {
         JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(config.getConfigData())).usingJobData(createContextData()).build();
         Trigger trigger = newTrigger().withIdentity(name, group).startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(config.getInterval()).repeatForever()).build();
@@ -61,13 +63,42 @@ public class SchedulingService {
     }
 
     /**
+     * Update interval of already scheduled job
+     */
+    public void rescheduleJob(String name, String group, int newInterval) throws SchedulerException {
+        Trigger oldTrigger = scheduler.getTrigger(new TriggerKey(name, group));
+        TriggerBuilder triggerBuilder = oldTrigger.getTriggerBuilder();
+        Trigger newTrigger = triggerBuilder.withIdentity(name, group).startNow()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(newInterval).repeatForever()).build();
+        scheduler.scheduleJob(getJobDetail(name, group), newTrigger);
+    }
+
+    /**
      * cancels a job by name and group
      */
     public void cancelJob(String name, String group) throws SchedulerException {
-        JobKey key = new JobKey(name, group);
-        if (scheduler.checkExists(key)) {
-            scheduler.deleteJob(key);
+        JobKey jobKey = new JobKey(name, group);
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.deleteJob(jobKey);
         }
+    }
+
+    public JobDetail getJobDetail(String name, String group) throws SchedulerException {
+        JobKey jobKey = new JobKey(name, group);
+        return scheduler.getJobDetail(jobKey);
+    }
+
+    public TriggerKey getTriggerKey(String name, String group) throws SchedulerException {
+        return scheduler.getTrigger(new TriggerKey(name, group)).getKey();
+    }
+
+    public boolean jobIsScheduled(String name, String group) throws SchedulerException {
+        JobKey jobKey = new JobKey(name, group);
+        return scheduler.checkExists(jobKey);
+    }
+
+    public void unscheduleJob(String name, String group) throws SchedulerException {
+        scheduler.unscheduleJob(getTriggerKey(name, group));
     }
 
 }

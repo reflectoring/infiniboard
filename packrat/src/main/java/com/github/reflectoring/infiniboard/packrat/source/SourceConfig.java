@@ -12,7 +12,7 @@ import java.util.Map;
 public class SourceConfig {
 
     @Id
-    private String id;
+    private long id;
 
     private String widgetId;
 
@@ -22,21 +22,24 @@ public class SourceConfig {
 
     private int interval;
 
-    private Map<String, Object> configData;
+    private Map<Integer, ConfigSource> configData;
 
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<String, Object> configData) {
+    private boolean deleted;
+
+    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<Integer, ConfigSource> configData) {
         this.widgetId = widgetId;
         this.sourceId = sourceId;
         this.lastModified = lastModified;
         this.interval = interval;
         this.configData = configData;
+        this.deleted = false;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -72,12 +75,19 @@ public class SourceConfig {
         this.interval = interval;
     }
 
-    public Map<String, Object> getConfigData() {
+    public Map<Integer, ConfigSource> getConfigData() {
         return configData;
     }
 
-    public void setConfigData(Map<String, Object> configData) {
+    public void setConfigData(Map<Integer, ConfigSource> configData) {
         this.configData = configData;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }
