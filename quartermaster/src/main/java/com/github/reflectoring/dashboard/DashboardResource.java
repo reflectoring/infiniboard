@@ -4,8 +4,17 @@ import org.springframework.hateoas.ResourceSupport;
 
 class DashboardResource extends ResourceSupport {
 
+    private int dashboardId;
     private String name;
     private String description;
+
+    public int getDashboardId() {
+        return dashboardId;
+    }
+
+    public void setDashboardId(int dashboardId) {
+        this.dashboardId = dashboardId;
+    }
 
     public String getName() {
         return name;

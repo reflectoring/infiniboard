@@ -1,6 +1,7 @@
 package com.github.reflectoring.dashboard;
 
-import com.github.reflectoring.HalJsonResource;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dashboard {
 
@@ -8,10 +9,13 @@ public class Dashboard {
     private String name;
     private String description;
 
+    private List<WidgetConfig> widgetConfigs;
+
     public Dashboard(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.widgetConfigs = new ArrayList<>();
     }
 
     public int getId() {
@@ -38,11 +42,11 @@ public class Dashboard {
         this.description = description;
     }
 
-    public HalJsonResource toResource() {
-        HalJsonResource resource = new HalJsonResource();
-        resource.addProperty("id", this.getId());
-        resource.addProperty("name", this.getName());
-        resource.addProperty("description", this.getDescription());
-        return resource;
+    public List<WidgetConfig> getWidgetConfigs() {
+        return widgetConfigs;
+    }
+
+    public void setWidgetConfigs(List<WidgetConfig> widgetConfigs) {
+        this.widgetConfigs = widgetConfigs;
     }
 }
