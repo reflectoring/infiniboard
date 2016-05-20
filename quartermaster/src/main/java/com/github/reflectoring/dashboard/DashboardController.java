@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -19,15 +18,18 @@ public class DashboardController {
     private DashboardRepository repository;
 
     private DashboardResourceAssembler assembler;
-    private WidgetConfigResourceAssembler widgetAssembler;
+    private WidgetConfigResourceAssembler widgetConfigAssembler;
+    private WidgetDataResourceAssembler widgetDataAssembler;
 
     @Autowired
     public DashboardController(DashboardRepository repository,
                                DashboardResourceAssembler assembler,
-                               WidgetConfigResourceAssembler widgetAssembler) {
+                               WidgetConfigResourceAssembler widgetConfigAssembler,
+                               WidgetDataResourceAssembler widgetDataAssembler) {
         this.repository = repository;
         this.assembler = assembler;
-        this.widgetAssembler = widgetAssembler;
+        this.widgetConfigAssembler = widgetConfigAssembler;
+        this.widgetDataAssembler = widgetDataAssembler;
 
     }
 
@@ -47,28 +49,22 @@ public class DashboardController {
     }
 
 
-    @RequestMapping(value = "/{id}/widgets", method = GET)
-    public ResponseEntity<List<WidgetConfigResource>> getWidgetConfiguration(@PathVariable int id) {
+    @RequestMapping(value = "/{id}/widget-data", method = GET)
+    public ResponseEntity<List<WidgetDataResource>> getWidgetConfiguration(@PathVariable int id) {
 
         Dashboard dashboard = repository.find(id);
-        List<WidgetConfig> widgetConfigs = dashboard.getWidgetConfigs();
-        List<WidgetConfigResource> resources = widgetAssembler.toResources(dashboard, widgetConfigs);
+        List<WidgetData> data = repository.findWidgetData(id);
+        List<WidgetDataResource> resources = widgetDataAssembler.toResources(dashboard, data);
         return new ResponseEntity<>(resources, OK);
     }
 
-    @RequestMapping(value = "/{id}/widgets/{widgetId}", method = GET)
-    public ResponseEntity<WidgetConfigResource> getWidgetConfiguration(@PathVariable int id, @PathVariable int widgetId) {
+    @RequestMapping(value = "/{id}/widget-data/{widgetId}", method = GET)
+    public ResponseEntity<WidgetDataResource> getWidgetConfiguration(@PathVariable int id, @PathVariable int widgetId) {
+
 
         Dashboard dashboard = repository.find(id);
-        List<WidgetConfig> widgetConfigs = dashboard.getWidgetConfigs();
-
-
-        WidgetConfig widgetConfig = widgetConfigs.stream()
-                .filter(wc -> wc.getId() == widgetId)
-                .collect(Collectors.toList())
-                .get(0);
-
-        WidgetConfigResource resources = widgetAssembler.toResource(dashboard, widgetConfig);
+        WidgetData data = repository.findWidgetData(id, widgetId);
+        WidgetDataResource resources = widgetDataAssembler.toResource(dashboard, data);
         return new ResponseEntity<>(resources, OK);
     }
 

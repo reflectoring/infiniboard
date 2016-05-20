@@ -15,7 +15,7 @@ public class WidgetConfigResourceAssembler {
     public WidgetConfigResource toResource(Dashboard dashboard, WidgetConfig widgetConfig) {
         WidgetConfigResource resource = new WidgetConfigResource();
 
-        resource.add(linkTo(methodOn(DashboardController.class).getWidgetConfiguration(dashboard.getId())).slash(widgetConfig.getId()).withSelfRel());
+        resource.add(linkTo(methodOn(DashboardController.class).getWidgetConfiguration(dashboard.getId())).slash(widgetConfig.getId()).withRel("data"));
 
         resource.setWidgetId(widgetConfig.getId());
         resource.setType(widgetConfig.getType());

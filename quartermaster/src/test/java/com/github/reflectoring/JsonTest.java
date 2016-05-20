@@ -7,14 +7,14 @@ import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class HalJsonResourceTest {
+public class JsonTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void getPropertyReturnsStoredPropertyValue() {
-        HalJsonResource resource = new HalJsonResource();
+        Json resource = new Json();
         String key = "name";
         String value = "First";
 
@@ -26,7 +26,7 @@ public class HalJsonResourceTest {
 
     @Test
     public void addPropertyThrowsExceptionOnExistingKey() {
-        HalJsonResource resource = new HalJsonResource();
+        Json resource = new Json();
         String key = "name";
         String value = "First";
 
