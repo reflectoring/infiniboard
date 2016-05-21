@@ -19,7 +19,7 @@ public class UrlSourceSequenceService {
 
     public long getNextSequence(String collection){
         UrlSource urlSource = mongoOperations.findAndModify(
-                query(where("_id").is(collection)),
+                query(where("id").is(collection)),
                 new Update().inc("seq", 1),
                 options().returnNew(true),
                 UrlSource.class);
