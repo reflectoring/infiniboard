@@ -7,9 +7,8 @@ import java.util.Date;
 /**
  * information about an url request
  */
-public class UrlSource {
+public class UrlSource extends ConfigSource{
 
-    @Id
     private String url;
 
     private Date lastFetched;
@@ -18,7 +17,8 @@ public class UrlSource {
 
     private int statusCode;
 
-    public UrlSource(String url, Date lastFetched, String content, int statusCode) {
+    public UrlSource(String url, Date lastFetched, String content, int statusCode, int updateInterval ) {
+        super(updateInterval);
         this.url = url;
         this.lastFetched = lastFetched;
         this.content = content;
@@ -33,11 +33,24 @@ public class UrlSource {
         return lastFetched;
     }
 
+    public void setLastFetched(Date lastFetched) {
+        this.lastFetched = lastFetched;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getStatusCode() {
         return statusCode;
     }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
 }

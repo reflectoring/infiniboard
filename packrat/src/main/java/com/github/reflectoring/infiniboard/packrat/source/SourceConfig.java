@@ -12,7 +12,7 @@ import java.util.Map;
 public class SourceConfig {
 
     @Id
-    private String id;
+    private long id;
 
     private String widgetId;
 
@@ -20,23 +20,28 @@ public class SourceConfig {
 
     private Date lastModified;
 
-    private int interval;
+    private int widgetRefreshInterval;
 
-    private Map<String, Object> configData;
+    private int sourceRefreshInterval;
 
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<String, Object> configData) {
+    private Map<Integer, ConfigSource> configData;
+
+    private boolean deleted;
+
+    public SourceConfig(String widgetId, String sourceId, Date lastModified, int sourceRefreshInterval, Map<Integer, ConfigSource> configData) {
         this.widgetId = widgetId;
         this.sourceId = sourceId;
         this.lastModified = lastModified;
-        this.interval = interval;
+        this.sourceRefreshInterval = sourceRefreshInterval;
         this.configData = configData;
+        this.deleted = false;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -64,20 +69,27 @@ public class SourceConfig {
         this.lastModified = lastModified;
     }
 
-    public int getInterval() {
-        return interval;
+    public int getSourceRefreshInterval() {
+        return sourceRefreshInterval;
     }
 
-    public void setInterval(int interval) {
-        this.interval = interval;
+    public void setSourceRefreshInterval(int interval) {
+        this.sourceRefreshInterval = interval;
     }
 
-    public Map<String, Object> getConfigData() {
+    public Map<Integer, ConfigSource> getConfigData() {
         return configData;
     }
 
-    public void setConfigData(Map<String, Object> configData) {
+    public void setConfigData(Map<Integer, ConfigSource> configData) {
         this.configData = configData;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }
