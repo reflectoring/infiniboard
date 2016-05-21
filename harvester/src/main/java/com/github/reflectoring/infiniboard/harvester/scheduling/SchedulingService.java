@@ -109,5 +109,4 @@ public class SchedulingService {
         scheduler.unscheduleJob(getTriggerKey(name, group));
         LOG.info("Unscheduled Job name: {} group {} ", name, group);
     }
-
 }

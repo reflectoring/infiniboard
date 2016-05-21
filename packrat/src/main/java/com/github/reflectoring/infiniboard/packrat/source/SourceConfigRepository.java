@@ -19,5 +19,4 @@ public interface SourceConfigRepository extends MongoRepository<SourceConfig, St
     List<SourceConfig> findByLastModifiedAfter(Date date);
 
     List<SourceConfig> findByIsDeleted(boolean isDeleted);
-
 }

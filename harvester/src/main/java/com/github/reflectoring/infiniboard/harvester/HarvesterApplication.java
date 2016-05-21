@@ -28,5 +28,4 @@ public class HarvesterApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(HarvesterApplication.class);
     }
-
 }
