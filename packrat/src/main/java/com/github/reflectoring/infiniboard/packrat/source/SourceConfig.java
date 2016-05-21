@@ -20,17 +20,19 @@ public class SourceConfig {
 
     private Date lastModified;
 
-    private int interval;
+    private int widgetRefreshInterval;
+
+    private int sourceRefreshInterval;
 
     private Map<Integer, ConfigSource> configData;
 
     private boolean deleted;
 
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<Integer, ConfigSource> configData) {
+    public SourceConfig(String widgetId, String sourceId, Date lastModified, int sourceRefreshInterval, Map<Integer, ConfigSource> configData) {
         this.widgetId = widgetId;
         this.sourceId = sourceId;
         this.lastModified = lastModified;
-        this.interval = interval;
+        this.sourceRefreshInterval = sourceRefreshInterval;
         this.configData = configData;
         this.deleted = false;
     }
@@ -67,12 +69,12 @@ public class SourceConfig {
         this.lastModified = lastModified;
     }
 
-    public int getInterval() {
-        return interval;
+    public int getSourceRefreshInterval() {
+        return sourceRefreshInterval;
     }
 
-    public void setInterval(int interval) {
-        this.interval = interval;
+    public void setSourceRefreshInterval(int interval) {
+        this.sourceRefreshInterval = interval;
     }
 
     public Map<Integer, ConfigSource> getConfigData() {
