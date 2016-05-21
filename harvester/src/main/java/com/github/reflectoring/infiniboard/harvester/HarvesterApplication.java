@@ -1,7 +1,7 @@
 package com.github.reflectoring.infiniboard.harvester;
 
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
-import com.github.reflectoring.infiniboard.harvester.source.config.UpdatePluginConfigJob;
+import com.github.reflectoring.infiniboard.harvester.source.sourceConfig.ConfigJobManagerJob;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +22,7 @@ public class HarvesterApplication {
 
     @PostConstruct
     public void startScheduling() throws SchedulerException {
-        schedulingService.scheduleJob("source", "harvester", UpdatePluginConfigJob.class,  5);
+        schedulingService.scheduleJob("source", "harvester", ConfigJobManagerJob.class, 5);
     }
 
     public static void main(String[] args) throws Exception {

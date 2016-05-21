@@ -3,45 +3,33 @@ package com.github.reflectoring.infiniboard.packrat.source;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 /**
- * configuration of a source with widget and plugin id, last modified date and a
+ * configuration of a source with sourceConfig and plugin id, last modified date and a
  * time interval to be checked for new information
  */
 public class SourceConfig {
 
     @Id
-    private long id;
+    private int id;
 
     private String widgetId;
 
-    private String sourceId;
-
     private Date lastModified;
 
-    private int widgetRefreshInterval;
+    private List<UrlSource> urlSources;
 
-    private int sourceRefreshInterval;
-
-    private Map<Integer, ConfigSource> configData;
-
-    private boolean deleted;
-
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, int sourceRefreshInterval, Map<Integer, ConfigSource> configData) {
+    public SourceConfig(String widgetId, Date lastModified) {
         this.widgetId = widgetId;
-        this.sourceId = sourceId;
         this.lastModified = lastModified;
-        this.sourceRefreshInterval = sourceRefreshInterval;
-        this.configData = configData;
-        this.deleted = false;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,14 +41,6 @@ public class SourceConfig {
         this.widgetId = widgetId;
     }
 
-    public String getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-    }
-
     public Date getLastModified() {
         return lastModified;
     }
@@ -69,27 +49,11 @@ public class SourceConfig {
         this.lastModified = lastModified;
     }
 
-    public int getSourceRefreshInterval() {
-        return sourceRefreshInterval;
+    public List<UrlSource> getUrlSources() {
+        return urlSources;
     }
 
-    public void setSourceRefreshInterval(int interval) {
-        this.sourceRefreshInterval = interval;
-    }
-
-    public Map<Integer, ConfigSource> getConfigData() {
-        return configData;
-    }
-
-    public void setConfigData(Map<Integer, ConfigSource> configData) {
-        this.configData = configData;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setUrlSources(List<UrlSource> sources) {
+        this.urlSources = sources;
     }
 }

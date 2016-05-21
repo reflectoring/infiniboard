@@ -1,23 +1,26 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
+import com.github.reflectoring.infiniboard.packrat.source.UrlSource;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-
+import java.util.HashMap;
 import java.util.Map;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * job scheduling service using quartz
  */
 @Service
 public class SchedulingService {
+    private final static Logger LOG = LoggerFactory.getLogger(SchedulingService.class);
 
     public final static String PARAM_CONTEXT = "applicationContext";
 
@@ -45,10 +48,15 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, SourceConfig config, Map<String, Object> test) throws SchedulerException {
-        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(config.getConfigData())).usingJobData(createContextData()).build();
+    public void scheduleJob(String name, String group, Class<? extends Job> clazz, UrlSource urlSource) throws SchedulerException {
+
+        //Store id of UrlSource to JobDataMap
+        Map<String, Integer> urlSourceInformation = new HashMap<>();
+        urlSourceInformation.put("id", urlSource.getId());
+
+        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(urlSourceInformation)).usingJobData(createContextData()).build();
         Trigger trigger = newTrigger().withIdentity(name, group).startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(config.getInterval()).repeatForever()).build();
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(urlSource.getUpdateInterval()).repeatForever()).build();
         scheduler.scheduleJob(job, trigger);
     }
 
@@ -99,6 +107,7 @@ public class SchedulingService {
 
     public void unscheduleJob(String name, String group) throws SchedulerException {
         scheduler.unscheduleJob(getTriggerKey(name, group));
+        LOG.info("Unscheduled Job name: {} group {} ", name, group);
     }
 
 }

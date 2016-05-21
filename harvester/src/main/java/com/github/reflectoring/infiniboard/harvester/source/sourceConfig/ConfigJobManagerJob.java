@@ -1,27 +1,20 @@
-package com.github.reflectoring.infiniboard.harvester.source.widget;
+package com.github.reflectoring.infiniboard.harvester.source.sourceConfig;
 
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
-import com.github.reflectoring.infiniboard.harvester.source.config.UpdatePluginConfigJob;
-import com.github.reflectoring.infiniboard.harvester.source.url.UrlSourceRetrieveJob;
-import com.github.reflectoring.infiniboard.packrat.source.*;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import com.github.reflectoring.infiniboard.harvester.source.SourceRetrieveJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfigRepository;
+import com.github.reflectoring.infiniboard.packrat.source.SourceRepository;
+import com.github.reflectoring.infiniboard.packrat.source.UrlSource;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-/**
- * job to retrieve UrlSource (configured via DB)
- */
+
 public class ConfigJobManagerJob implements Job {
 
     private final static Logger LOG = LoggerFactory.getLogger(ConfigJobManagerJob.class);
@@ -31,7 +24,7 @@ public class ConfigJobManagerJob implements Job {
         JobDataMap configuration = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         SourceConfigRepository sourceConfigRepository = applicationContext.getBean(SourceConfigRepository.class);
-        UrlSourceRepository urlSourceRepository = applicationContext.getBean(UrlSourceRepository.class);
+        SourceRepository sourceRepository = applicationContext.getBean(SourceRepository.class);
         SchedulingService schedulingService = applicationContext.getBean(SchedulingService.class);
 
 
@@ -40,18 +33,18 @@ public class ConfigJobManagerJob implements Job {
         //Delete the Sourceconfig and Configdatas of DB afterwards
         List<SourceConfig> deletedSourceconfigs = sourceConfigRepository.findByIsDeleted(true);
         for(SourceConfig tempSourceConfig : deletedSourceconfigs){
-            for(ConfigSource configData : tempSourceConfig.getConfigData().values()) {
+            for (UrlSource tempUrlSource : tempSourceConfig.getUrlSources()) {
                 try {
-                    String name = configData.getName();
+                    String name = String.valueOf(tempUrlSource.getId());
                     String group = tempSourceConfig.getWidgetId();
 
                     if (schedulingService.jobIsScheduled(name, group)) {
                         schedulingService.unscheduleJob(name, group);
                     }
 
-                    urlSourceRepository.deleteById(configData.getId());
+                    sourceRepository.deleteById(tempUrlSource.getId());
                 } catch (SchedulerException e) {
-                    //TODO LOG
+                    LOG.error(String.format("Could not delete ConfigdataId %s couse of ", tempUrlSource.getId()), e);
                 }
             }
 
@@ -63,22 +56,20 @@ public class ConfigJobManagerJob implements Job {
         //Search for modified Sourceconfigs and apply changes to the corresponding update-configdata-jobs
         Date lastExecutionDate = new Date();
         List<SourceConfig> modifiedSourceConfigs = sourceConfigRepository.findByLastModifiedAfter(lastExecutionDate);
-
         for(SourceConfig tempSourceConfig : modifiedSourceConfigs){
-            for(ConfigSource configData : tempSourceConfig.getConfigData().values()) {
+            for (UrlSource tempUrlSource : tempSourceConfig.getUrlSources()) {
                 try {
-                    String name = configData.getName();
+                    String name = String.valueOf(tempUrlSource.getId());
                     String group = tempSourceConfig.getWidgetId();
-
-                    int updateInterval = configData.getUpdateInterval();
+                    int updateInterval = tempUrlSource.getUpdateInterval();
 
                     if (schedulingService.jobIsScheduled(name, group)) {
                         schedulingService.rescheduleJob(name, group, updateInterval);
                     }else{
-                        schedulingService.scheduleJob(name, group, UrlSourceRetrieveJob.class, updateInterval);
+                        schedulingService.scheduleJob(name, group, SourceRetrieveJob.class, updateInterval);
                     }
                 } catch (SchedulerException e) {
-                    //TODO LOG
+                    LOG.error(String.format("Could not schedule ConfigdataId %s couse of ", tempUrlSource.getId()), e);
                 }
             }
         }
