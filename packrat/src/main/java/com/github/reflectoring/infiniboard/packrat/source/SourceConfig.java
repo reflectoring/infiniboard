@@ -2,6 +2,7 @@ package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class SourceConfig {
 
     @Id
-    private int id;
+    private String id;
 
     private String widgetId;
 
@@ -20,17 +21,18 @@ public class SourceConfig {
 
     private List<UrlSource> urlSources;
 
-    public SourceConfig(String widgetId, Date lastModified) {
+    private boolean deleted;
+
+    public SourceConfig(String id, String widgetId, Date lastModified) {
+        this.id = id;
         this.widgetId = widgetId;
         this.lastModified = lastModified;
+        this.urlSources = new ArrayList<>();
+        this.deleted = false;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getWidgetId() {
@@ -55,5 +57,13 @@ public class SourceConfig {
 
     public void setUrlSources(List<UrlSource> sources) {
         this.urlSources = sources;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

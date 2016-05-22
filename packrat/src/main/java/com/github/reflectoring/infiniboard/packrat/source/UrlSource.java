@@ -7,7 +7,7 @@ import java.util.Date;
 public class UrlSource {
 
     @Id
-    private int id;
+    private String id;
 
     private int updateInterval;
 
@@ -17,13 +17,13 @@ public class UrlSource {
 
     private int statusCode;
 
-    public UrlSource(String url, Date lastFetched, String content, int statusCode, int updateInterval ) {
+    public UrlSource(String url, Date lastFetched, int updateInterval) {
         this.url = url;
         this.lastFetched = lastFetched;
-        this.statusCode = statusCode;
+        this.updateInterval = updateInterval;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

@@ -51,7 +51,7 @@ public class SchedulingService {
     public void scheduleJob(String name, String group, Class<? extends Job> clazz, UrlSource urlSource) throws SchedulerException {
 
         //Store id of UrlSource to JobDataMap
-        Map<String, Integer> urlSourceInformation = new HashMap<>();
+        Map<String, String> urlSourceInformation = new HashMap<>();
         urlSourceInformation.put("id", urlSource.getId());
 
         JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(urlSourceInformation)).usingJobData(createContextData()).build();
@@ -96,8 +96,12 @@ public class SchedulingService {
         return scheduler.getJobDetail(jobKey);
     }
 
+    public Trigger getTrigger(String name, String group) throws SchedulerException {
+        return scheduler.getTrigger(new TriggerKey(name, group));
+    }
+
     public TriggerKey getTriggerKey(String name, String group) throws SchedulerException {
-        return scheduler.getTrigger(new TriggerKey(name, group)).getKey();
+        return getTrigger(name, group).getKey();
     }
 
     public boolean jobIsScheduled(String name, String group) throws SchedulerException {

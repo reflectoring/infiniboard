@@ -6,5 +6,13 @@ import org.springframework.data.annotation.Id;
 public class Widget {
 
     @Id
-    private int id;
+    private String id;
+
+    public Widget() {
+
+    }
+
+    public String getId() {
+        return id;
+    }
 }

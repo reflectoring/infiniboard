@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 public abstract class Result {
 
     @Id
-    private int id;
+    private String id;
 
     private int sourceId;
 
@@ -14,6 +14,10 @@ public abstract class Result {
 
     public Result(int sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getSourceId() {

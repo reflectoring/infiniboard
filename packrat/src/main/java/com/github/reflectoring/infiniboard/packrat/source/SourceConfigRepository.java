@@ -10,13 +10,11 @@ import java.util.List;
  */
 public interface SourceConfigRepository extends MongoRepository<SourceConfig, String> {
 
-    long deleteById(long id);
-
-    List<SourceConfig> findBySourceId(String sourceId);
+    SourceConfig findById(String id);
 
     List<SourceConfig> findByWidgetId(String widgetId);
 
     List<SourceConfig> findByLastModifiedAfter(Date date);
 
-    List<SourceConfig> findByIsDeleted(boolean isDeleted);
+    List<SourceConfig> findByDeleted(boolean isDeleted);
 }
