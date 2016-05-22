@@ -1,6 +1,6 @@
 package com.github.reflectoring.dashboard;
 
-import com.github.reflectoring.Json;
+import com.github.reflectoring.haljson.Json;
 
 class WidgetData {
 

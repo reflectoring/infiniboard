@@ -1,4 +1,4 @@
-package com.github.reflectoring;
+package com.github.reflectoring.haljson;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

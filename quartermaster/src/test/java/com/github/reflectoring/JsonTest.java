@@ -1,5 +1,6 @@
 package com.github.reflectoring;
 
+import com.github.reflectoring.haljson.Json;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
