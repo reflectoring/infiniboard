@@ -1,5 +1,7 @@
 package com.github.reflectoring.haljson;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.reflectoring.Link;
@@ -9,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HalJsonResource extends Json {
+public class HalJsonResource {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("_embedded")
@@ -19,10 +21,13 @@ public class HalJsonResource extends Json {
     @JsonProperty("_links")
     private Map<String, List<Link>> links;
 
+    private Map<String, Object> properties;
+
     public HalJsonResource() {
         super();
         this.embedded = new HashMap<>();
         this.links = new HashMap<>();
+        this.properties = new HashMap<>();
     }
 
     public void add(Link link) {
@@ -93,6 +98,33 @@ public class HalJsonResource extends Json {
         }
 
         return resources;
+    }
+
+
+    @JsonAnySetter
+    public void add(String name, Object object) {
+        checkPropertyNotExists(name);
+
+        this.properties.put(name, object);
+    }
+
+    private void checkPropertyNotExists(String name) {
+        if (this.properties.containsKey(name)) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public Object getProperty(String name) {
+        if (!(this.properties.containsKey(name))) {
+            throw new IllegalArgumentException();
+        }
+
+        return this.properties.get(name);
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        return this.properties;
     }
 
 }

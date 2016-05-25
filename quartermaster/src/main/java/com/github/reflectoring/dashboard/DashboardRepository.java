@@ -1,6 +1,6 @@
 package com.github.reflectoring.dashboard;
 
-import com.github.reflectoring.haljson.Json;
+import com.github.reflectoring.haljson.HalJsonResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class DashboardRepository {
     public List<WidgetData> findWidgetData(int dashboardId) {
         List<WidgetData> data = new ArrayList<>();
 
-        Json data1 = new Json();
+        HalJsonResource data1 = new HalJsonResource();
         data1.add("name", "harvester");
         data1.add("duration", "1:23 min");
         data1.add("status", "Failure");
@@ -62,7 +62,7 @@ public class DashboardRepository {
 
         data.add(new WidgetData(1, 1, data1));
 
-        Json data2 = new Json();
+        HalJsonResource data2 = new HalJsonResource();
         data2.add("name", "quartermaster");
         data2.add("duration", "4:15 min");
         data2.add("status", "Unstable");
@@ -71,7 +71,7 @@ public class DashboardRepository {
 
         data.add(new WidgetData(1, 2, data2));
 
-        Json data3 = new Json();
+        HalJsonResource data3 = new HalJsonResource();
         data3.add("name", "infiniboard");
         data3.add("duration", "2:21 min");
         data3.add("status", "Success");
@@ -80,7 +80,7 @@ public class DashboardRepository {
 
         data.add(new WidgetData(1, 3, data3));
 
-        Json data4 = new Json();
+        HalJsonResource data4 = new HalJsonResource();
         data4.add("name", "Development");
         data4.add("version", "0.1.0");
         data4.add("status", "ok");

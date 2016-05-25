@@ -1,6 +1,5 @@
-package com.github.reflectoring;
+package com.github.reflectoring.haljson;
 
-import com.github.reflectoring.haljson.Json;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -8,14 +7,14 @@ import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class JsonTest {
+public class HalJsonResourceTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void getPropertyReturnsStoredPropertyValue() {
-        Json resource = new Json();
+        HalJsonResource resource = new HalJsonResource();
         String key = "name";
         String value = "First";
 
@@ -27,7 +26,7 @@ public class JsonTest {
 
     @Test
     public void addPropertyThrowsExceptionOnExistingKey() {
-        Json resource = new Json();
+        HalJsonResource resource = new HalJsonResource();
         String key = "name";
         String value = "First";
 

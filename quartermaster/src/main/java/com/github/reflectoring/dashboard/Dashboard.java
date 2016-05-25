@@ -1,7 +1,11 @@
 package com.github.reflectoring.dashboard;
 
+import com.github.reflectoring.Link;
+import com.github.reflectoring.haljson.HalJsonResource;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Dashboard {
 
@@ -48,5 +52,25 @@ public class Dashboard {
 
     public void setWidgetConfigs(List<WidgetConfig> widgetConfigs) {
         this.widgetConfigs = widgetConfigs;
+    }
+
+    public static HalJsonResource toResource(Dashboard dashboard) {
+        HalJsonResource resource = new HalJsonResource();
+        resource.add("id", dashboard.getId());
+        resource.add("name", dashboard.getName());
+        resource.add("description", dashboard.getDescription());
+
+        resource.add("widgets", WidgetConfig.toResources(dashboard, dashboard.getWidgetConfigs()));
+
+        resource.add(new Link("self", "http://localhost:8090/api/dashboards/" + dashboard.getId()));
+        resource.add(new Link("widget-data", "http://localhost:8090/api/dashboards/" + dashboard.getId() + "/widget-data"));
+
+        return resource;
+    }
+
+    public static List<HalJsonResource> toResources(List<Dashboard> dashboards) {
+        return dashboards.stream()
+                .map(Dashboard::toResource)
+                .collect(Collectors.toList());
     }
 }

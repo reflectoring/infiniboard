@@ -1,5 +1,6 @@
 package com.github.reflectoring.dashboard;
 
+import com.github.reflectoring.haljson.HalJsonResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,54 +18,43 @@ public class DashboardController {
 
     private DashboardRepository repository;
 
-    private DashboardResourceAssembler assembler;
-    private WidgetConfigResourceAssembler widgetConfigAssembler;
-    private WidgetDataResourceAssembler widgetDataAssembler;
-
     @Autowired
-    public DashboardController(DashboardRepository repository,
-                               DashboardResourceAssembler assembler,
-                               WidgetConfigResourceAssembler widgetConfigAssembler,
-                               WidgetDataResourceAssembler widgetDataAssembler) {
+    public DashboardController(DashboardRepository repository) {
         this.repository = repository;
-        this.assembler = assembler;
-        this.widgetConfigAssembler = widgetConfigAssembler;
-        this.widgetDataAssembler = widgetDataAssembler;
 
     }
 
     @RequestMapping(method = GET)
-    public ResponseEntity<List<DashboardResource>> getAllDashboardConfigurations() {
+    public ResponseEntity<List<HalJsonResource>> getAllDashboardConfigurations() {
         List<Dashboard> dashboards = repository.findAll();
-        List<DashboardResource> resources = assembler.toResources(dashboards);
+        List<HalJsonResource> resources = Dashboard.toResources(dashboards);
         return new ResponseEntity<>(resources, OK);
     }
 
 
     @RequestMapping(value = "/{id}", method = GET)
-    public ResponseEntity<DashboardResource> getDashboardConfiguration(@PathVariable int id) {
+    public ResponseEntity<HalJsonResource> getDashboardConfiguration(@PathVariable int id) {
         Dashboard dashboard = repository.find(id);
-        DashboardResource resources = assembler.toResource(dashboard);
+        HalJsonResource resources = Dashboard.toResource(dashboard);
         return new ResponseEntity<>(resources, OK);
     }
 
 
     @RequestMapping(value = "/{id}/widget-data", method = GET)
-    public ResponseEntity<List<WidgetDataResource>> getWidgetConfiguration(@PathVariable int id) {
+    public ResponseEntity<List<HalJsonResource>> getWidgetConfiguration(@PathVariable int id) {
 
         Dashboard dashboard = repository.find(id);
-        List<WidgetData> data = repository.findWidgetData(id);
-        List<WidgetDataResource> resources = widgetDataAssembler.toResources(dashboard, data);
+        List<WidgetData> widgetConfigs = repository.findWidgetData(id);
+        List<HalJsonResource> resources = WidgetData.toResources(dashboard, widgetConfigs);
         return new ResponseEntity<>(resources, OK);
     }
 
     @RequestMapping(value = "/{id}/widget-data/{widgetId}", method = GET)
-    public ResponseEntity<WidgetDataResource> getWidgetConfiguration(@PathVariable int id, @PathVariable int widgetId) {
-
+    public ResponseEntity<HalJsonResource> getWidgetConfiguration(@PathVariable int id, @PathVariable int widgetId) {
 
         Dashboard dashboard = repository.find(id);
-        WidgetData data = repository.findWidgetData(id, widgetId);
-        WidgetDataResource resources = widgetDataAssembler.toResource(dashboard, data);
+        WidgetData widgetConfig = repository.findWidgetData(id, widgetId);
+        HalJsonResource resources = WidgetData.toResource(dashboard, widgetConfig);
         return new ResponseEntity<>(resources, OK);
     }
 

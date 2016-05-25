@@ -1,18 +1,18 @@
 package com.github.reflectoring;
 
-import javax.servlet.DispatcherType;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 
+import javax.servlet.DispatcherType;
+
 @SpringBootApplication
-public class QuartermasterApplication {
+public class Quartermaster {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(QuartermasterApplication.class).run(args);
+        new SpringApplicationBuilder().sources(Quartermaster.class).run(args);
     }
 
     @Bean
