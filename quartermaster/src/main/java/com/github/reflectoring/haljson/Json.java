@@ -14,7 +14,8 @@ public class Json {
         this.properties = new HashMap<>();
     }
 
-    public void addProperty(String name, Object object) {
+    @JsonAnySetter
+    public void add(String name, Object object) {
         checkPropertyNotExists(name);
 
         this.properties.put(name, object);
@@ -34,13 +35,8 @@ public class Json {
         return this.properties.get(name);
     }
 
-    @JsonAnySetter
-    public void add(String key, Object value) {
-        properties.put(key, value);
-    }
-
     @JsonAnyGetter
-    public Map<String, Object> getMap() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 }

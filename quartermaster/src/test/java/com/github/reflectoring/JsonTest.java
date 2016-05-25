@@ -19,7 +19,7 @@ public class JsonTest {
         String key = "name";
         String value = "First";
 
-        resource.addProperty(key, value);
+        resource.add(key, value);
         Object object = resource.getProperty(key);
 
         assertThat(object, is(value));
@@ -31,11 +31,11 @@ public class JsonTest {
         String key = "name";
         String value = "First";
 
-        resource.addProperty(key, value);
+        resource.add(key, value);
 
         exception.expect(IllegalArgumentException.class);
 
-        resource.addProperty(key, value);
+        resource.add(key, value);
     }
 
 }

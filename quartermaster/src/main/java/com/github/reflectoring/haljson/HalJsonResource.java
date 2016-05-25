@@ -4,18 +4,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.reflectoring.Link;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HalJsonResource extends Json {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("_embedded")
-    private Map<String, HalJsonResource> embedded;
+    private Map<String, List<HalJsonResource>> embedded;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("_links")
-    private Map<String, Link> links;
+    private Map<String, List<Link>> links;
 
     public HalJsonResource() {
         super();
@@ -23,11 +25,17 @@ public class HalJsonResource extends Json {
         this.links = new HashMap<>();
     }
 
-    public void add(String rel, Link link) {
-        checkLinkRelNotExists(rel);
+    public void add(Link link) {
+        checkLinkRelNotExists(link.getRel());
         checkLinkNotExists(link);
 
-        this.links.put(rel, link);
+        List<Link> links = this.links.get(link.getRel());
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+
+        links.add(link);
+        this.links.put(link.getRel(), links);
     }
 
     private void checkLinkRelNotExists(String rel) {
@@ -52,7 +60,12 @@ public class HalJsonResource extends Json {
         checkEmbeddedRelNotExists(rel);
         checkEmbeddedResourceNotExists(embeddedResource);
 
-        this.embedded.put(rel, embeddedResource);
+        List<HalJsonResource> embeddedResources = this.embedded.get(rel);
+        if (embeddedResources == null) {
+            embeddedResources = new ArrayList<>();
+        }
+        embeddedResources.add(embeddedResource);
+        this.embedded.put(rel, embeddedResources);
     }
 
     private void checkEmbeddedResourceNotExists(HalJsonResource embeddedResource) {

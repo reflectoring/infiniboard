@@ -17,10 +17,10 @@ public class HalJsonController {
         HalJsonResource resource = new HalJsonResource();
         resource.add("name", "Hans Müller");
         resource.add("age", 30);
-        resource.add("self", new Link("http://localhost:8090/api/test"));
+        resource.add(new Link("self", "http://localhost:8090/api/test"));
 
         HalJsonResource transcriptResource = new HalJsonResource();
-        transcriptResource.add("self", new Link("http://localhost:8090/api/test/1"));
+        transcriptResource.add(new Link("self", "http://localhost:8090/api/test/1"));
         transcriptResource.add("math", "A");
         transcriptResource.add("english", "B");
         resource.add("transcript-of-records", transcriptResource);
