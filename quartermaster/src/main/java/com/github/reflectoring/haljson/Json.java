@@ -22,13 +22,13 @@ public class Json {
     }
 
     private void checkPropertyNotExists(String name) {
-        if (properties.containsKey(name)) {
+        if (this.properties.containsKey(name)) {
             throw new IllegalArgumentException();
         }
     }
 
     public Object getProperty(String name) {
-        if (!(properties.containsKey(name))) {
+        if (!(this.properties.containsKey(name))) {
             throw new IllegalArgumentException();
         }
 
@@ -37,6 +37,6 @@ public class Json {
 
     @JsonAnyGetter
     public Map<String, Object> getProperties() {
-        return properties;
+        return this.properties;
     }
 }

@@ -26,7 +26,6 @@ public class HalJsonResource extends Json {
     }
 
     public void add(Link link) {
-        checkLinkRelNotExists(link.getRel());
         checkLinkNotExists(link);
 
         List<Link> links = this.links.get(link.getRel());
@@ -38,15 +37,6 @@ public class HalJsonResource extends Json {
         this.links.put(link.getRel(), links);
     }
 
-    private void checkLinkRelNotExists(String rel) {
-
-        this.links.keySet().forEach(key -> {
-            if (key.equalsIgnoreCase(rel)) {
-                throw new IllegalArgumentException("A link with the same relation already exists.");
-            }
-        });
-    }
-
     private void checkLinkNotExists(Link link) {
         this.links.values().forEach(l -> {
             if (l.equals(link)) {
@@ -55,9 +45,23 @@ public class HalJsonResource extends Json {
         });
     }
 
+    public void add(List<Link> links) {
+        links.forEach(link -> add(link));
+    }
+
+    public List<Link> getLinks(String rel) {
+
+        List<Link> links = this.links.get(rel);
+
+        if (links == null) {
+            return new ArrayList<>();
+        }
+
+        return links;
+    }
+
     public void add(String rel, HalJsonResource embeddedResource) {
 
-        checkEmbeddedRelNotExists(rel);
         checkEmbeddedResourceNotExists(embeddedResource);
 
         List<HalJsonResource> embeddedResources = this.embedded.get(rel);
@@ -76,11 +80,19 @@ public class HalJsonResource extends Json {
         });
     }
 
-    private void checkEmbeddedRelNotExists(String rel) {
-        this.embedded.keySet().forEach(k -> {
-            if (k.equalsIgnoreCase(rel)) {
-                throw new IllegalArgumentException("An embedded resource with this relation already exists.");
-            }
-        });
+    public void add(String rel, List<HalJsonResource> embeddedResources) {
+        embeddedResources.forEach(resource -> add(rel, resource));
     }
+
+
+    public List<HalJsonResource> getEmbeddedRessources(String rel) {
+        List<HalJsonResource> resources = this.embedded.get(rel);
+
+        if (resources == null) {
+            return new ArrayList<>();
+        }
+
+        return resources;
+    }
+
 }
