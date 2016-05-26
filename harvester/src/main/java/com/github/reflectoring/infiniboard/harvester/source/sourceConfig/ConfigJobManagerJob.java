@@ -11,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ConfigJobManagerJob implements Job {
@@ -26,14 +27,6 @@ public class ConfigJobManagerJob implements Job {
         SourceConfigRepository sourceConfigRepository = applicationContext.getBean(SourceConfigRepository.class);
         UrlSourceRepository sourceRepository = applicationContext.getBean(UrlSourceRepository.class);
         SchedulingService schedulingService = applicationContext.getBean(SchedulingService.class);
-
-        Date lastExecutionDate = null;
-        try {
-            lastExecutionDate = (schedulingService.getTrigger("source", "harvester")).getPreviousFireTime();
-        } catch (SchedulerException e) {
-            LOG.error("Could not get Trigger cause of ", e);
-            return;
-        }
 
         //1.
         //Search for deleted SourceConfigs and unschedule the corresponding jobs.
@@ -58,10 +51,9 @@ public class ConfigJobManagerJob implements Job {
             sourceConfigRepository.delete(tempSourceConfig.getId());
         }
 
-
         //2.
         //Search for modified Sourceconfigs and apply changes to the corresponding update-configdata-jobs
-        List<SourceConfig> modifiedSourceConfigs = sourceConfigRepository.findByLastModifiedAfter(lastExecutionDate);
+        List<SourceConfig> modifiedSourceConfigs = sourceConfigRepository.findByModified(true);
         for(SourceConfig tempSourceConfig : modifiedSourceConfigs){
             for (UrlSource tempUrlSource : tempSourceConfig.getUrlSources()) {
                 try {
@@ -69,15 +61,21 @@ public class ConfigJobManagerJob implements Job {
                     String group = tempSourceConfig.getWidgetId();
                     int updateInterval = tempUrlSource.getUpdateInterval();
 
-                    if (schedulingService.jobIsScheduled(name, group)) {
-                        schedulingService.rescheduleJob(name, group, updateInterval);
-                    }else{
-                        schedulingService.scheduleJob(name, group, SourceRetrieveJob.class, tempUrlSource);
-                    }
+                    schedulingService.cancelJob(name, group);
+
+                    //Store id of UrlSource to JobDataMap
+                    Map<String, String> urlSourceInformation = new HashMap<>();
+                    urlSourceInformation.put("id", tempUrlSource.getId());
+                    //TODO:  (@Stefan K.) Should i use a DTO to send Job-Data?
+                    schedulingService.scheduleJob(name, group, SourceRetrieveJob.class, urlSourceInformation, updateInterval);
+
                 } catch (SchedulerException e) {
                     LOG.error(String.format("Could not schedule ConfigdataId %s couse of ", tempUrlSource.getId()), e);
                 }
             }
+
+            tempSourceConfig.setModified(false);
+            sourceConfigRepository.save(tempSourceConfig);
         }
 
 

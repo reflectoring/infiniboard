@@ -11,7 +11,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,34 +24,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SourceConfigTest {
 
     @Autowired
-    private SourceConfigRepository repository;
+    private SourceConfigRepository sourceConfigRepository;
+
+    @Autowired
+    private UrlSourceRepository urlSourceRepository;
 
 
     private String testSourceConfigId;
 
     @Before
     public void setup() {
-        SourceConfig sourceConfig1 = new SourceConfig("sc", "widget1", new Date());
+        SourceConfig sourceConfig1 = new SourceConfig("widget1");
 
         List<UrlSource> urlSources = new ArrayList<>();
-        urlSources.add(new UrlSource("www.foo1.bar", new Date(), 5));
-        urlSources.add(new UrlSource("www.foo2.bar", new Date(), 5));
-        urlSources.add(new UrlSource("www.foo3.bar", new Date(), 5));
+        urlSources.add(new UrlSource("www.foo1.bar", 2));
+        urlSources.add(new UrlSource("www.foo2.bar", 3));
+        urlSources.add(new UrlSource("www.foo3.bar", 6));
         sourceConfig1.setUrlSources(urlSources);
-
-        SourceConfig tempSourceconfig = repository.save(sourceConfig1);
-        testSourceConfigId = tempSourceconfig.getId();
+        urlSources = urlSourceRepository.save(urlSources);
+        sourceConfig1 = sourceConfigRepository.save(sourceConfig1);
+        testSourceConfigId = sourceConfig1.getId();
     }
 
     @Test
-    public void findByWidgetIdTest() {
-        SourceConfig result1 = repository.findById(testSourceConfigId);
-        assertThat(result1).isNotNull();
+    public void sourceConfigSavedTest() {
+        SourceConfig sourceConfig = sourceConfigRepository.findOne(testSourceConfigId);
+        assertThat(sourceConfig).isNotNull();
+        assertThat(sourceConfig.getUrlSources()).hasSize(3);
     }
 
     @Test
     public void configWasSaved() {
-        SourceConfig result1 = repository.findById(testSourceConfigId);
-        assertThat(result1.getUrlSources()).hasSize(3);
     }
 }

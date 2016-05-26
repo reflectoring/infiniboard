@@ -2,8 +2,6 @@ package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
-
 public class UrlSource {
 
     @Id
@@ -13,13 +11,10 @@ public class UrlSource {
 
     private String url;
 
-    private Date lastFetched;
-
     private int statusCode;
 
-    public UrlSource(String url, Date lastFetched, int updateInterval) {
+    public UrlSource(String url, int updateInterval) {
         this.url = url;
-        this.lastFetched = lastFetched;
         this.updateInterval = updateInterval;
     }
 
@@ -37,14 +32,6 @@ public class UrlSource {
 
     public String getUrl() {
         return url;
-    }
-
-    public Date getLastFetched() {
-        return lastFetched;
-    }
-
-    public void setLastFetched(Date lastFetched) {
-        this.lastFetched = lastFetched;
     }
 
     public int getStatusCode() {

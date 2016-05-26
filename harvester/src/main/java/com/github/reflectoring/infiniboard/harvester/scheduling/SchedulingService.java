@@ -1,6 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import com.github.reflectoring.infiniboard.packrat.source.UrlSource;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.quartz.JobBuilder.newJob;
@@ -48,15 +46,10 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, UrlSource urlSource) throws SchedulerException {
-
-        //Store id of UrlSource to JobDataMap
-        Map<String, String> urlSourceInformation = new HashMap<>();
-        urlSourceInformation.put("id", urlSource.getId());
-
-        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(urlSourceInformation)).usingJobData(createContextData()).build();
+    public void scheduleJob(String name, String group, Class<? extends Job> clazz, Map<String, String> jobMapDataMap, int interval) throws SchedulerException {
+        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(jobMapDataMap)).usingJobData(createContextData()).build();
         Trigger trigger = newTrigger().withIdentity(name, group).startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(urlSource.getUpdateInterval()).repeatForever()).build();
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(interval).repeatForever()).build();
         scheduler.scheduleJob(job, trigger);
     }
 

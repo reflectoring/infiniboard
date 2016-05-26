@@ -1,9 +1,9 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,16 +17,15 @@ public class SourceConfig {
 
     private String widgetId;
 
-    private Date lastModified;
+    private boolean modified;
 
+    @DBRef
     private List<UrlSource> urlSources;
 
     private boolean deleted;
 
-    public SourceConfig(String id, String widgetId, Date lastModified) {
-        this.id = id;
+    public SourceConfig(String widgetId) {
         this.widgetId = widgetId;
-        this.lastModified = lastModified;
         this.urlSources = new ArrayList<>();
         this.deleted = false;
     }
@@ -43,12 +42,12 @@ public class SourceConfig {
         this.widgetId = widgetId;
     }
 
-    public Date getLastModified() {
-        return lastModified;
+    public boolean isModified() {
+        return modified;
     }
 
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 
     public List<UrlSource> getUrlSources() {

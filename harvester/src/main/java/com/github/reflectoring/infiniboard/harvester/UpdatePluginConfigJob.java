@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Date;
+import java.util.List;
 
 public class UpdatePluginConfigJob implements Job {
 
@@ -26,9 +26,10 @@ public class UpdatePluginConfigJob implements Job {
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         SourceConfigRepository repository = applicationContext.getBean(SourceConfigRepository.class);
 
-        SourceConfig tempSoureConfig = repository.findOne("sc");
-        tempSoureConfig.setLastModified(new Date());
-        repository.insert(tempSoureConfig);
+        List<SourceConfig> tempSoureConfig = repository.findAll();
+        for (SourceConfig sourceConfig : tempSoureConfig) {
+            sourceConfig.setModified(true);
+            repository.save(sourceConfig);
+        }
     }
-
 }
