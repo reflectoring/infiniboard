@@ -5,13 +5,7 @@ import com.github.reflectoring.infiniboard.packrat.source.UrlResult;
 import com.github.reflectoring.infiniboard.packrat.source.UrlResultRepository;
 import com.github.reflectoring.infiniboard.packrat.source.UrlSource;
 import com.github.reflectoring.infiniboard.packrat.source.UrlSourceRepository;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -20,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.io.IOException;
+import java.util.Date;
 
 /**
  * job to retrieve UrlSource (configured via DB)
@@ -29,7 +23,10 @@ public class SourceRetrieveJob implements Job {
 
     private final static Logger LOG = LoggerFactory.getLogger(SourceRetrieveJob.class);
 
+
     private RetrieveResult retrieve(UrlSource urlSource) {
+        //TODO: For write dummyvalue for testing
+        /*
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(urlSource.getUrl());
 
@@ -49,6 +46,10 @@ public class SourceRetrieveJob implements Job {
 
         LOG.info(String.format("Executed SourceRetrieveJob for %s", urlSource.getId()));
         return retrieveResult;
+        */
+
+        LOG.info(String.format("Executed SourceRetrieveJob for %s", urlSource.getId()));
+        return new RetrieveResult(false, 42, "new Content " + new Date());
     }
 
     private void updateUrlSource(UrlSourceRepository urlSourceRepository, UrlSource urlSource, int statusCode) {
