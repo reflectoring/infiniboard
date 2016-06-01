@@ -48,7 +48,7 @@ Open another terminal and start the application:
 ```
 $ cd quartermaster
 $ ../gradlew bootRun
-For remot debug user
+For remote debug use
 $ ../gradlew bootRun --debug-jvm
 ```
 
