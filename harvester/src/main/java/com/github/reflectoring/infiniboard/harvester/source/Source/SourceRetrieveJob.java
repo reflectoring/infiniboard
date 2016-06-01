@@ -97,9 +97,7 @@ public class SourceRetrieveJob implements Job {
     private class RetrieveResult {
 
         private boolean errorOccurred;
-
         private int statusCode;
-
         private String content;
 
         RetrieveResult() {
