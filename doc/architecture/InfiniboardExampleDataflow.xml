@@ -1,0 +1,78 @@
+<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><help_text>Space for diagres</help_text><element><id>UMLClass</id><coordinates><x>1120</x><y>1104</y><w>320</w><h>120</h></coordinates><panel_attributes>Quartermaster
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>1500</x><y>634</y><w>330</w><h>340</h></coordinates><panel_attributes>customelement=
+// Text Elemnt
+// DB Symbol
+drawArc(0,0,width,height*2/5,0,180,true) fg=black bg=#ffffff //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,180,180,true) fg=black //Parameters (x, y, width, height, start, extent, open)
+drawRectangle(0,(height+0.5)/5,width,(height-1.5)*3/5) lw=0.1 bg=#ffffff //Parameters (x, y, width, height)
+drawLine(0,height/5,0,height*4/5)fg=black //Parameters (x1, y1, x2, y2) 
+drawLine(width,height/5,width,height*4/5)fg=black //Parameters (x1, y1, x2, y2) 
+drawArc(0,height*3/5,width,height*2/5,180,180,true)fg=black bg=#ffffff //Parameters (x, y, width, height, start, extent, open)
+
+fg=magenta
+layer=-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1530</x><y>74</y><w>710</w><h>380</h></coordinates><panel_attributes>Harvester</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1260</x><y>844</y><w>260</w><h>280</h></coordinates><panel_attributes>lt=&lt;-
+save(widget)
+</panel_attributes><additional_attributes>240;20;10;20;10;260</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1120</x><y>1344</y><w>320</w><h>160</h></coordinates><panel_attributes>Plattform
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>2280</x><y>194</y><w>310</w><h>150</h></coordinates><panel_attributes>the internet
+bg=blue
+layer=-2</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>2430</x><y>224</y><w>20</w><h>20</h></coordinates><panel_attributes>bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1140</x><y>1214</y><w>40</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+0</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1510</x><y>1314</y><w>490</w><h>190</h></coordinates><panel_attributes>bg=blue
+0)GET /dashboards
+get all available dashboards
+
+1)GET /dashboards/{name or id} 
+get a concret dashboardconfiguration. response as JSON 
+
+2)GET /widgets/{name or id}
+get a concret widget. response as JSON
+
+3)POST /widgets
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1160</x><y>1214</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1200</x><y>1214</y><w>40</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+1</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>1220</x><y>1214</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1260</x><y>1214</y><w>40</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+2</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>1280</x><y>1214</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1350</x><y>1214</y><w>40</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+3</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>1370</x><y>1214</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1430</x><y>1394</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>80;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>1504</y><w>290</w><h>140</h></coordinates><panel_attributes>Example Widget
+--
+Platformstatus: running
+--
+version: 5.10.11.12
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1710</x><y>234</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1140</x><y>734</y><w>380</w><h>390</h></coordinates><panel_attributes>lt=&lt;-
+load (widget)
+</panel_attributes><additional_attributes>10;370;10;10;360;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1140</x><y>1384</y><w>160</w><h>110</h></coordinates><panel_attributes>Example 
+Widget 1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1310</x><y>1384</y><w>110</w><h>50</h></coordinates><panel_attributes>Example 
+Widget 2</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1310</x><y>1444</y><w>110</w><h>50</h></coordinates><panel_attributes>Example 
+Widget 3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>720</x><y>1324</y><w>290</w><h>160</h></coordinates><panel_attributes>bg=green
+Each Widget owns a Configpart 
+by which the Widget can be controlled
+Config:
+id:42
+name:DEV01
+url(status...)
+url(version...)
+widget_refresh_intervall:10sec
+source_refresh_intervall:10sec
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>1404</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>1454</y><w>160</w><h>150</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;130;70;130;70;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1810</x><y>324</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;.
+</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1900</x><y>644</y><w>120</w><h>160</h></coordinates><panel_attributes>bg=green
+(source)
+
+sources:[
+{type:url
+url:http//:...},
+{type:url
+url:http//:...}
+]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1780</x><y>714</y><w>140</w><h>100</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>120;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1520</x><y>834</y><w>100</w><h>40</h></coordinates><panel_attributes>Example 
+Widget 1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1670</x><y>794</y><w>100</w><h>40</h></coordinates><panel_attributes>Source</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1670</x><y>874</y><w>100</w><h>40</h></coordinates><panel_attributes>Result</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1610</x><y>800</y><w>80</w><h>70</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>60;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1680</x><y>784</y><w>100</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1690</x><y>774</y><w>100</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1690</x><y>854</y><w>100</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1680</x><y>864</y><w>100</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1650</x><y>284</y><w>170</w><h>110</h></coordinates><panel_attributes>ManageUpdateJobs
+Job
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1970</x><y>304</y><w>120</w><h>70</h></coordinates><panel_attributes>LoadSource
+Job
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1670</x><y>384</y><w>100</w><h>270</h></coordinates><panel_attributes>lt=&lt;&lt;.
+Load Widgets</panel_attributes><additional_attributes>10;10;10;250</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1570</x><y>144</y><w>350</w><h>100</h></coordinates><panel_attributes>bg=blue
+1: Load all new and modified Widgets
+2: Create a Job for each Source of Widget </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1760</x><y>364</y><w>270</w><h>300</h></coordinates><panel_attributes>lt=&lt;&lt;.
+Load Source</panel_attributes><additional_attributes>250;10;250;130;10;130;10;280</additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>364</y><w>280</w><h>320</h></coordinates><panel_attributes>lt=&lt;&lt;.
+Store Result </panel_attributes><additional_attributes>10;300;10;160;260;160;260;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1980</x><y>294</y><w>120</w><h>70</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1990</x><y>284</y><w>120</w><h>70</h></coordinates><panel_attributes>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2100</x><y>264</y><w>210</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>190;20;80;50;100;10;10;60</additional_attributes></element></diagram>

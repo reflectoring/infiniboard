@@ -48,6 +48,8 @@ Open another terminal and start the application:
 ```
 $ cd quartermaster
 $ ../gradlew bootRun
+For remote debug use
+$ ../gradlew bootRun --debug-jvm
 ```
 
 Now all changes are reloaded live.

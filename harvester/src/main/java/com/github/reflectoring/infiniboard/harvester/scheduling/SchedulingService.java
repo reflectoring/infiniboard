@@ -1,21 +1,24 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import java.util.Map;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * job scheduling service using quartz
  */
 @Service
 public class SchedulingService {
+    private final static Logger LOG = LoggerFactory.getLogger(SchedulingService.class);
 
     public final static String PARAM_CONTEXT = "applicationContext";
 
@@ -43,10 +46,10 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, SourceConfig config) throws SchedulerException {
-        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(config.getConfigData())).usingJobData(createContextData()).build();
+    public void scheduleJob(String name, String group, Class<? extends Job> clazz, Map<String, String> jobMapDataMap, int interval) throws SchedulerException {
+        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(jobMapDataMap)).usingJobData(createContextData()).build();
         Trigger trigger = newTrigger().withIdentity(name, group).startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(config.getInterval()).repeatForever()).build();
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(interval).repeatForever()).build();
         scheduler.scheduleJob(job, trigger);
     }
 
@@ -61,13 +64,46 @@ public class SchedulingService {
     }
 
     /**
+     * Update interval of already scheduled job
+     */
+    public void rescheduleJob(String name, String group, int newInterval) throws SchedulerException {
+        Trigger oldTrigger = scheduler.getTrigger(new TriggerKey(name, group));
+        TriggerBuilder triggerBuilder = oldTrigger.getTriggerBuilder();
+        Trigger newTrigger = triggerBuilder.withIdentity(name, group).startNow()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(newInterval).repeatForever()).build();
+        scheduler.scheduleJob(getJobDetail(name, group), newTrigger);
+    }
+
+    /**
      * cancels a job by name and group
      */
     public void cancelJob(String name, String group) throws SchedulerException {
-        JobKey key = new JobKey(name, group);
-        if (scheduler.checkExists(key)) {
-            scheduler.deleteJob(key);
+        JobKey jobKey = new JobKey(name, group);
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.deleteJob(jobKey);
         }
     }
 
+    public JobDetail getJobDetail(String name, String group) throws SchedulerException {
+        JobKey jobKey = new JobKey(name, group);
+        return scheduler.getJobDetail(jobKey);
+    }
+
+    public Trigger getTrigger(String name, String group) throws SchedulerException {
+        return scheduler.getTrigger(new TriggerKey(name, group));
+    }
+
+    public TriggerKey getTriggerKey(String name, String group) throws SchedulerException {
+        return getTrigger(name, group).getKey();
+    }
+
+    public boolean jobIsScheduled(String name, String group) throws SchedulerException {
+        JobKey jobKey = new JobKey(name, group);
+        return scheduler.checkExists(jobKey);
+    }
+
+    public void unscheduleJob(String name, String group) throws SchedulerException {
+        scheduler.unscheduleJob(getTriggerKey(name, group));
+        LOG.info("Unscheduled Job name: {} group {} ", name, group);
+    }
 }

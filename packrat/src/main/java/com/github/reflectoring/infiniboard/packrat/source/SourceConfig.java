@@ -1,12 +1,13 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * configuration of a source with widget and plugin id, last modified date and a
+ * configuration of a source with sourceConfig and plugin id, last modified date and a
  * time interval to be checked for new information
  */
 public class SourceConfig {
@@ -16,28 +17,21 @@ public class SourceConfig {
 
     private String widgetId;
 
-    private String sourceId;
+    private boolean modified;
 
-    private Date lastModified;
+    @DBRef
+    private List<UrlSource> urlSources;
 
-    private int interval;
+    private boolean deleted;
 
-    private Map<String, Object> configData;
-
-    public SourceConfig(String widgetId, String sourceId, Date lastModified, int interval, Map<String, Object> configData) {
+    public SourceConfig(String widgetId) {
         this.widgetId = widgetId;
-        this.sourceId = sourceId;
-        this.lastModified = lastModified;
-        this.interval = interval;
-        this.configData = configData;
+        this.urlSources = new ArrayList<>();
+        this.deleted = false;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getWidgetId() {
@@ -48,36 +42,27 @@ public class SourceConfig {
         this.widgetId = widgetId;
     }
 
-    public String getSourceId() {
-        return sourceId;
+    public boolean isModified() {
+        return modified;
     }
 
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 
-    public Date getLastModified() {
-        return lastModified;
+    public List<UrlSource> getUrlSources() {
+        return urlSources;
     }
 
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+    public void setUrlSources(List<UrlSource> sources) {
+        this.urlSources = sources;
     }
 
-    public int getInterval() {
-        return interval;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setInterval(int interval) {
-        this.interval = interval;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
-
-    public Map<String, Object> getConfigData() {
-        return configData;
-    }
-
-    public void setConfigData(Map<String, Object> configData) {
-        this.configData = configData;
-    }
-
 }

@@ -1,6 +1,8 @@
-package com.github.reflectoring.infiniboard.harvester.source.config;
+package com.github.reflectoring.infiniboard.harvester;
 
+import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfigRepository;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -9,26 +11,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfigRepository;
+import java.util.List;
 
-import java.util.Date;
-import java.util.HashMap;
-
-/**
- * reads the configurations of the sources and schedules the corresponding jobs
- */
 public class UpdatePluginConfigJob implements Job {
+
+    //TODO delete me
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdatePluginConfigJob.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LOGGER.info("executing update");
-        SourceConfig config = new SourceConfig("widget", "urlsource", new Date(), 5, new HashMap<>());
+        LOGGER.info("Modified SourceConfig");
         JobDataMap configuration = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         SourceConfigRepository repository = applicationContext.getBean(SourceConfigRepository.class);
-        repository.save(config);
+
+        List<SourceConfig> tempSoureConfig = repository.findAll();
+        for (SourceConfig sourceConfig : tempSoureConfig) {
+            sourceConfig.setModified(true);
+            repository.save(sourceConfig);
+        }
     }
 }

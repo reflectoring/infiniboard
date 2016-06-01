@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 /**
  * testing the source configurations
@@ -26,30 +24,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SourceConfigTest {
 
     @Autowired
-    private SourceConfigRepository repository;
+    private SourceConfigRepository sourceConfigRepository;
+
+    @Autowired
+    private UrlSourceRepository urlSourceRepository;
+
+
+    private String testSourceConfigId;
 
     @Before
     public void setup() {
-        HashMap<String, Object> attributes = new HashMap<>();
-        attributes.put("alpha", "one");
-        attributes.put("beta", "two");
-        attributes.put("gamma", "three");
-        SourceConfig config = new SourceConfig("foo", "bar", new Date(), 5 * 60, attributes);
+        SourceConfig sourceConfig1 = new SourceConfig("widget1");
 
-        repository.save(config);
+        List<UrlSource> urlSources = new ArrayList<>();
+        urlSources.add(new UrlSource("www.foo1.bar", 2));
+        urlSources.add(new UrlSource("www.foo2.bar", 3));
+        urlSources.add(new UrlSource("www.foo3.bar", 6));
+        sourceConfig1.setUrlSources(urlSources);
+        urlSources = urlSourceRepository.save(urlSources);
+        sourceConfig1 = sourceConfigRepository.save(sourceConfig1);
+        testSourceConfigId = sourceConfig1.getId();
+    }
+
+    @Test
+    public void sourceConfigSavedTest() {
+        SourceConfig sourceConfig = sourceConfigRepository.findOne(testSourceConfigId);
+        assertThat(sourceConfig).isNotNull();
+        assertThat(sourceConfig.getUrlSources()).hasSize(3);
     }
 
     @Test
     public void configWasSaved() {
-        List<SourceConfig> configList = repository.findBySourceId("bar");
-        assertThat(configList).hasSize(1);
     }
-
-    @Test
-    public void variableConfig() {
-        List<SourceConfig> configList = repository.findBySourceId("bar");
-        SourceConfig sourceConfig = configList.get(0);
-        assertThat(sourceConfig.getConfigData()).containsKeys("alpha", "beta", "gamma");
-    }
-
 }
