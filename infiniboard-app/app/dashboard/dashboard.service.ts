@@ -1,11 +1,22 @@
 import {Injectable} from 'angular2/core';
 import {DASHBOARDS} from './mock-dashboards';
+import {RestService} from '../rest.service';
 
 @Injectable()
 export class DashboardService {
 
+  private rest: RestService;
+
+  constructor(rest: RestService) {
+    this.rest = rest;
+  }
+
   public getDashboards() {
-    return Promise.resolve(DASHBOARDS);
+    console.log('getting data');
+    this.rest.GetAll()
+      .subscribe(data => console.log(data),
+        error => console.log(error),
+        () => console.log('Get all Items complete'));
   }
 
   public getDashboard(_id: number) {
