@@ -15,7 +15,7 @@ import java.util.Collections;
 /**
  * application class for harvester service
  */
-@EnableMongoRepositories(basePackages = "com.github.reflectoring.infiniboard.packrat.source")
+@EnableMongoRepositories(basePackages = "com.github.reflectoring.infiniboard.packrat")
 @SpringBootApplication
 public class HarvesterApplication {
 

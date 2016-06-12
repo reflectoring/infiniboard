@@ -1,5 +1,7 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Map;
 
 /**
@@ -7,24 +9,31 @@ import java.util.Map;
  */
 public class SourceData {
 
-    private String WidgetId;
+    @Id
+    private String id;
+
+    private String widgetId;
 
     private String sourceId;
 
     private Map<String, Object> data;
 
     public SourceData(String widgetId, String sourceId, Map<String, Object> data) {
-        WidgetId = widgetId;
+        this.widgetId = widgetId;
         this.sourceId = sourceId;
         this.data = data;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getWidgetId() {
-        return WidgetId;
+        return widgetId;
     }
 
     public void setWidgetId(String widgetId) {
-        WidgetId = widgetId;
+        widgetId = widgetId;
     }
 
     public String getSourceId() {

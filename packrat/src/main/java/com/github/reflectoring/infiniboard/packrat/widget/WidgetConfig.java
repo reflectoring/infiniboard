@@ -22,6 +22,9 @@ public class WidgetConfig {
 
     private List<SourceConfig> sourceConfigs = new ArrayList<>();
 
+    public WidgetConfig() {
+    }
+
     public WidgetConfig(String title) {
         this.title = title;
     }

@@ -15,6 +15,9 @@ public class SourceConfig {
 
     private Map<String, Object> configData;
 
+    public SourceConfig() {
+    }
+
     public SourceConfig(String id, String type, int interval, Map<String, Object> configData) {
         this.id = id;
         this.type = type;
