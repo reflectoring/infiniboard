@@ -1,5 +1,6 @@
-package com.github.reflectoring.infiniboard.packrat.source;
+package com.github.reflectoring.infiniboard.packrat.widget;
 
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;

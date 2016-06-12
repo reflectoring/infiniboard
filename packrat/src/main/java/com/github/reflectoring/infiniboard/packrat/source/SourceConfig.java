@@ -1,6 +1,5 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -10,15 +9,15 @@ public class SourceConfig {
 
     private String id;
 
-    private String sourceId;
+    private String type;
 
     private int interval;
 
     private Map<String, Object> configData;
 
-    public SourceConfig(String id, String sourceId, int interval, Map<String, Object> configData) {
+    public SourceConfig(String id, String type, int interval, Map<String, Object> configData) {
         this.id = id;
-        this.sourceId = sourceId;
+        this.type = type;
         this.interval = interval;
         this.configData = configData;
     }
@@ -31,12 +30,12 @@ public class SourceConfig {
         this.id = id;
     }
 
-    public String getSourceId() {
-        return sourceId;
+    public String getType() {
+        return type;
     }
 
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getInterval() {

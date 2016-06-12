@@ -2,6 +2,7 @@ package com.github.reflectoring.infiniboard.harvester;
 
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 import com.github.reflectoring.infiniboard.harvester.source.config.UpdatePluginConfigJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 
 /**
  * application class for harvester service
@@ -22,7 +24,8 @@ public class HarvesterApplication {
 
     @PostConstruct
     public void startScheduling() throws SchedulerException {
-        schedulingService.scheduleJob("source", "harvester", UpdatePluginConfigJob.class,  5);
+        schedulingService.registerJob("updatePlugins", UpdatePluginConfigJob.class);
+        schedulingService.scheduleJob("harvester", new SourceConfig("updatePlugins", "updatePlugins", 5000, Collections.emptyMap()));
     }
 
     public static void main(String[] args) throws Exception {

@@ -1,15 +1,23 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * job scheduling service using quartz
@@ -17,7 +25,11 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 @Service
 public class SchedulingService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SchedulingService.class);
+
     public final static String PARAM_CONTEXT = "applicationContext";
+
+    private Map<String, Class<? extends SourceJob>> jobMap = new HashMap<>();
 
     @Autowired
     private ApplicationContext context;
@@ -29,6 +41,13 @@ public class SchedulingService {
         Scheduler scheduler = schedulerFactory.getScheduler();
         scheduler.start();
         this.scheduler = scheduler;
+    }
+
+    synchronized public void registerJob(String type, Class<? extends SourceJob> clazz) {
+        if (jobMap.containsKey(type)) {
+            throw new RuntimeException(String.format("job type %s is already registered by %s", type, jobMap.get(type)));
+        }
+        jobMap.put(type, clazz);
     }
 
     /**
@@ -43,31 +62,45 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, SourceConfig config) throws SchedulerException {
-        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(new JobDataMap(config.getConfigData())).usingJobData(createContextData()).build();
-        Trigger trigger = newTrigger().withIdentity(name, group).startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(config.getInterval()).repeatForever()).build();
-        scheduler.scheduleJob(job, trigger);
-    }
-
-    /**
-     * schedules a job with time interval to be repeated
-     */
-    public void scheduleJob(String name, String group, Class<? extends Job> clazz, int interval) throws SchedulerException {
-        JobDetail job = newJob(clazz).withIdentity(name, group).usingJobData(createContextData()).build();
-        Trigger trigger = newTrigger().withIdentity(name, group).startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(interval).repeatForever()).build();
-        scheduler.scheduleJob(job, trigger);
-    }
-
-    /**
-     * cancels a job by name and group
-     */
-    public void cancelJob(String name, String group) throws SchedulerException {
-        JobKey key = new JobKey(name, group);
-        if (scheduler.checkExists(key)) {
-            scheduler.deleteJob(key);
+    public void scheduleJob(String group, SourceConfig config) throws SchedulerException {
+        String type = config.getType();
+        if (!jobMap.containsKey(type)) {
+            LOG.error("no job of type {} was found", type);
+        } else {
+            JobDetail job = newJob(jobMap.get(type))
+                    .withIdentity(config.getId(), group)
+                    .usingJobData(new JobDataMap(config.getConfigData()))
+                    .usingJobData(createContextData())
+                    .build();
+            Trigger trigger = newTrigger()
+                    .withIdentity(config.getId(), group)
+                    .startNow()
+                    .withSchedule(SimpleScheduleBuilder
+                            .simpleSchedule()
+                            .withIntervalInMilliseconds(config.getInterval())
+                            .repeatForever())
+                    .build();
+            scheduler.scheduleJob(job, trigger);
         }
+    }
+
+    /**
+     * checks if an job exists
+     */
+    public boolean checkExists(String name, String group) throws SchedulerException {
+        return scheduler.checkExists(new JobKey(name, group));
+    }
+
+    /**
+     * deletes all jobs of given group
+     */
+    public void cancelJobs(String group) throws SchedulerException {
+        Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.groupEquals(group));
+        if (jobKeys.isEmpty()) {
+            LOG.warn("no jobs found for group {}", group);
+            return;
+        }
+        scheduler.deleteJobs(new ArrayList<>(jobKeys));
     }
 
 }

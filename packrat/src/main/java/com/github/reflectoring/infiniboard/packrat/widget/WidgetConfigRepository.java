@@ -1,9 +1,8 @@
-package com.github.reflectoring.infiniboard.packrat.source;
+package com.github.reflectoring.infiniboard.packrat.widget;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,6 +12,6 @@ public interface WidgetConfigRepository extends MongoRepository<WidgetConfig, St
 
     WidgetConfig findByTitle(String title);
 
-    List<WidgetConfig> findByLastModifiedAfter(LocalDate date);
+    List<WidgetConfig> findAllByLastModifiedAfter(LocalDate date);
 
 }
