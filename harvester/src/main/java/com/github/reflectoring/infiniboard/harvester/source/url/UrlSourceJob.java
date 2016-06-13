@@ -68,7 +68,7 @@ public class UrlSourceJob extends SourceJob {
 
     CloseableHttpClient getHttpClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-        // simple SSL hack, should be temporary
+        // simple SSL hack, should be temporary (https://github.com/reflectoring/infiniboard/issues/40)
         return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
                 .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build()).build();
 
