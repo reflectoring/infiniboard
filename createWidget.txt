@@ -7,7 +7,7 @@
       "interval" : 1000,
       "configData" :
         {
-          "url" : "someUrlToLookup"
+          "url" : "https://echo.getpostman.com/get?test=123"
         }
      }
   ]
