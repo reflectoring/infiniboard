@@ -1,11 +1,12 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceData;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.github.reflectoring.infiniboard.packrat.source.SourceData;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 
 @RequestMapping("/api/widgets")
 @RestController

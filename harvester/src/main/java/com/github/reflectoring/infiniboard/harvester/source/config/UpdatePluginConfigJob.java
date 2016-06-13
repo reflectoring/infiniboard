@@ -1,19 +1,20 @@
 package com.github.reflectoring.infiniboard.harvester.source.config;
 
-import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
+import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 
 /**
  * reads the configurations of the sources and schedules the corresponding jobs

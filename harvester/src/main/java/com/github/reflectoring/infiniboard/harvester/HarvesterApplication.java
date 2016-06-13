@@ -1,16 +1,18 @@
 package com.github.reflectoring.infiniboard.harvester;
 
-import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
-import com.github.reflectoring.infiniboard.harvester.source.config.UpdatePluginConfigJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import java.util.Collections;
+
+import javax.annotation.PostConstruct;
+
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import javax.annotation.PostConstruct;
-import java.util.Collections;
+import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
+import com.github.reflectoring.infiniboard.harvester.source.config.UpdatePluginConfigJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 
 /**
  * application class for harvester service

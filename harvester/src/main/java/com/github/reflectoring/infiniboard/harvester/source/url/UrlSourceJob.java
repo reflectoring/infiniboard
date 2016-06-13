@@ -1,8 +1,12 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceData;
-import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,12 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceData;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 
 /**
  * job to retrieve UrlSource (configured via DB)
@@ -68,14 +69,8 @@ public class UrlSourceJob extends SourceJob {
     CloseableHttpClient getHttpClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
         // simple SSL hack, should be temporary
-        return HttpClients
-                .custom()
-                .setSSLHostnameVerifier(new NoopHostnameVerifier())
-                .setSSLContext(
-                        new SSLContextBuilder()
-                                .loadTrustMaterial(null, (x509Certificates, s) -> true)
-                                .build())
-                .build();
+        return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build()).build();
 
         // return HttpClients.createDefault();
     }

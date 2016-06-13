@@ -1,16 +1,13 @@
 package com.github.reflectoring.infiniboard.packrat.widget;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-import org.springframework.data.annotation.Id;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- * widget configuration, contains metadata and list of source configs
- */
+import org.springframework.data.annotation.Id;
+
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+
 public class WidgetConfig {
 
     @Id

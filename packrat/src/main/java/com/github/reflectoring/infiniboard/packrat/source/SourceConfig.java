@@ -2,9 +2,6 @@ package com.github.reflectoring.infiniboard.packrat.source;
 
 import java.util.Map;
 
-/**
- * configuration of a source with widget and plugin id, last modified date and a time interval to be checked for new information
- */
 public class SourceConfig {
 
     private String id;

@@ -1,9 +1,11 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import com.github.reflectoring.infiniboard.packrat.PackratTestApplication;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
-import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import com.github.reflectoring.infiniboard.packrat.PackratTestApplication;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * tests saving and retrieving widget and source configs
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PackratTestApplication.class)
 @Category(MongoIntegrationTests.class)
@@ -56,7 +54,7 @@ public class WidgetConfigTest {
     }
 
     @Test
-    public void firstEmbeddedSource() {
+    public void findByTitleReturnsWidgetConfigWithSourceConfigOfSavedType() {
         WidgetConfig widgetConfig = repository.findByTitle(TITLE);
         assertThat(widgetConfig.getSourceConfigs().get(0)).hasFieldOrPropertyWithValue("id", "1").hasFieldOrPropertyWithValue("type", "TestSource");
     }
@@ -68,7 +66,7 @@ public class WidgetConfigTest {
     }
 
     @Test
-    public void lastModified() {
+    public void findAllByLastModifiedAfter() {
         List<WidgetConfig> widgetConfigs = repository.findAllByLastModifiedAfter(LocalDate.now().minusDays(3));
         assertThat(widgetConfigs).hasSize(1);
         assertThat(widgetConfigs.get(0)).hasFieldOrPropertyWithValue("title", UPDATED_WIDGET);

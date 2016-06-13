@@ -1,7 +1,13 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -11,13 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 
 /**
  * job scheduling service using quartz
@@ -31,12 +32,13 @@ public class SchedulingService {
 
     private Map<String, Class<? extends SourceJob>> jobMap = new HashMap<>();
 
-    @Autowired
     private ApplicationContext context;
 
     private final Scheduler scheduler;
 
-    public SchedulingService() throws SchedulerException {
+    @Autowired
+    public SchedulingService(ApplicationContext context) throws SchedulerException {
+        this.context = context;
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         Scheduler scheduler = schedulerFactory.getScheduler();
         scheduler.start();
@@ -67,19 +69,10 @@ public class SchedulingService {
         if (!jobMap.containsKey(type)) {
             LOG.error("no job of type {} was found", type);
         } else {
-            JobDetail job = newJob(jobMap.get(type))
-                    .withIdentity(config.getId(), group)
-                    .usingJobData(new JobDataMap(config.getConfigData()))
-                    .usingJobData(createContextData())
-                    .build();
-            Trigger trigger = newTrigger()
-                    .withIdentity(config.getId(), group)
-                    .startNow()
-                    .withSchedule(SimpleScheduleBuilder
-                            .simpleSchedule()
-                            .withIntervalInMilliseconds(config.getInterval())
-                            .repeatForever())
-                    .build();
+            JobDetail job = newJob(jobMap.get(type)).withIdentity(config.getId(), group).usingJobData(new JobDataMap(config.getConfigData()))
+                    .usingJobData(createContextData()).build();
+            Trigger trigger = newTrigger().withIdentity(config.getId(), group).startNow()
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(config.getInterval()).repeatForever()).build();
             scheduler.scheduleJob(job, trigger);
         }
     }

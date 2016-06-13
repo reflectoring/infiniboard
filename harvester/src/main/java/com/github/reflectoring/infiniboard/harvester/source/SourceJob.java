@@ -1,13 +1,15 @@
 package com.github.reflectoring.infiniboard.harvester.source;
 
-import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
+import java.util.Map;
+
 import org.quartz.*;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Map;
+import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 
 /**
- * base class of SourceJobs
+ * This base class of SourceJobs gets information from the quartz JobExecutionContext and calls internal method with Spring application context and SourceJob
+ * configuration data.
  */
 public abstract class SourceJob implements Job {
 

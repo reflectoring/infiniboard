@@ -2,9 +2,6 @@ package com.github.reflectoring.infiniboard.packrat.dashboard;
 
 import org.springframework.data.annotation.Id;
 
-/**
- * dashboard configuration
- */
 public class DashboardConfig {
 
     @Id

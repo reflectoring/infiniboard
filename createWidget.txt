@@ -7,7 +7,7 @@
       "interval" : 1000,
       "configData" :
         {
-          "url" : "https://bmi-evergabe-web-qs01.adesso.de/platform/version"
+          "url" : "someUrlToLookup"
         }
      }
   ]

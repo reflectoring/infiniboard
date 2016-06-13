@@ -1,12 +1,9 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.Map;
 
-/**
- * contains data that was retrieved by a source
- */
+import org.springframework.data.annotation.Id;
+
 public class SourceData {
 
     @Id

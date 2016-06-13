@@ -1,13 +1,10 @@
 package com.github.reflectoring.infiniboard.packrat.widget;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * repository for widget configurations
- */
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 public interface WidgetConfigRepository extends MongoRepository<WidgetConfig, String> {
 
     WidgetConfig findByTitle(String title);
