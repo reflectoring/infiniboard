@@ -26,8 +26,8 @@ public class HarvesterApplication {
 
     @PostConstruct
     public void startScheduling() throws SchedulerException {
-        schedulingService.registerJob("updatePlugins", UpdatePluginConfigJob.class);
-        schedulingService.scheduleJob("harvester", new SourceConfig("updatePlugins", "updatePlugins", 5000, Collections.emptyMap()));
+        schedulingService.registerJob(UpdatePluginConfigJob.JOBTYPE, UpdatePluginConfigJob.class);
+        schedulingService.scheduleJob("harvester", new SourceConfig("updatePlugins", UpdatePluginConfigJob.JOBTYPE, 5000, Collections.emptyMap()));
     }
 
     public static void main(String[] args) throws Exception {
