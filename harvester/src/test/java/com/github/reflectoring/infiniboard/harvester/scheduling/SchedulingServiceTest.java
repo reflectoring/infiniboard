@@ -1,21 +1,19 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-
-import java.util.HashMap;
-
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 import org.quartz.SchedulerException;
-
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.springframework.context.ApplicationContext;
+
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class SchedulingServiceTest {
 
@@ -37,6 +35,15 @@ public class SchedulingServiceTest {
         SchedulingService schedulingService = getSchedulingService();
         expectedException.expectMessage("job type TestJob is already registered by " + TestJob.class.toString());
         schedulingService.registerJob(TEST_JOB, TestJob.class);
+    }
+
+    @Test
+    public void sameJobCanNotBeScheduledTwice() throws SchedulerException{
+        SchedulingService schedulingService = getSchedulingService();
+        schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, new HashMap<String, Object>()));
+
+        expectedException.expectMessage("Job already exists");
+        schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, new HashMap<String, Object>()));
     }
 
     @Test
@@ -66,6 +73,11 @@ public class SchedulingServiceTest {
 
         schedulingService.cancelJobs(GROUP_NAME);
         assertFalse(schedulingService.checkExists(TEST_JOB, GROUP_NAME));
+    }
+
+    @Test
+    public void canSourceJobBeExecuted(){
+        //TODO positive and negative test
     }
 
 }
