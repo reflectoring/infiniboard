@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = Quartermaster.class)
 @WebAppConfiguration
 @Category(MongoIntegrationTests.class)
-public class InfiniboardApplicationTests {
+public class InfiniboardTests {
 
     @Test
     public void contextLoads() {
