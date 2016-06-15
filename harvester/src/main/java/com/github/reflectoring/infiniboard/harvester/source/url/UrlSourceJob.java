@@ -1,12 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceData;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -19,9 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceData;
-import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * job to retrieve UrlSource (configured via DB)
@@ -30,7 +29,7 @@ public class UrlSourceJob extends SourceJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
-    public static final String JOBTYPE = "UrlSource";
+    public static final String JOBTYPE = "urlSource";
 
     static final String PARAM_STATUS = "status";
     static final String PARAM_CONTENT = "content";
