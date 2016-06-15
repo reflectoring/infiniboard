@@ -1,6 +1,6 @@
-package com.github.reflectoring.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard;
 
-import com.github.reflectoring.Link;
+import com.github.reflectoring.haljson.Link;
 import com.github.reflectoring.haljson.HalJsonResource;
 
 import java.util.List;

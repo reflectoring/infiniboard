@@ -1,4 +1,4 @@
-package com.github.reflectoring;
+package com.github.reflectoring.infiniboard.quartermaster;
 
 import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = Quartermaster.class)
 @WebAppConfiguration
 @Category(MongoIntegrationTests.class)
-public class InfiniboardTests {
+public class QuartermasterTest {
 
     @Test
     public void contextLoads() {

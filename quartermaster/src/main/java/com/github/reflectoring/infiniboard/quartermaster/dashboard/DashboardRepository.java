@@ -1,4 +1,4 @@
-package com.github.reflectoring.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard;
 
 import com.github.reflectoring.haljson.HalJsonResource;
 import org.springframework.stereotype.Repository;

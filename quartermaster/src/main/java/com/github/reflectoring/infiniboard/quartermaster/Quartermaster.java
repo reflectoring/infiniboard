@@ -1,4 +1,4 @@
-package com.github.reflectoring;
+package com.github.reflectoring.infiniboard.quartermaster;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
