@@ -22,7 +22,7 @@ public class UrlSourceJobRegistrar {
 
     @PostConstruct
     public void register() {
-        schedulingService.registerJob("UrlSource", UrlSourceJob.class);
+        schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
     }
 
 }

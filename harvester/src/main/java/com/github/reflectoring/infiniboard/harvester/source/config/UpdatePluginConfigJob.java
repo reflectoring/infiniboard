@@ -23,6 +23,8 @@ public class UpdatePluginConfigJob extends SourceJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePluginConfigJob.class);
 
+    public static final String JOBTYPE = "updatePlugins";
+
     private LocalDate lastChecked;
 
     @Override
