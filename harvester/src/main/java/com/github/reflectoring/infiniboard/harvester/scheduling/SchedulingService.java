@@ -1,14 +1,17 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.quartz.*;
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
@@ -17,8 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * job scheduling service using quartz
@@ -35,6 +43,10 @@ public class SchedulingService {
     private ApplicationContext context;
 
     private final Scheduler scheduler;
+
+    private WidgetConfigRepository widgetConfigRepository;
+
+    private SourceDataRepository sourceDataRepository;
 
     @Autowired
     public SchedulingService(ApplicationContext context) throws SchedulerException {
@@ -66,15 +78,23 @@ public class SchedulingService {
      */
     public void scheduleJob(String group, SourceConfig config) throws SchedulerException {
         String type = config.getType();
+        String name = config.getId();
+
         if (!jobMap.containsKey(type)) {
             LOG.error("no job of type {} was found", type);
-        } else {
-            JobDetail job = newJob(jobMap.get(type)).withIdentity(config.getId(), group).usingJobData(new JobDataMap(config.getConfigData()))
-                    .usingJobData(createContextData()).build();
-            Trigger trigger = newTrigger().withIdentity(config.getId(), group).startNow()
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(config.getInterval()).repeatForever()).build();
-            scheduler.scheduleJob(job, trigger);
+            return;
         }
+
+        if(checkExists(name, group)){
+            LOG.error("job of type {}, group {}, and name{} already exists {} was found", type, group, name);
+            throw new SchedulerException("Job already exists");
+        }
+
+        JobDetail job = newJob(jobMap.get(type)).withIdentity(config.getId(), group).usingJobData(new JobDataMap(config.getConfigData()))
+                .usingJobData(createContextData()).build();
+        Trigger trigger = newTrigger().withIdentity(config.getId(), group).startNow()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(config.getInterval()).repeatForever()).build();
+        scheduler.scheduleJob(job, trigger);
     }
 
     /**
@@ -96,4 +116,16 @@ public class SchedulingService {
         scheduler.deleteJobs(new ArrayList<>(jobKeys));
     }
 
+
+    public boolean canSourceJobBeExecuted(String group) throws SchedulerException {
+        if(widgetConfigRepository.exists(group)){
+            return true;
+        }
+
+        sourceDataRepository.deleteByWidgetId(group);
+
+        cancelJobs(group);
+
+        return false;
+    }
 }
