@@ -41,7 +41,7 @@ task integrationTest(type: Test) {
 }
 
 bootRepackage {
-    mainClass = 'com.github.reflectoring.infiniboard.quartermaster.Quartermaster'
+    mainClass = 'com.github.reflectoring.Quartermaster'
     executable = true
 }
 

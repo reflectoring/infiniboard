@@ -1,5 +1,6 @@
 package com.github.reflectoring.infiniboard.quartermaster;
 
+import com.github.reflectoring.Quartermaster;
 import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

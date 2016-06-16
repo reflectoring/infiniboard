@@ -1,5 +1,7 @@
 package com.github.reflectoring.haljson;
 
+import java.time.LocalDate;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ public class HalJsonController {
         HalJsonResource resource = new HalJsonResource();
         resource.add("name", "Hans Müller");
         resource.add("age", 30);
+        resource.add("modified", LocalDate.now());
         resource.add(new Link("self", "http://localhost:8090/api/test"));
 
         HalJsonResource transcript1Resource = getTranscriptOne();
