@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
@@ -37,4 +36,7 @@ public class WidgetConfigService {
         return sourceDataRepository.findAllByWidgetId(widgetId);
     }
 
+    public List<WidgetConfig> loadWidgets() {
+        return this.widgetConfigRepository.findAll();
+    }
 }
