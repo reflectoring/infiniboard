@@ -13,6 +13,7 @@ import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -37,9 +38,13 @@ public class WidgetController {
 
     @RequestMapping(value = "/{widgetId}", method = GET)
     public ResponseEntity<HalJsonResource> getWidget(@PathVariable String widgetId) {
-        WidgetConfig    widgetConfig = widgetService.loadWidget(widgetId);
-        HalJsonResource resource     = widgetConfigMapper.toResource(widgetConfig);
+        WidgetConfig widgetConfig = widgetService.loadWidget(widgetId);
 
+        if (widgetConfig == null) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+
+        HalJsonResource resource = widgetConfigMapper.toResource(widgetConfig);
         return new ResponseEntity<>(resource, OK);
     }
 
@@ -53,9 +58,9 @@ public class WidgetController {
 
     @RequestMapping(value = "/{widgetId}/data", method = GET)
     public ResponseEntity<List<HalJsonResource>> getData(@PathVariable String widgetId) {
-        List<SourceData> data = widgetService.getData(widgetId);
-
+        List<SourceData>      data         = widgetService.getData(widgetId);
         List<HalJsonResource> resourceList = sourceDataMapper.toResources(data);
+        
         return new ResponseEntity<>(resourceList, OK);
     }
 
