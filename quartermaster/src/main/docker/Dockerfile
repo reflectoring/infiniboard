@@ -1,6 +1,6 @@
 FROM java:8
 
-MAINTAINER Matthias Balke <mathias.balke@gmail.com>
+MAINTAINER Matthias Balke <mathias.balke@googlemail.com>
 
 VOLUME /tmp
 
@@ -12,4 +12,4 @@ RUN bash -c 'touch /app.war'
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dspring.data.mongodb.host=mongo","-jar","/app.war"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.war"]
