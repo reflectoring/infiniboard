@@ -31,7 +31,6 @@ public class Quartermaster {
 //        registrationBean.addInitParameter("statusEnabled", "true");
 //        registrationBean.addInitParameter("logLevel", "DEBUG");
 
-
         return registrationBean;
     }
 

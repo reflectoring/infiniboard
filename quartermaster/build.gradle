@@ -20,8 +20,8 @@ dependencies {
     compile(
             project(":packrat"),
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-data-mongodb',
-            'org.tuckey:urlrewritefilter:4.0.4'
+            'org.springframework.boot:spring-boot-starter-actuator',
+            "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
     )
 
     providedRuntime(
