@@ -91,5 +91,10 @@ task buildDocker(type: Docker, dependsOn: buildWithClient) {
             into stageDir
             exclude '*.original'
         }
+        copy {
+            from "${projectDir}/src/main/docker"
+            into stageDir
+            include 'application.properties'
+        }
     }
 }

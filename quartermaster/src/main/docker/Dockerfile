@@ -4,6 +4,8 @@ MAINTAINER Matthias Balke <mathias.balke@gmail.com>
 
 VOLUME /tmp
 
+ADD application.properties
+
 ADD quartermaster.war app.war
 
 RUN bash -c 'touch /app.war'

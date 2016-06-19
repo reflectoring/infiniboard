@@ -4,6 +4,8 @@ MAINTAINER Matthias Balke <mathias.balke@gmail.com>
 
 VOLUME /tmp
 
+ADD application.properties
+
 ADD harvester.jar app.jar
 
 RUN bash -c 'touch /app.jar'

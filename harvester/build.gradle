@@ -10,7 +10,7 @@ apply plugin: 'spring-boot'
 apply plugin: 'docker'
 
 dependencies {
-    compile (
+    compile(
             project(':packrat'),
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-actuator',
@@ -18,7 +18,7 @@ dependencies {
             "org.apache.httpcomponents:httpclient:${version_httpclient}",
     )
 
-    testCompile (
+    testCompile(
             'org.springframework.boot:spring-boot-starter-test'
     )
 }
@@ -41,6 +41,11 @@ task buildDocker(type: Docker, dependsOn: build) {
             }
             into stageDir
             exclude '*.original'
+        }
+        copy {
+            from "${projectDir}/src/main/docker"
+            into stageDir
+            include 'application.properties'
         }
     }
 }
