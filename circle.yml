@@ -44,18 +44,22 @@ dependencies:
 
 test:
   pre:
-    - docker-compose up
-    - sleep 30
+    - docker-compose up -d harvester
+    - docker-compose up -d quartermaster
+    - echo "waiting 50 seconds for applications to boot ..."; echo "50..."; sleep 10; echo "40..."; sleep 10; echo "30..."; sleep 10; echo "20..."; sleep 10; echo "10..."; sleep 10; echo "done.";
+
   override:
-    - curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
-    - curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
-    - curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+    - echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
+    - echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
+    - echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+
   post:
-    - docker ps -a
-    - docker stop $(docker ps -a -q)
-    - docker logs infiniboard_mongo_1         > $CIRCLE_TEST_REPORTS/mongo.log
-    - docker logs infiniboard_harvester_1     > $CIRCLE_TEST_REPORTS/harvester.log
-    - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/quartermaster.log
+    - echo "Running Docker containers"; docker ps -a
+    - echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+    - mkdir -p $CIRCLE_TEST_REPORTS/docker/
+    - docker logs infiniboardmatthiasbalke_mongo_1             > $CIRCLE_TEST_REPORTS/docker/mongo.log
+    - docker logs infiniboardmatthiasbalke_harvester_run_1     > $CIRCLE_TEST_REPORTS/docker/harvester.log
+    - docker logs infiniboardmatthiasbalke_quartermaster_run_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
   hub:
