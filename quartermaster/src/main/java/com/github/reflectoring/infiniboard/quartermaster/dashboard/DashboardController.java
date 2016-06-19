@@ -13,8 +13,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-@RequestMapping("/api/dashboards")
 @RestController
+@RequestMapping("/api/dashboards")
 public class DashboardController {
 
     private DashboardRepository repository;
