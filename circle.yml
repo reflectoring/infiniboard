@@ -52,6 +52,7 @@ test:
     - curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
     - curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
   post:
+    - docker ps
     - docker stop $(docker ps -a -q)
     - docker logs infiniboard_mongo_run_1         > $CIRCLE_TEST_REPORTS/mongo.log
     - docker logs infiniboard_harvester_run_1     > $CIRCLE_TEST_REPORTS/harvester.log
