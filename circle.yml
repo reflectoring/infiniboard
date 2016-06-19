@@ -47,6 +47,7 @@ test:
     - docker-compose run -d mongo
     - docker-compose run -d harvester
     - docker-compose run -d quartermaster
+    - sleep 30
   override:
     - curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
     - curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
