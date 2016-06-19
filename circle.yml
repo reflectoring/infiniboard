@@ -8,6 +8,8 @@ machine:
     - docker
 
 dependencies:
+  pre:
+    - sudo curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
   cache_directories:
     - "~/docker"
     - "~/.npm"
@@ -37,9 +39,7 @@ dependencies:
 
 test:
   override:
-    - docker run -d                           mongo:3.2                  --name mongo
-    - docker run -d -p 8080:8080 -p 8090:8090 reflectoring/quartermaster --link mongo:mongo
-    - docker run -d -p 9090:9090              reflectoring/harvester     --link mongo:mongo
+    - docker-compose up
     - sleep 30
     - curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
     - curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
