@@ -15,8 +15,10 @@ dependencies:
   cache_directories:
     - "~/docker"
     - "~/.npm"
+    - "~/infiniboard/infiniboard-app/node_modules"
 
   override:
+    - docker version
     - docker info
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
