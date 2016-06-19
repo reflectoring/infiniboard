@@ -20,6 +20,7 @@ dependencies:
   override:
     - docker version
     - docker info
+    - docker-compose version
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
