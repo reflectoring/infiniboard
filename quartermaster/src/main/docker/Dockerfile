@@ -4,7 +4,7 @@ MAINTAINER Matthias Balke <mathias.balke@googlemail.com>
 
 VOLUME /tmp
 
-ADD application.properties
+ADD application.properties application.properties
 
 ADD quartermaster.war app.war
 
