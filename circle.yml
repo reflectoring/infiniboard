@@ -41,6 +41,7 @@ test:
     - docker run -d              mongo:3.2;
     - docker run -d -p 8080:8080 reflectoring/quartermaster --link mongo:mongo;
     - docker run -d -p 9090:9090 reflectoring/harvester     --link mongo:mongo; sleep 30
+    - curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
     - curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
 
 deployment:
