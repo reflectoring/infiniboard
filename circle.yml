@@ -57,9 +57,9 @@ test:
     - echo "Running Docker containers"; docker ps -a
     - echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
     - mkdir -p $CIRCLE_TEST_REPORTS/docker/
-    - docker logs infiniboardmatthiasbalke_mongo_1             > $CIRCLE_TEST_REPORTS/docker/mongo.log
-    - docker logs infiniboardmatthiasbalke_harvester_run_1     > $CIRCLE_TEST_REPORTS/docker/harvester.log
-    - docker logs infiniboardmatthiasbalke_quartermaster_run_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
+    - docker logs infiniboard_mongo_1         > $CIRCLE_TEST_REPORTS/docker/mongo.log
+    - docker logs infiniboard_harvester_1     > $CIRCLE_TEST_REPORTS/docker/harvester.log
+    - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
   hub:
