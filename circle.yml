@@ -6,7 +6,6 @@ machine:
 
   services:
     - docker
-    - mongodb
 
 dependencies:
   cache_directories:
