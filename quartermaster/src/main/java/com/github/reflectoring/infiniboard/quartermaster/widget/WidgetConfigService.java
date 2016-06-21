@@ -37,4 +37,7 @@ public class WidgetConfigService {
         return sourceDataRepository.findAllByWidgetId(widgetId);
     }
 
+    public List<WidgetConfig> loadWidgets() {
+        return this.widgetConfigRepository.findAll();
+    }
 }
