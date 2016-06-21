@@ -34,6 +34,12 @@ public class Quartermaster {
         return registrationBean;
     }
 
+    /*
+     * Activates Cross-Origin Resource Sharing (CORS)
+     * for local development of JavaScript client.
+     *
+     * https://de.wikipedia.org/wiki/Cross-Origin_Resource_Sharing
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
