@@ -18,4 +18,9 @@ public class UrlSourceJobRegistrar {
         this.schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
     }
 
+    @PostConstruct
+    public void register() {
+        schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
+    }
+
 }

@@ -3,7 +3,7 @@
   "sourceConfigs" : [
     {
       "id" : "urlSource",
-      "type" : "UrlSource",
+      "type" : "urlSource",
       "interval" : 1000,
       "configData" :
         {
