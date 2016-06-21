@@ -20,8 +20,8 @@ dependencies {
     compile(
             project(":packrat"),
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-data-mongodb',
-            'org.tuckey:urlrewritefilter:4.0.4'
+            'org.springframework.boot:spring-boot-starter-actuator',
+            "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
     )
 
     providedRuntime(
@@ -41,7 +41,7 @@ task integrationTest(type: Test) {
 }
 
 bootRepackage {
-    mainClass = 'com.github.reflectoring.QuartermasterApplication'
+    mainClass = 'com.github.reflectoring.Quartermaster'
     executable = true
 }
 
@@ -49,8 +49,7 @@ bootRun {
     // default application configuration for running application via bootRun in development mode
     // (in production, these properties are defined in application.properties)
     jvmArgs '-Xdebug',
-            '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009',
-            '-Dserver.port=8080'
+            '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009'
 }
 
 task cleanWebappDir(type: Delete) {
@@ -91,6 +90,11 @@ task buildDocker(type: Docker, dependsOn: buildWithClient) {
             }
             into stageDir
             exclude '*.original'
+        }
+        copy {
+            from "${projectDir}/src/main/docker"
+            into stageDir
+            include 'application.properties'
         }
     }
 }
