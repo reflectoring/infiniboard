@@ -1,11 +1,10 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import javax.annotation.PostConstruct;
-
+import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
+import javax.annotation.PostConstruct;
 
 /**
  * registers the UrlSourceJob at the SchedulingService
