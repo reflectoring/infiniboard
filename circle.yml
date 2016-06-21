@@ -3,22 +3,28 @@ machine:
     version: oraclejdk8
   node:
     version: 4.4.0
+  python:
+    version: 2.7.3
 
   services:
     - docker
-    - mongodb
 
 dependencies:
+  pre:
+    - sudo pip install docker-compose==1.5.2
   cache_directories:
     - "~/docker"
     - "~/.npm"
+    - "infiniboard-app/node_modules"
 
   override:
+    - docker version
     - docker info
+    - docker-compose version
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
-    - ./gradlew --console=plain buildDocker -Pno_embedded_mongo
+    - ./gradlew --console=plain buildDocker
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
@@ -37,11 +43,23 @@ dependencies:
     - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
 
 test:
+  pre:
+    - docker-compose up -d harvester
+    - docker-compose up -d quartermaster
+    - echo "waiting 50 seconds for applications to boot ..."; echo "50..."; sleep 10; echo "40..."; sleep 10; echo "30..."; sleep 10; echo "20..."; sleep 10; echo "10..."; sleep 10; echo "done.";
+
   override:
-    - docker run -d              mongo:3.2;
-    - docker run -d -p 8080:8080 reflectoring/quartermaster --link mongo:mongo;
-    - docker run -d              reflectoring/harvester     --link mongo:mongo; sleep 30
-    - curl --retry 10 --retry-delay 5 -v http://localhost:8080
+    - echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
+    - echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
+    - echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+
+  post:
+    - echo "Running Docker containers"; docker ps -a
+    - echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+    - mkdir -p $CIRCLE_TEST_REPORTS/docker/
+    - docker logs infiniboard_mongo_1         > $CIRCLE_TEST_REPORTS/docker/mongo.log
+    - docker logs infiniboard_harvester_1     > $CIRCLE_TEST_REPORTS/docker/harvester.log
+    - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
   hub:
