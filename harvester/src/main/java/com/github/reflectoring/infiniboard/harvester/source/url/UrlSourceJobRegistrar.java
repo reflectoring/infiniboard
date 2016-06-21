@@ -4,6 +4,8 @@ import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * registers the UrlSourceJob at the SchedulingService
  */
