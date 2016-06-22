@@ -95,7 +95,7 @@ public class SchedulingServiceTest {
 
 
     @Test
-    public void souceJobShouldBeCanceled() throws SchedulerException, InterruptedException {
+    public void sourceJobShouldBeCanceled() throws SchedulerException, InterruptedException {
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
         Thread.sleep(200); //time for scheduling service to cancel the job
 
