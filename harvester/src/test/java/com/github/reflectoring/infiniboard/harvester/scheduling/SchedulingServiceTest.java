@@ -82,13 +82,13 @@ public class SchedulingServiceTest {
 
     @Test
     public void cancelJob() throws SchedulerException, InterruptedException {
+        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
+
         MutableInt mutableInt = new MutableInt(0);
         HashMap<String, Object> map = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
 
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, map));
-        Thread.sleep(100); //time for scheduling service to cancel the job
-
         assertTrue(schedulingService.checkJobExists(TEST_JOB, GROUP_NAME));
 
         schedulingService.cancelJobs(GROUP_NAME);
