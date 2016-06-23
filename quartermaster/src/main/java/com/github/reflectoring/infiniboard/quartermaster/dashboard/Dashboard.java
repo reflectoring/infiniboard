@@ -7,7 +7,7 @@ import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 
 public class Dashboard {
 
-    private int id;
+    private int    id;
     private String name;
     private String description;
 

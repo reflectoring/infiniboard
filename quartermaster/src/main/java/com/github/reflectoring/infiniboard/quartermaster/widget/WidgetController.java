@@ -60,7 +60,7 @@ public class WidgetController {
     public ResponseEntity<List<HalJsonResource>> getData(@PathVariable String widgetId) {
         List<SourceData>      data         = widgetService.getData(widgetId);
         List<HalJsonResource> resourceList = sourceDataMapper.toResources(data);
-        
+
         return new ResponseEntity<>(resourceList, OK);
     }
 

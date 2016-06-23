@@ -19,7 +19,8 @@ public class WidgetConfigService {
     private SourceDataRepository sourceDataRepository;
 
     @Autowired
-    public WidgetConfigService(WidgetConfigRepository widgetConfigRepository, SourceDataRepository sourceDataRepository) {
+    public WidgetConfigService(WidgetConfigRepository widgetConfigRepository,
+                               SourceDataRepository sourceDataRepository) {
         this.widgetConfigRepository = widgetConfigRepository;
         this.sourceDataRepository = sourceDataRepository;
     }

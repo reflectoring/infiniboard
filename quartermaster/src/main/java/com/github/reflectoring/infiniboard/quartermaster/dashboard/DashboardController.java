@@ -19,7 +19,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class DashboardController {
 
     private DashboardRepository repository;
-    private DashboardMapper dashboardMapper;
+    private DashboardMapper     dashboardMapper;
 
     @Autowired
     public DashboardController(DashboardRepository repository, DashboardMapper dashboardMapper) {
@@ -29,8 +29,8 @@ public class DashboardController {
 
     @RequestMapping(method = GET)
     public ResponseEntity<List<HalJsonResource>> getAllDashboardConfigurations() {
-        List<Dashboard> dashboards = repository.findAll();
-        List<HalJsonResource> resources = dashboardMapper.toResources(dashboards);
+        List<Dashboard>       dashboards = repository.findAll();
+        List<HalJsonResource> resources  = dashboardMapper.toResources(dashboards);
 
         return new ResponseEntity<>(resources, OK);
     }

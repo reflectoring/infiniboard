@@ -29,11 +29,12 @@ public class UpdatePluginConfigJob extends SourceJob {
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
-        WidgetConfigRepository repository = context.getBean(WidgetConfigRepository.class);
-        SchedulingService schedulingService = context.getBean(SchedulingService.class);
+        WidgetConfigRepository repository        = context.getBean(WidgetConfigRepository.class);
+        SchedulingService      schedulingService = context.getBean(SchedulingService.class);
 
-        LocalDate now = LocalDate.now();
-        List<WidgetConfig> newWidgets = (lastChecked == null) ? repository.findAll() : repository.findAllByLastModifiedAfter(lastChecked);
+        LocalDate          now        = LocalDate.now();
+        List<WidgetConfig> newWidgets =
+                (lastChecked == null) ? repository.findAll() : repository.findAllByLastModifiedAfter(lastChecked);
         lastChecked = now;
 
         for (WidgetConfig widget : newWidgets) {
