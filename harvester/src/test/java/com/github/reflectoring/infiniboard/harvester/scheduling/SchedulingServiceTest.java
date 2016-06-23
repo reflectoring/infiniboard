@@ -1,8 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import java.util.Collections;
+import java.util.HashMap;
+
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,16 +11,14 @@ import org.junit.rules.ExpectedException;
 import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Collections;
-import java.util.HashMap;
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SchedulingServiceTest {
 
@@ -38,7 +36,8 @@ public class SchedulingServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
-    public void setup() throws SchedulerException {
+    public void setup()
+            throws SchedulerException {
         ApplicationContext applicationContext = mock(ApplicationContext.class);
 
         //introduce repositorys
@@ -52,13 +51,15 @@ public class SchedulingServiceTest {
     }
 
     @Test
-    public void registerJobNotRegisteringTwice() throws SchedulerException {
+    public void registerJobNotRegisteringTwice()
+            throws SchedulerException {
         expectedException.expectMessage("job type TestJob is already registered by " + TestJob.class.toString());
         schedulingService.registerJob(TEST_JOB, TestJob.class);
     }
 
     @Test
-    public void sameJobCanNotBeScheduledTwice() throws SchedulerException{
+    public void sameJobCanNotBeScheduledTwice()
+            throws SchedulerException {
         expectedException.expectMessage("Job already exists");
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
 
@@ -67,11 +68,12 @@ public class SchedulingServiceTest {
     }
 
     @Test
-    public void scheduleJobShouldRunAtLeastThreeTimes() throws SchedulerException, InterruptedException {
+    public void scheduleJobShouldRunAtLeastThreeTimes()
+            throws SchedulerException, InterruptedException {
         when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
 
-        MutableInt mutableInt = new MutableInt(0);
-        HashMap<String, Object> map = new HashMap<>();
+        MutableInt              mutableInt = new MutableInt(0);
+        HashMap<String, Object> map        = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
 
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, map));
@@ -81,11 +83,12 @@ public class SchedulingServiceTest {
     }
 
     @Test
-    public void cancelJob() throws SchedulerException, InterruptedException {
+    public void cancelJob()
+            throws SchedulerException, InterruptedException {
         when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
 
-        MutableInt mutableInt = new MutableInt(0);
-        HashMap<String, Object> map = new HashMap<>();
+        MutableInt              mutableInt = new MutableInt(0);
+        HashMap<String, Object> map        = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
 
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, map));
@@ -97,7 +100,8 @@ public class SchedulingServiceTest {
 
 
     @Test
-    public void souceJobShouldBeCanceled() throws SchedulerException, InterruptedException {
+    public void souceJobShouldBeCanceled()
+            throws SchedulerException, InterruptedException {
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
         Thread.sleep(200); //time for scheduling service to cancel the job
 

@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A generic mapper interface to map any kind of Object to {@link HalJsonResource}.
- * <p>
- * <p>This interface provides a default implementation for multiple Objects.</p>
+ * A generic mapper interface to map any kind of Object to {@link HalJsonResource}. <p> <p>This interface provides a
+ * default implementation for multiple Objects.</p>
  *
  * @param <T>
  *         Type of Object to Map

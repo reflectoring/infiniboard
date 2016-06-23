@@ -1,8 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,12 +18,15 @@ import org.springframework.context.ApplicationContext;
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 
+import static org.mockito.Matchers.refEq;
+import static org.mockito.Mockito.*;
+
 public class UrlSourceJobTest {
 
-    private static final String SOURCE_ID = "sourceId";
-    private static final String WIDGET_ID = "widgetId";
+    private static final String SOURCE_ID  = "sourceId";
+    private static final String WIDGET_ID  = "widgetId";
     private static final String MY_CONTENT = "myContent";
-    private static final String MY_REASON = "myReason";
+    private static final String MY_REASON  = "myReason";
 
     private ApplicationContext applicationContext;
 
@@ -57,7 +57,8 @@ public class UrlSourceJobTest {
     }
 
     @Test
-    public void executeInternalReturnsContent() throws IOException {
+    public void executeInternalReturnsContent()
+            throws IOException {
 
         TestJob job = new TestJob(prepareHttpClientMock(true));
         job.executeInternal(applicationContext, new JobKey(SOURCE_ID, WIDGET_ID), createConfigMap());
@@ -69,7 +70,8 @@ public class UrlSourceJobTest {
     }
 
     @Test
-    public void executeInternalReturnsReasonIfThereIsNoContent() throws IOException {
+    public void executeInternalReturnsReasonIfThereIsNoContent()
+            throws IOException {
 
         TestJob job = new TestJob(prepareHttpClientMock(false));
         job.executeInternal(applicationContext, new JobKey(SOURCE_ID, WIDGET_ID), createConfigMap());
@@ -88,10 +90,11 @@ public class UrlSourceJobTest {
 
     /**
      * @param withContent
-     *            defines if an entity should be returned (otherwise simulating an empty result)
+     *         defines if an entity should be returned (otherwise simulating an empty result)
      */
-    private CloseableHttpClient prepareHttpClientMock(boolean withContent) throws IOException {
-        CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
+    private CloseableHttpClient prepareHttpClientMock(boolean withContent)
+            throws IOException {
+        CloseableHttpClient   httpClient   = mock(CloseableHttpClient.class);
         CloseableHttpResponse httpResponse = mock(CloseableHttpResponse.class);
         when(httpClient.execute(any(HttpGet.class))).thenReturn(httpResponse);
         StatusLine statusLine = mock(StatusLine.class);

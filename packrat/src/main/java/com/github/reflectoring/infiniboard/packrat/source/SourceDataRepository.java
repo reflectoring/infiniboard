@@ -1,8 +1,8 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface SourceDataRepository extends MongoRepository<SourceData, String> {
 

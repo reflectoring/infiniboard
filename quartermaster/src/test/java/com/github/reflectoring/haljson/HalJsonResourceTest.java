@@ -4,8 +4,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class HalJsonResourceTest {
 
@@ -15,8 +15,8 @@ public class HalJsonResourceTest {
     @Test
     public void getPropertyReturnsStoredPropertyValue() {
         HalJsonResource resource = new HalJsonResource();
-        String key = "name";
-        String value = "First";
+        String          key      = "name";
+        String          value    = "First";
 
         resource.add(key, value);
         Object object = resource.getProperty(key);
@@ -27,8 +27,8 @@ public class HalJsonResourceTest {
     @Test
     public void addPropertyThrowsExceptionOnExistingKey() {
         HalJsonResource resource = new HalJsonResource();
-        String key = "name";
-        String value = "First";
+        String          key      = "name";
+        String          value    = "First";
 
         resource.add(key, value);
 

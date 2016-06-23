@@ -3,5 +3,6 @@
   <li class="header">Dashboards</li>
   <!-- Optionally, you can add icons to the links -->
   <li *ngFor="#dashboard of dashboards"
-      [class.active]="dashboard.active"><a (click)="gotoDashboard(dashboard)"><i class="fa fa-circle-o text-red"></i> <span>{{dashboard.name}}</span></a></li>
+      [class.active]="dashboard.active"><a (click)="gotoDashboard(dashboard)"><i class="fa fa-circle-o text-red"></i>
+    <span>{{dashboard.name}}</span></a></li>
 </ul><!-- /.sidebar-menu -->
