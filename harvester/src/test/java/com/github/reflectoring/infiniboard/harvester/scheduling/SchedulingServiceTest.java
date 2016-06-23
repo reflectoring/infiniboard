@@ -1,21 +1,26 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-
-import java.util.HashMap;
-
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 import org.quartz.SchedulerException;
-
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import org.springframework.context.ApplicationContext;
+
+import java.util.Collections;
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class SchedulingServiceTest {
 
@@ -23,25 +28,47 @@ public class SchedulingServiceTest {
 
     private static final String GROUP_NAME = "SchedulingServiceTest";
 
+    private WidgetConfigRepository widgetConfigRepository;
+
+    private SourceDataRepository sourceDataRepository;
+
+    private SchedulingService schedulingService;
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private SchedulingService getSchedulingService() throws SchedulerException {
-        SchedulingService schedulingService = new SchedulingService(mock(ApplicationContext.class));
+    @Before
+    public void setup() throws SchedulerException {
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+
+        //introduce repositorys
+        widgetConfigRepository = mock(WidgetConfigRepository.class);
+        sourceDataRepository = mock(SourceDataRepository.class);
+
+        schedulingService = new SchedulingService(applicationContext, widgetConfigRepository, sourceDataRepository);
+        when(applicationContext.getBean(SchedulingService.class)).thenReturn(schedulingService);
+
         schedulingService.registerJob(TEST_JOB, TestJob.class);
-        return schedulingService;
     }
 
     @Test
     public void registerJobNotRegisteringTwice() throws SchedulerException {
-        SchedulingService schedulingService = getSchedulingService();
         expectedException.expectMessage("job type TestJob is already registered by " + TestJob.class.toString());
         schedulingService.registerJob(TEST_JOB, TestJob.class);
     }
 
     @Test
+    public void sameJobCanNotBeScheduledTwice() throws SchedulerException{
+        expectedException.expectMessage("Job already exists");
+        schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
+
+        schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
+        schedulingService.cancelJobs(GROUP_NAME);
+    }
+
+    @Test
     public void scheduleJobShouldRunAtLeastThreeTimes() throws SchedulerException, InterruptedException {
-        SchedulingService schedulingService = getSchedulingService();
+        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
 
         MutableInt mutableInt = new MutableInt(0);
         HashMap<String, Object> map = new HashMap<>();
@@ -54,18 +81,28 @@ public class SchedulingServiceTest {
     }
 
     @Test
-    public void cancelJob() throws SchedulerException {
-        SchedulingService schedulingService = getSchedulingService();
+    public void cancelJob() throws SchedulerException, InterruptedException {
+        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
 
         MutableInt mutableInt = new MutableInt(0);
         HashMap<String, Object> map = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
 
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, map));
-        assertTrue(schedulingService.checkExists(TEST_JOB, GROUP_NAME));
+        assertTrue(schedulingService.checkJobExists(TEST_JOB, GROUP_NAME));
 
         schedulingService.cancelJobs(GROUP_NAME);
-        assertFalse(schedulingService.checkExists(TEST_JOB, GROUP_NAME));
+        assertFalse(schedulingService.checkJobExists(TEST_JOB, GROUP_NAME));
+    }
+
+
+    @Test
+    public void souceJobShouldBeCanceled() throws SchedulerException, InterruptedException {
+        schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
+        Thread.sleep(200); //time for scheduling service to cancel the job
+
+        assertFalse(schedulingService.checkJobExists(TEST_JOB, GROUP_NAME));
+        verify(sourceDataRepository).deleteByWidgetId(eq(GROUP_NAME));
     }
 
 }
