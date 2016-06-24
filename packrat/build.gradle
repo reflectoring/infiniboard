@@ -10,11 +10,11 @@ apply plugin: 'spring-boot'
 apply plugin: 'mongo'
 
 dependencies {
-    compile (
+    compile(
             'org.springframework.boot:spring-boot-starter-data-mongodb',
     )
 
-    testCompile (
+    testCompile(
             'org.springframework.boot:spring-boot-starter-test'
     )
 }

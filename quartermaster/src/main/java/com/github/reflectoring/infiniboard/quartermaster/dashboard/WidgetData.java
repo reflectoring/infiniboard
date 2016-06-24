@@ -1,15 +1,15 @@
 package com.github.reflectoring.infiniboard.quartermaster.dashboard;
 
-import com.github.reflectoring.haljson.Link;
-import com.github.reflectoring.haljson.HalJsonResource;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.github.reflectoring.haljson.HalJsonResource;
+import com.github.reflectoring.haljson.Link;
+
 class WidgetData {
 
-    private int dashboardId;
-    private int widgetId;
+    private int             dashboardId;
+    private int             widgetId;
     private HalJsonResource data;
 
     public WidgetData(int dashboardId, int widgetId, HalJsonResource data) {
@@ -49,7 +49,8 @@ class WidgetData {
         resource.add("widgetId", widgetData.getWidgetId());
         resource.add("data", widgetData.getData());
 
-        resource.add(new Link("self", "http://localhost:8090/api/dashboards/" + dashboard.getId() + "/widget-data/" + widgetData.getWidgetId()));
+        resource.add(new Link("self", "http://localhost:8090/api/dashboards/" + dashboard.getId() + "/widget-data/" +
+                                      widgetData.getWidgetId()));
 
         return resource;
     }

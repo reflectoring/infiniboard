@@ -1,7 +1,5 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -20,12 +18,14 @@ import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PackratTestApplication.class)
 @Category(MongoIntegrationTests.class)
 public class WidgetConfigTest {
 
-    private static final String TITLE = "myFirstWidget";
+    private static final String TITLE          = "myFirstWidget";
     private static final String UPDATED_WIDGET = "updatedWidget";
 
     @Autowired
@@ -56,7 +56,8 @@ public class WidgetConfigTest {
     @Test
     public void findByTitleReturnsWidgetConfigWithSourceConfigOfSavedType() {
         WidgetConfig widgetConfig = repository.findByTitle(TITLE);
-        assertThat(widgetConfig.getSourceConfigs().get(0)).hasFieldOrPropertyWithValue("id", "1").hasFieldOrPropertyWithValue("type", "TestSource");
+        assertThat(widgetConfig.getSourceConfigs().get(0)).hasFieldOrPropertyWithValue("id", "1")
+                .hasFieldOrPropertyWithValue("type", "TestSource");
     }
 
     @Test

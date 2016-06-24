@@ -2,6 +2,7 @@ package com.github.reflectoring.infiniboard.quartermaster.dashboard;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.haljson.Link;
 import com.github.reflectoring.haljson.ResourceMapper;

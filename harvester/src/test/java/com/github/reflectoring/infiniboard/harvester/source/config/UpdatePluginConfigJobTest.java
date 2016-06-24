@@ -1,7 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.source.config;
 
-import static org.mockito.Mockito.*;
-
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +16,8 @@ import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingServic
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+
+import static org.mockito.Mockito.*;
 
 public class UpdatePluginConfigJobTest {
 
@@ -51,7 +51,8 @@ public class UpdatePluginConfigJobTest {
     }
 
     @Test
-    public void executeInternalSchedulesAllGivenJobs() throws SchedulerException, NoSuchFieldException, IllegalAccessException {
+    public void executeInternalSchedulesAllGivenJobs()
+            throws SchedulerException, NoSuchFieldException, IllegalAccessException {
 
         ArrayList<WidgetConfig> widgetConfigs = new ArrayList<>();
         when(repository.findAll()).thenReturn(widgetConfigs);
@@ -73,7 +74,8 @@ public class UpdatePluginConfigJobTest {
 
     }
 
-    private WidgetConfig createWidgetConfig(String widgetLabel, String... sourceLabels) throws IllegalAccessException, NoSuchFieldException {
+    private WidgetConfig createWidgetConfig(String widgetLabel, String... sourceLabels)
+            throws IllegalAccessException, NoSuchFieldException {
         WidgetConfig widgetConfig = new WidgetConfig(widgetLabel);
 
         // making id accessible

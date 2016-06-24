@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
@@ -18,7 +19,8 @@ public class WidgetConfigService {
     private SourceDataRepository sourceDataRepository;
 
     @Autowired
-    public WidgetConfigService(WidgetConfigRepository widgetConfigRepository, SourceDataRepository sourceDataRepository) {
+    public WidgetConfigService(WidgetConfigRepository widgetConfigRepository,
+                               SourceDataRepository sourceDataRepository) {
         this.widgetConfigRepository = widgetConfigRepository;
         this.sourceDataRepository = sourceDataRepository;
     }

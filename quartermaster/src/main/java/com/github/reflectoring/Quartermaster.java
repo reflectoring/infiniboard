@@ -28,8 +28,8 @@ public class Quartermaster {
         registrationBean.addUrlPatterns("/*");
         registrationBean.setDispatcherTypes(DispatcherType.REQUEST);
         registrationBean.addInitParameter("confPath", "urlrewrite.xml");
-//        registrationBean.addInitParameter("statusEnabled", "true");
-//        registrationBean.addInitParameter("logLevel", "DEBUG");
+        //        registrationBean.addInitParameter("statusEnabled", "true");
+        //        registrationBean.addInitParameter("logLevel", "DEBUG");
 
         return registrationBean;
     }
