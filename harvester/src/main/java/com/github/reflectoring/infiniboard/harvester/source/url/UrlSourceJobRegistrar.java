@@ -1,7 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +16,7 @@ public class UrlSourceJobRegistrar {
     @Autowired
     public UrlSourceJobRegistrar(SchedulingService schedulingService) {
         this.schedulingService = schedulingService;
-    }
-
-    @PostConstruct
-    public void register() {
-        schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
+        this.schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
     }
 
 }

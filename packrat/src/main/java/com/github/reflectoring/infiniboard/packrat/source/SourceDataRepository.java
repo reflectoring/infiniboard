@@ -10,4 +10,6 @@ public interface SourceDataRepository extends MongoRepository<SourceData, String
 
     SourceData findByWidgetIdAndSourceId(String widgetId, String sourceId);
 
+    void deleteByWidgetId(String widgetId);
+
 }

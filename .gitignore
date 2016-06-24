@@ -23,6 +23,8 @@ gradle-app.setting
 *.iws
 .idea
 
+!doc/codestyle/settings.jar
+
 # temp
 *.*~
 
