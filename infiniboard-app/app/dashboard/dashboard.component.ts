@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
     Promise.resolve(promise).then(
       component => {
-        component.instance.setUpdateInterval(widgetConfig.interval);
+        component.instance.setUpdateInterval(1000);
         component.instance.initWidget(widgetConfig.id);
         component.instance.updateWidgetData();
       });

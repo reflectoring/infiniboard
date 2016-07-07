@@ -38,11 +38,13 @@ export class WidgetComponent {
   }
 
   public updateWidgetData() {
-    let widgetUpdate = this._widgetService.getWidgetData(this.getId());
-    Promise.resolve(widgetUpdate).then(
-      update => {
-        this.updateData(update.data);
-      }
+    this._widgetService.getWidgetData(this.getId()).subscribe(
+      widgetData => {
+        if (widgetData.length > 0) {
+          this.updateData(widgetData.data);
+        }
+      },
+      error => console.error(error)
     );
   }
 
