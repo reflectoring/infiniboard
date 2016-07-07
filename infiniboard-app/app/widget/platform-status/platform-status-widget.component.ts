@@ -8,7 +8,7 @@ import {WidgetService} from '../widget.service';
 })
 export class PlatformStatusWidgetComponent extends WidgetComponent {
 
-  version: string;
+  version: string = 'N/A';
   status: string;
 
   public constructor(widgetService: WidgetService) {
@@ -16,8 +16,9 @@ export class PlatformStatusWidgetComponent extends WidgetComponent {
   }
 
   public updateData(data: any) {
-    this.version = data.version;
-    this.status = data.status;
+    // TODO read data from response
+    // this.version = data.version;
+    // this.status = data.status;
 
     console.log('[PlatformStatusWidgetComponent] updateData(): interval ' + this.getUpdateInterval());
   }
