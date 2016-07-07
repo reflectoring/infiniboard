@@ -1,7 +1,8 @@
 import {Injectable} from 'angular2/core';
-import {Http, Headers} from 'angular2/http';
+import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {Dashboard} from './dashboard';
+import {WidgetConfig} from './widget-config';
 import '../rxjs-operators';
 
 @Injectable()
@@ -34,15 +35,43 @@ export class DashboardService {
     return new Dashboard(haljson.id, haljson.name, haljson.description, []);
   }
 
+  private static createWidgetConfig(haljson: any): WidgetConfig[] {
+    let widgetConfigs: any[] = [];
+
+    if (!(haljson._embedded || {}).widgets) {
+      return widgetConfigs;
+    }
+
+    for (let widget of haljson._embedded.widgets) {
+      let widgetConfig = new WidgetConfig(widget.id, 'platform-status', widget.title);
+      widgetConfigs.push(widgetConfig);
+    }
+    console.log(widgetConfigs);
+    return widgetConfigs;
+  }
+
+  private static handleDashboard(res: Response): Dashboard {
+    let haljson = res.json();
+    let dashboard = DashboardService.createDashboard(haljson);
+    dashboard.widgetConfigs = DashboardService.createWidgetConfig(haljson);
+
+    return dashboard;
+  }
+
+  private static handleDashboardList(res: Response): Dashboard[] {
+    let haljson = res.json();
+    return DashboardService.extractDashboardList(haljson);
+  }
+
   public getDashboard(id: number): Observable<Dashboard> {
     return this.http.get(this.actionUrl + '/' + id)
-      .map(res => DashboardService.createDashboard(res.json() || {}))
+      .map(DashboardService.handleDashboard)
       .catch(this.handleError);
   }
 
   public getDashboards(): Observable<Dashboard[]> {
     return this.http.get(this.actionUrl)
-      .map(res => DashboardService.extractDashboardList(res.json() || {}))
+      .map(DashboardService.handleDashboardList)
       .catch(this.handleError);
   }
 
