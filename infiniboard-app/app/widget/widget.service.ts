@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {Headers, Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
-
+import '../rxjs-operators';
 
 @Injectable()
 export class WidgetService {
