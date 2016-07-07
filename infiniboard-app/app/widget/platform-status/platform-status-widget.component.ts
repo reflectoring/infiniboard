@@ -8,7 +8,6 @@ import {WidgetService} from '../widget.service';
 })
 export class PlatformStatusWidgetComponent extends WidgetComponent {
 
-  name: string;
   version: string;
   status: string;
 
@@ -17,7 +16,6 @@ export class PlatformStatusWidgetComponent extends WidgetComponent {
   }
 
   public updateData(data: any) {
-    this.name = data.name;
     this.version = data.version;
     this.status = data.status;
 

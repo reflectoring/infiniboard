@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
     Promise.resolve(promise).then(
       component => {
         component.instance.setUpdateInterval(1000);
-        component.instance.initWidget(widgetConfig.id);
+        component.instance.initWidget(widgetConfig.id, widgetConfig.title);
         component.instance.updateWidgetData();
       });
   }
