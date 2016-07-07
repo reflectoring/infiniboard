@@ -38,12 +38,15 @@ export class DashboardComponent implements OnInit {
     // + converts the string to a number
     let id = +this._routeParams.get('id');
 
-    this._dashboardService.getDashboard(id)
-      .then(dashboard => this.initializeDashboard(dashboard));
+    this._dashboardService.getDashboard(id).subscribe(
+      dashboard => this.initializeDashboard(dashboard),
+      error => console.error(error)
+    );
   }
 
   private initializeDashboard(dashboard: Dashboard) {
     this.dashboard = dashboard;
+    console.log(this.dashboard);
 
     this.initializeWidgets();
   }
@@ -58,8 +61,8 @@ export class DashboardComponent implements OnInit {
     let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
     Promise.resolve(promise).then(
       component => {
-        component.instance.setUpdateInterval(widgetConfig.interval);
-        component.instance.initWidget(widgetConfig.id);
+        component.instance.setUpdateInterval(1000);
+        component.instance.initWidget(widgetConfig.id, widgetConfig.title);
         component.instance.updateWidgetData();
       });
   }

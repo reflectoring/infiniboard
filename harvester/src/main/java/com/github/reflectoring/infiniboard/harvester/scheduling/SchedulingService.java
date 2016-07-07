@@ -1,5 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

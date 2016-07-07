@@ -2,32 +2,42 @@ import {WidgetService} from './widget.service';
 
 export class WidgetComponent {
 
-  private _id: string;
-  private _updateInterval: number;
-  private _widgetService: WidgetService;
+  private id: string;
+  private title: string;
+  private updateInterval: number;
+  private widgetService: WidgetService;
 
   public constructor(widgetService: WidgetService) {
-    this._widgetService = widgetService;
+    this.widgetService = widgetService;
   }
 
   public getId() {
-    return this._id;
+    return this.id;
   }
 
   public setId(id: string) {
-    this._id = id;
+    this.id = id;
+  }
+
+  public getTitle(): string {
+    return this.title;
+  }
+
+  public setTitle(title: string) {
+    this.title = title;
   }
 
   public getUpdateInterval(): number {
-    return this._updateInterval;
+    return this.updateInterval;
   }
 
   public setUpdateInterval(value: number) {
-    this._updateInterval = value;
+    this.updateInterval = value;
   }
 
-  public initWidget(id: string) {
+  public initWidget(id: string, title: string) {
     this.setId(id);
+    this.setTitle(title);
     this.triggerUpdate();
   }
 
@@ -38,11 +48,13 @@ export class WidgetComponent {
   }
 
   public updateWidgetData() {
-    let widgetUpdate = this._widgetService.getWidgetData(this.getId());
-    Promise.resolve(widgetUpdate).then(
-      update => {
-        this.updateData(update.data);
-      }
+    this.widgetService.getWidgetData(this.getId()).subscribe(
+      widgetData => {
+        if (widgetData.length > 0) {
+          this.updateData(widgetData.data);
+        }
+      },
+      error => console.error(error)
     );
   }
 
