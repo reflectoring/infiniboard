@@ -38,12 +38,15 @@ export class DashboardComponent implements OnInit {
     // + converts the string to a number
     let id = +this._routeParams.get('id');
 
-    this._dashboardService.getDashboard(id)
-      .then(dashboard => this.initializeDashboard(dashboard));
+    this._dashboardService.getDashboard(id).subscribe(
+      dashboard => this.initializeDashboard(dashboard),
+      error => console.error(error)
+    );
   }
 
   private initializeDashboard(dashboard: Dashboard) {
     this.dashboard = dashboard;
+    console.log(this.dashboard);
 
     this.initializeWidgets();
   }

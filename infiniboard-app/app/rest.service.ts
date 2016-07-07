@@ -15,7 +15,7 @@ export class RestService {
   constructor(http: Http) {
 
     this.http = http;
-    this.actionUrl = 'http://localhost:8090/api/dashboards';
+    this.actionUrl = 'http://localhost:8080/api/dashboards';
 
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
