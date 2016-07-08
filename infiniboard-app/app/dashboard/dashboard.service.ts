@@ -46,7 +46,6 @@ export class DashboardService {
       let widgetConfig = new WidgetConfig(widget.id, 'platform-status', widget.title);
       widgetConfigs.push(widgetConfig);
     }
-    console.log(widgetConfigs);
     return widgetConfigs;
   }
 

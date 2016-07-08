@@ -51,7 +51,7 @@ export class WidgetComponent {
     this.widgetService.getWidgetData(this.getId()).subscribe(
       widgetData => {
         if (widgetData.length > 0) {
-          this.updateData(widgetData.data);
+          this.updateData(widgetData);
         }
       },
       error => console.error(error)

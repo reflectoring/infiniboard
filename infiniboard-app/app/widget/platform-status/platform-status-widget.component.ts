@@ -15,11 +15,21 @@ export class PlatformStatusWidgetComponent extends WidgetComponent {
     super(widgetService);
   }
 
-  public updateData(data: any) {
-    // TODO read data from response
-    // this.version = data.version;
-    // this.status = data.status;
+  public updateData(data: any[]) {
+    for (let sourceData of data) {
+      if (sourceData.sourceId === 'version') {
+        this.version = sourceData.data.content;
+      }
+      if (sourceData.sourceId === 'status') {
+        this.status = this.transformHttpStatusCode(sourceData.data.status);
+      }
+    }
+  }
 
-    console.log('[PlatformStatusWidgetComponent] updateData(): interval ' + this.getUpdateInterval());
+  private transformHttpStatusCode(status: number) {
+    if (status === 200) {
+      return 'green';
+    }
+    return 'yellow';
   }
 }

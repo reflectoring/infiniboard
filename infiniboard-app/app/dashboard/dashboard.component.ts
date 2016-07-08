@@ -46,8 +46,6 @@ export class DashboardComponent implements OnInit {
 
   private initializeDashboard(dashboard: Dashboard) {
     this.dashboard = dashboard;
-    console.log(this.dashboard);
-
     this.initializeWidgets();
   }
 

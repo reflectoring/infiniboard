@@ -20,9 +20,7 @@ export class WidgetService {
   }
 
   private static handleWidgetData(res: Response): any {
-    let haljson = res.json();
-    console.log(haljson);
-    return haljson;
+    return res.json();
   }
 
   public getWidgetData(id: string): Observable<any> {
