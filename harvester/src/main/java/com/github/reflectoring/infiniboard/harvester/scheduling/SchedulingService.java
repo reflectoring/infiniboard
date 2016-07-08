@@ -30,7 +30,9 @@ public class SchedulingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulingService.class);
 
-    public final static String PARAM_CONTEXT = "applicationContext";
+    public static final String PARAM_CONTEXT = "applicationContext";
+
+    public static final String GROUP_HARVESTER = "harvester";
 
     private Map<String, Class<? extends SourceJob>> jobMap = new HashMap<>();
 
@@ -62,6 +64,7 @@ public class SchedulingService {
                     String.format("job type %s is already registered by %s", type, jobMap.get(type)));
         }
         jobMap.put(type, clazz);
+        LOG.debug("registered job {} as '{}'", clazz.getSimpleName(), type);
     }
 
     /**
@@ -104,6 +107,8 @@ public class SchedulingService {
                                       .repeatForever())
                 .build();
         scheduler.scheduleJob(job, trigger);
+        LOG.debug("scheduled job ({}:{}) of type {} for {} ms", group, config.getId(), config.getType(),
+                  config.getInterval());
     }
 
     public boolean checkJobExists(String name, String group)
@@ -122,17 +127,18 @@ public class SchedulingService {
             return;
         }
         scheduler.deleteJobs(new ArrayList<>(jobKeys));
+        LOG.debug("canceled jobs of group {}", group);
     }
 
 
     public boolean canSourceJobBeExecuted(String group)
             throws SchedulerException {
-        if (widgetConfigRepository.exists(group)) {
+        if (GROUP_HARVESTER.equals(group) || widgetConfigRepository.exists(group)) {
             return true;
         }
 
+        LOG.debug("no widget {} found - deleting data and canceling jobs");
         sourceDataRepository.deleteByWidgetId(group);
-
         cancelJobs(group);
 
         return false;

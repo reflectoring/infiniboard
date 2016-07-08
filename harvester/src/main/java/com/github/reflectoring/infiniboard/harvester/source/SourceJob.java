@@ -20,6 +20,7 @@ public abstract class SourceJob implements Job {
     @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
+        LOG.debug("executing job {} ", getClass().getSimpleName());
         JobDataMap         configuration      = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         SchedulingService  schedulingService  = applicationContext.getBean(SchedulingService.class);

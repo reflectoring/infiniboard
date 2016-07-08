@@ -1,6 +1,6 @@
 package com.github.reflectoring.infiniboard.packrat.source;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,14 +34,14 @@ public class WidgetConfigTest {
     @Before
     public void setup() {
         WidgetConfig widget = new WidgetConfig(TITLE);
-        widget.setLastModified(LocalDate.now().minusDays(5));
+        widget.setLastModified(LocalDateTime.now().minusDays(5));
         widget.add(new SourceConfig("1", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("2", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("3", "TestSource", 500, Collections.emptyMap()));
         repository.save(widget);
 
         widget = new WidgetConfig(UPDATED_WIDGET);
-        widget.setLastModified(LocalDate.now());
+        widget.setLastModified(LocalDateTime.now());
         widget.add(new SourceConfig("1", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("2", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("3", "TestSource", 500, Collections.emptyMap()));
@@ -68,7 +68,7 @@ public class WidgetConfigTest {
 
     @Test
     public void findAllByLastModifiedAfter() {
-        List<WidgetConfig> widgetConfigs = repository.findAllByLastModifiedAfter(LocalDate.now().minusDays(3));
+        List<WidgetConfig> widgetConfigs = repository.findAllByLastModifiedAfter(LocalDateTime.now().minusDays(3));
         assertThat(widgetConfigs).hasSize(1);
         assertThat(widgetConfigs.get(0)).hasFieldOrPropertyWithValue("title", UPDATED_WIDGET);
     }

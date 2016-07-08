@@ -1,6 +1,6 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class WidgetConfigService {
     }
 
     public WidgetConfig saveWidget(WidgetConfig widgetConfig) {
-        widgetConfig.setLastModified(LocalDate.now());
+        widgetConfig.setLastModified(LocalDateTime.now());
         return widgetConfigRepository.save(widgetConfig);
     }
 
