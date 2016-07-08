@@ -1,6 +1,6 @@
 package com.github.reflectoring.infiniboard.packrat.widget;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class WidgetConfig {
 
     private String title;
 
-    private LocalDate lastModified = LocalDate.now();
+    private LocalDateTime lastModified = LocalDateTime.now();
 
     private List<SourceConfig> sourceConfigs = new ArrayList<>();
 
@@ -38,11 +38,11 @@ public class WidgetConfig {
         this.title = title;
     }
 
-    public LocalDate getLastModified() {
+    public LocalDateTime getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(LocalDate lastModified) {
+    public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
     }
 

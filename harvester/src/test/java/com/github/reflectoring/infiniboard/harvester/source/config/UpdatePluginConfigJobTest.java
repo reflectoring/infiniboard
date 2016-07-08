@@ -1,7 +1,7 @@
 package com.github.reflectoring.infiniboard.harvester.source.config;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class UpdatePluginConfigJobTest {
         // first call searches all configurations
         verify(repository, atMost(1)).findAll();
         // subsequent calls search new configurations
-        verify(repository, atLeast(2)).findAllByLastModifiedAfter(any(LocalDate.class));
+        verify(repository, atLeast(2)).findAllByLastModifiedAfter(any(LocalDateTime.class));
     }
 
     @Test

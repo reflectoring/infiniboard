@@ -1,6 +1,7 @@
 package com.github.reflectoring.infiniboard.harvester.source.config;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +26,20 @@ public class UpdatePluginConfigJob extends SourceJob {
 
     public static final String JOBTYPE = "updatePlugins";
 
-    private LocalDate lastChecked;
+    // job is instantiated at each call
+    private static LocalDateTime lastChecked;
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
         WidgetConfigRepository repository        = context.getBean(WidgetConfigRepository.class);
         SchedulingService      schedulingService = context.getBean(SchedulingService.class);
 
-        LocalDate          now        = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         List<WidgetConfig> newWidgets =
                 (lastChecked == null) ? repository.findAll() : repository.findAllByLastModifiedAfter(lastChecked);
         lastChecked = now;
+
+        LOG.debug("updating {} widgets at {}", newWidgets.size(), now.format(DateTimeFormatter.ISO_DATE_TIME));
 
         for (WidgetConfig widget : newWidgets) {
             String widgetId = widget.getId();
