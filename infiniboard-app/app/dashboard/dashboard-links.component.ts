@@ -31,7 +31,12 @@ export class DashboardLinksComponent implements OnInit {
   }
 
   private getDashboards() {
-    this._dashboardService.getDashboards().then(dashboards => this.dashboards = dashboards);
+    this._dashboardService.getDashboards().subscribe(
+      dashboards => {
+        this.dashboards = dashboards;
+      },
+      error => console.error(error)
+    );
   }
 
 }
