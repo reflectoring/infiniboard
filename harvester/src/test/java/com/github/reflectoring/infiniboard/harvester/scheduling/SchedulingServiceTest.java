@@ -42,6 +42,8 @@ public class SchedulingServiceTest {
 
         //introduce repositorys
         widgetConfigRepository = mock(WidgetConfigRepository.class);
+        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
+
         sourceDataRepository = mock(SourceDataRepository.class);
 
         schedulingService = new SchedulingService(applicationContext, widgetConfigRepository, sourceDataRepository);
@@ -70,8 +72,6 @@ public class SchedulingServiceTest {
     @Test
     public void scheduleJobShouldRunAtLeastThreeTimes()
             throws SchedulerException, InterruptedException {
-        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
-
         MutableInt              mutableInt = new MutableInt(0);
         HashMap<String, Object> map        = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
@@ -85,8 +85,6 @@ public class SchedulingServiceTest {
     @Test
     public void cancelJob()
             throws SchedulerException, InterruptedException {
-        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
-
         MutableInt              mutableInt = new MutableInt(0);
         HashMap<String, Object> map        = new HashMap<>();
         map.put(TestJob.COUNTER, mutableInt);
@@ -102,6 +100,9 @@ public class SchedulingServiceTest {
     @Test
     public void souceJobShouldBeCanceled()
             throws SchedulerException, InterruptedException {
+        // this test should find no widget and therefore cancel the job
+        when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(false);
+
         schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
         Thread.sleep(200); //time for scheduling service to cancel the job
 
