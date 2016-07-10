@@ -24,7 +24,7 @@ dependencies:
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
-    - ./gradlew --console=plain buildDocker
+    - ./gradlew --console=plain clean build integrationTest buildDocker
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
