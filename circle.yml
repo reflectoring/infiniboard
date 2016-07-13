@@ -25,7 +25,7 @@ dependencies:
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
     - ./gradlew --stacktrace --console=plain build integrationTest
-    - if [ -z $CIRCLE_PR_NUMBER ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'Skipping SonarQube analysis for PRs!'; fi
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'Skipping SonarQube analysis for PRs!'; fi
     - ./gradlew --stacktrace --console=plain buildDocker
 
     # pull image here to cache it and speed up the test
