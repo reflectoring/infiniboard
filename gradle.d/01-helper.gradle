@@ -1,0 +1,19 @@
+def getEnv(String envVarName, Object defaultValue) {
+
+    Map<String, String> env = System.getenv();
+    if (env.containsKey(envVarName)) {
+        return env.get(envVarName)
+    }
+
+    return defaultValue
+}
+
+boolean getBoolEnv(String envVarName, boolean defaultValue) {
+    Boolean.valueOf(getEnv(envVarName, defaultValue))
+}
+
+ext {
+    // export method as closure to make it available for all projects
+    getEnv = this.&getEnv
+    getBoolEnv = this.&getBoolEnv
+}
