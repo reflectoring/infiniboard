@@ -12,15 +12,6 @@ export class DashboardService {
   private http: Http;
   private headers: Headers;
 
-  constructor(http: Http) {
-    this.http = http;
-    this.actionUrl = 'http://localhost:8080/api/dashboards';
-
-    this.headers = new Headers();
-    this.headers.append('Content-Type', 'application/json');
-    this.headers.append('Accept', 'application/json');
-  }
-
   private static extractDashboardList(haljson: any): Dashboard[] {
 
     let result: any[] = [];
@@ -60,6 +51,15 @@ export class DashboardService {
   private static handleDashboardList(res: Response): Dashboard[] {
     let haljson = res.json();
     return DashboardService.extractDashboardList(haljson);
+  }
+
+  constructor(http: Http) {
+    this.http = http;
+    this.actionUrl = '/api/dashboards';
+
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Accept', 'application/json');
   }
 
   public getDashboard(id: number): Observable<Dashboard> {
