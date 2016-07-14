@@ -17,6 +17,9 @@ public abstract class SourceJob implements Job {
 
     private final static Logger LOG = LoggerFactory.getLogger(SourceJob.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {

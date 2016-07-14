@@ -30,6 +30,9 @@ public class UrlSourceJob extends SourceJob {
 
     private final static Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
+    /**
+     * name used for registering this job
+     */
     public static final String JOBTYPE = "urlSource";
 
     static final String PARAM_STATUS  = "status";
@@ -76,8 +79,6 @@ public class UrlSourceJob extends SourceJob {
         return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
                 .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
                 .build();
-
-        // return HttpClients.createDefault();
     }
 
 }

@@ -27,6 +27,10 @@ public class HarvesterApplication {
     @Autowired
     private SchedulingService schedulingService;
 
+    /**
+     * after startup this method registers the {@link UpdatePluginConfigJob} that reads the widget configurations na
+     * schedules the corresponding jobs
+     */
     @PostConstruct
     public void startScheduling()
             throws SchedulerException {
@@ -37,6 +41,9 @@ public class HarvesterApplication {
                                                        Collections.emptyMap()));
     }
 
+    /**
+     * used to start the spring boot application
+     */
     public static void main(String[] args)
             throws Exception {
         SpringApplication.run(HarvesterApplication.class);

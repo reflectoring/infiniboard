@@ -44,6 +44,12 @@ public class SchedulingService {
 
     private SourceDataRepository sourceDataRepository;
 
+    /**
+     * initializes the scheduling service and starts an quartz scheduler
+     *
+     * @throws SchedulerException
+     *         may occur when configuring or stating quartz scheduler
+     */
     @Autowired
     public SchedulingService(ApplicationContext context, WidgetConfigRepository widgetConfigRepository,
                              SourceDataRepository sourceDataRepository)
@@ -58,6 +64,10 @@ public class SchedulingService {
         this.scheduler = scheduler;
     }
 
+    /**
+     * registers a class as a job under the given type name <br/>
+     * Each type is unique, registering a job for an already existing type name gives an exception.
+     */
     synchronized public void registerJob(String type, Class<? extends SourceJob> clazz) {
         if (jobMap.containsKey(type)) {
             throw new RuntimeException(
@@ -111,13 +121,23 @@ public class SchedulingService {
                   config.getInterval());
     }
 
+    /**
+     * checks if a special job is scheduled
+     *
+     * @param name
+     *         name of job
+     * @param group
+     *         name od widget
+     *
+     * @throws SchedulerException
+     */
     public boolean checkJobExists(String name, String group)
             throws SchedulerException {
         return scheduler.checkExists(new JobKey(name, group));
     }
 
     /**
-     * deletes all jobs of given group
+     * deletes all jobs of given group (aka widget)
      */
     public void cancelJobs(String group)
             throws SchedulerException {
@@ -131,6 +151,9 @@ public class SchedulingService {
     }
 
 
+    /**
+     * looks if the given group (aka widget) still exists and deletes all associated data and jobs otherwise
+     */
     public boolean canSourceJobBeExecuted(String group)
             throws SchedulerException {
         if (GROUP_HARVESTER.equals(group) || widgetConfigRepository.exists(group)) {
