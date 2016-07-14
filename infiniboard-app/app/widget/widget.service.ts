@@ -10,17 +10,17 @@ export class WidgetService {
   private http: Http;
   private headers: Headers;
 
+  private static handleWidgetData(res: Response): any {
+    return res.json();
+  }
+
   constructor(http: Http) {
     this.http = http;
-    this.actionUrl = 'http://localhost:8080/api/widgets';
+    this.actionUrl = '/api/widgets';
 
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');
-  }
-
-  private static handleWidgetData(res: Response): any {
-    return res.json();
   }
 
   public getWidgetData(id: string): Observable<any> {
