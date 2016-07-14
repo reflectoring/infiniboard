@@ -1,8 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import java.util.Collections;
-import java.util.HashMap;
-
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,14 +11,16 @@ import org.junit.rules.ExpectedException;
 import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class SchedulingServiceTest {
 
@@ -98,7 +100,7 @@ public class SchedulingServiceTest {
 
 
     @Test
-    public void souceJobShouldBeCanceled()
+    public void sourceJobShouldBeCanceled()
             throws SchedulerException, InterruptedException {
         // this test should find no widget and therefore cancel the job
         when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(false);
