@@ -13,6 +13,11 @@ public class UrlSourceJobRegistrar {
 
     private SchedulingService schedulingService;
 
+    /**
+     * using the scheduling service to register the {@link UrlSourceJob} at startup
+     *
+     * @param schedulingService
+     */
     @Autowired
     public UrlSourceJobRegistrar(SchedulingService schedulingService) {
         this.schedulingService = schedulingService;

@@ -24,6 +24,9 @@ public class UpdatePluginConfigJob extends SourceJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdatePluginConfigJob.class);
 
+    /**
+     * name used for registering this job
+     */
     public static final String JOBTYPE = "updatePlugins";
 
     // job is instantiated at each call
