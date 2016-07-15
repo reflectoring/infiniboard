@@ -30,6 +30,9 @@ public class HarvesterApplication {
     /**
      * after startup this method registers the {@link UpdatePluginConfigJob} that reads the widget configurations na
      * schedules the corresponding jobs
+     *
+     * @throws SchedulerException
+     *         if the Job or Trigger cannot be added to the Scheduler, or there is an internal Scheduler error.
      */
     @PostConstruct
     public void startScheduling()

@@ -48,7 +48,7 @@ public class SchedulingService {
      * initializes the scheduling service and starts an quartz scheduler
      *
      * @throws SchedulerException
-     *         may occur when configuring or stating quartz scheduler
+     *         if there is a problem with the underlying <code>Scheduler</code>
      */
     @Autowired
     public SchedulingService(ApplicationContext context, WidgetConfigRepository widgetConfigRepository,
@@ -88,6 +88,9 @@ public class SchedulingService {
 
     /**
      * schedules a source update job with its configuration (containing the update time interval)
+     *
+     * @throws SchedulerException
+     *         if the Job or Trigger cannot be added to the Scheduler, or there is an internal Scheduler error.
      */
     public void scheduleJob(String group, SourceConfig config)
             throws SchedulerException {
@@ -127,9 +130,10 @@ public class SchedulingService {
      * @param name
      *         name of job
      * @param group
-     *         name od widget
+     *         name of widget
      *
      * @throws SchedulerException
+     *         if there is a problem with the underlying <code>Scheduler</code>
      */
     public boolean checkJobExists(String name, String group)
             throws SchedulerException {
@@ -138,6 +142,9 @@ public class SchedulingService {
 
     /**
      * deletes all jobs of given group (aka widget)
+     *
+     * @throws SchedulerException
+     *         if there is an internal Scheduler error.
      */
     public void cancelJobs(String group)
             throws SchedulerException {
@@ -153,6 +160,9 @@ public class SchedulingService {
 
     /**
      * looks if the given group (aka widget) still exists and deletes all associated data and jobs otherwise
+     *
+     * @throws SchedulerException
+     *         if there is an internal Scheduler error.
      */
     public boolean canSourceJobBeExecuted(String group)
             throws SchedulerException {
