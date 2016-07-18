@@ -4,53 +4,15 @@
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
 
 
-## local development
+## development
 
 Remove all existing IntelliJ project configurations and create the latest one by running:
 ```
 $ ./gradlew cleanIdea idea
 ```
 
-### infiniboard-app
-If you do not have node/npm set up globally, setup a local installation by running:
-```
-$ ./gradlew -Pdownload_node npmSetup
-$ ./gradlew -Pdownload_node npmInstall
-```
-
-otherwise just run:
-```
-$ npm install
-```
-
-To start the client in development mode run:
-```
-$ node node_modules/.bin/gulp dev
-```
-
-To package the client for production usage run:
-```
-$ node node_modules/.bin/gulp
-```
-
-The package client is located inside the `build` directory.
-
-
-### quartermaster
-Open a terminal and start a gradle deamon that builds continuously:
-```
-$ cd quartermaster
-$ ../gradlew buildWithClient
-$ ../gradlew -t classes
-```
-
-Open another terminal and start the application:
-```
-$ cd quartermaster
-$ ../gradlew bootRun
-```
-
-Now all changes are reloaded live.
+## building components
+Each components has specific instruction on how it is build defined in its `Readme.md`.
 
 ## license
 

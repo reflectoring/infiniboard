@@ -1,19 +1,37 @@
-## harvester
-
-The harvester component is a spring boot service that retrieves the data to be visualized on the dashboard.
+## quartermaster
 
 ## endpoints
-* Actuator API `http://localhost:9090/`
+* Client `http://localhost:8080/index.html`
+* REST API `http://localhost:8080/api/dashboards`
+* Actuator API `http://localhost:8090/`
 
-### build harvester for production usage:
+### bundling the client with quartermaster
+Build `infiniboard-app` before doing one of the next steps and the client will be automaticly bundled into quartermaster.  
+
+### build quartermaster for production usage:
 ```
 $ ../gradlew clean build
 ```
 
-### build harvester docker container:
+### build quartermaster docker container:
 ```
 $ ../gradlew clean buildDocker
 ```
+
+### build continuously while developing:
+Open a terminal and run:
+```
+$ ../gradlew clean build
+$ ../gradlew -t classes
+```
+
+Open another terminal and start the application:
+```
+$ cd quartermaster
+$ ../gradlew bootRun
+```
+
+Now all changes are reloaded live.
 
 ## license
 

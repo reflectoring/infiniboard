@@ -1,19 +1,20 @@
-## harvester
-
-The harvester component is a spring boot service that retrieves the data to be visualized on the dashboard.
-
-## endpoints
-* Actuator API `http://localhost:9090/`
-
-### build harvester for production usage:
+## infiniboard-app
+install dependencies:
 ```
-$ ../gradlew clean build
+$ npm install
 ```
 
-### build harvester docker container:
+package the client for production usage:
 ```
-$ ../gradlew clean buildDocker
+$ gulp
 ```
+
+start the client in development mode:
+```
+$ gulp dev
+```
+
+The packaged client is located inside the `build` directory.
 
 ## license
 
