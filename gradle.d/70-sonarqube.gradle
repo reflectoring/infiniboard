@@ -11,6 +11,8 @@ buildscript {
     }
 }
 
+// To apply a third-party plugin from an external build script,
+// you have to use the plugin's fully qualified class name, rather than its ID
 apply plugin: org.sonarqube.gradle.SonarQubePlugin
 
 
