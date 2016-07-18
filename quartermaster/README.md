@@ -5,20 +5,22 @@
 * REST API `http://localhost:8080/api/dashboards`
 * Actuator API `http://localhost:8090/`
 
+## building
+
 ### bundling the client with quartermaster
 Build `infiniboard-app` before doing one of the next steps and the client will be automaticly bundled into quartermaster.  
 
-### build quartermaster for production usage:
+### build quartermaster for production usage
 ```
 $ ../gradlew clean build
 ```
 
-### build quartermaster docker container:
+### build quartermaster docker container
 ```
 $ ../gradlew clean buildDocker
 ```
 
-### build continuously while developing:
+### build continuously while developing
 Open a terminal and run:
 ```
 $ ../gradlew clean build

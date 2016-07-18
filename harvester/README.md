@@ -1,16 +1,18 @@
-## harvester
+# harvester
 
 The harvester component is a spring boot service that retrieves the data to be visualized on the dashboard.
 
 ## endpoints
 * Actuator API `http://localhost:9090/`
 
-### build harvester for production usage:
+## building
+
+### build harvester for production usage
 ```
 $ ../gradlew clean build
 ```
 
-### build harvester docker container:
+### build harvester docker container
 ```
 $ ../gradlew clean buildDocker
 ```

@@ -1,20 +1,21 @@
-## infiniboard-app
-install dependencies:
+# infiniboard-app
+
+## building
+
+### install dependencies
 ```
 $ npm install
 ```
 
-package the client for production usage:
+### build infiniboard-app for production usage
 ```
 $ gulp
 ```
 
-start the client in development mode:
+### build infiniboard-app for development usage
 ```
 $ gulp dev
 ```
-
-The packaged client is located inside the `build` directory.
 
 ## license
 
