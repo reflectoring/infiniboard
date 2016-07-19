@@ -67,17 +67,12 @@ clean.dependsOn cleanWebappDir
 // clean old webapp first
 copyClient.dependsOn cleanWebappDir
 
-// Der client kann erst kopiert werden, nachdem er gebaut wurde
-copyClient.mustRunAfter ':infiniboard-app:npmInstall'
-
 // der client muss kopiert werden, bevor die quartermaster WAR gebaut wird
 processResources.mustRunAfter copyClient
 
-task buildWithClient {
-    dependsOn ':infiniboard-app:npmInstall', copyClient, build
-}
+build.dependsOn copyClient
 
-task buildDocker(type: Docker, dependsOn: buildWithClient) {
+task buildDocker(type: Docker, dependsOn: build) {
     push = false
     tagVersion = 'latest'
     tag = "${project.dockerGroup}/${war.baseName}"

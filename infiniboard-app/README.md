@@ -1,18 +1,21 @@
-[![Build Status](https://circleci.com/gh/reflectoring/infiniboard.svg?style=shield&circle-token=b5481c7e89b830ae2579de7a5303f495a96fc8b2)](https://circleci.com/gh/reflectoring/infiniboard) [![Gradle Status](https://gradleupdate.appspot.com/reflectoring/infiniboard/status.svg?branch=master)](https://gradleupdate.appspot.com/reflectoring/infiniboard/status)
+# infiniboard-app
 
-# infiniboard
-infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
+## building
 
-
-## development
-
-Remove all existing IntelliJ project configurations and create the latest one by running:
+### install dependencies
 ```
-$ ./gradlew cleanIdea idea
+$ npm install
 ```
 
-## building components
-Each components has specific instruction on how it is build defined in its `Readme.md`.
+### build infiniboard-app for production usage
+```
+$ gulp
+```
+
+### build infiniboard-app for development usage
+```
+$ gulp dev
+```
 
 ## license
 
