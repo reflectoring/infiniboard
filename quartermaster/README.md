@@ -1,18 +1,39 @@
-[![Build Status](https://circleci.com/gh/reflectoring/infiniboard.svg?style=shield&circle-token=b5481c7e89b830ae2579de7a5303f495a96fc8b2)](https://circleci.com/gh/reflectoring/infiniboard) [![Gradle Status](https://gradleupdate.appspot.com/reflectoring/infiniboard/status.svg?branch=master)](https://gradleupdate.appspot.com/reflectoring/infiniboard/status)
+## quartermaster
 
-# infiniboard
-infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
+## endpoints
+* Client `http://localhost:8080/index.html`
+* REST API `http://localhost:8080/api/dashboards`
+* Actuator API `http://localhost:8090/`
 
+## building
 
-## development
+### bundling the client with quartermaster
+Build `infiniboard-app` before doing one of the next steps and the client will be automaticly bundled into quartermaster.  
 
-Remove all existing IntelliJ project configurations and create the latest one by running:
+### build quartermaster for production usage
 ```
-$ ./gradlew cleanIdea idea
+$ ../gradlew clean build
 ```
 
-## building components
-Each components has specific instruction on how it is build defined in its `Readme.md`.
+### build quartermaster docker container
+```
+$ ../gradlew clean buildDocker
+```
+
+### build continuously while developing
+Open a terminal and run:
+```
+$ ../gradlew clean build
+$ ../gradlew -t classes
+```
+
+Open another terminal and start the application:
+```
+$ cd quartermaster
+$ ../gradlew bootRun
+```
+
+Now all changes are reloaded live.
 
 ## license
 
