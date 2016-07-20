@@ -1,3 +1,10 @@
 #!/bin/bash
-curl -X POST -d @widget.platform-dev.json  http://localhost:8080/api/widgets --header "Content-Type:application/json"
-curl -X POST -d @widget.platform-prod.json http://localhost:8080/api/widgets --header "Content-Type:application/json"
+
+HOST=localhost
+PORT=8080
+ENDPOINT=http://$HOST:8080/api/widgets
+
+curl -X POST -d @widget.platform-dev.json  $ENDPOINT --header "Content-Type:application/json"
+curl -X POST -d @widget.platform-test.json $ENDPOINT --header "Content-Type:application/json"
+curl -X POST -d @widget.platform-qs.json $ENDPOINT --header "Content-Type:application/json"
+curl -X POST -d @widget.platform-prod.json $ENDPOINT --header "Content-Type:application/json"
