@@ -17,6 +17,7 @@ public class UrlSourceJobRegistrar {
      * using the scheduling service to register the {@link UrlSourceJob} at startup
      *
      * @param schedulingService
+     *         injecting the scheduling service to register job class
      */
     @Autowired
     public UrlSourceJobRegistrar(SchedulingService schedulingService) {
