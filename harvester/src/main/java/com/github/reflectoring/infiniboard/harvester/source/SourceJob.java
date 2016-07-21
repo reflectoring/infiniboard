@@ -36,5 +36,10 @@ public abstract class SourceJob implements Job {
         }
     }
 
+    /**
+     * @param context
+     * @param jobKey
+     * @param configuration
+     */
     protected abstract void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration);
 }

@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import com.github.reflectoring.infiniboard.harvester.scheduling.JobAlreadyScheduledException;
+import com.github.reflectoring.infiniboard.harvester.scheduling.NoSuchJobTypeException;
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
@@ -55,7 +57,7 @@ public class UpdatePluginConfigJob extends SourceJob {
             for (SourceConfig source : widget.getSourceConfigs()) {
                 try {
                     schedulingService.scheduleJob(widgetId, source);
-                } catch (SchedulerException e) {
+                } catch (SchedulerException | JobAlreadyScheduledException | NoSuchJobTypeException e) {
                     LOG.error("failed to schedule job", e);
                     // handling?
                 }
