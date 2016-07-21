@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {JenkinsJobWidgetComponent} from './widget/jenkins/jenkins-job-widget.component';
 import {DashboardLinksComponent} from './dashboard/dashboard-links.component';
@@ -26,7 +26,6 @@ import {StatusService} from './widget/platform-status/status.service';
     DashboardLinksComponent,
     JenkinsJobWidgetComponent],
   providers: [
-    ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     DashboardService,
     WidgetService,
