@@ -48,6 +48,8 @@ public class SchedulingServiceTest {
 
         schedulingService = new SchedulingService(applicationContext, widgetConfigRepository, sourceDataRepository);
         when(applicationContext.getBean(SchedulingService.class)).thenReturn(schedulingService);
+        when(applicationContext.getBean(WidgetConfigRepository.class)).thenReturn(widgetConfigRepository);
+
 
         schedulingService.registerJob(TEST_JOB, TestJob.class);
     }

@@ -1,9 +1,6 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -14,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.github.reflectoring.infiniboard.harvester.scheduling.config.UpdateSourceConfigJob;
 import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
@@ -67,9 +65,12 @@ public class SchedulingService {
         this.sourceDataRepository = sourceDataRepository;
 
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-        Scheduler        scheduler        = schedulerFactory.getScheduler();
-        scheduler.start();
-        this.scheduler = scheduler;
+        Scheduler        newScheduler     = schedulerFactory.getScheduler();
+        newScheduler.start();
+        scheduler = newScheduler;
+
+        createJobSchedule(GROUP_HARVESTER, UpdateSourceConfigJob.JOBTYPE, UpdateSourceConfigJob.class,
+                          Collections.EMPTY_MAP, 5000);
     }
 
     /**
@@ -84,7 +85,7 @@ public class SchedulingService {
      * @throws JobTypeAlreadyRegisteredException
      *         if the key was already used to register a job
      */
-    synchronized public void registerJob(String type, Class<? extends SourceJob> clazz) {
+    public synchronized void registerJob(String type, Class<? extends SourceJob> clazz) {
         if (jobMap.containsKey(type)) {
             throw new JobTypeAlreadyRegisteredException(
                     String.format("job type '%s' is already registered by '%s'", type, jobMap.get(type)));
@@ -119,8 +120,9 @@ public class SchedulingService {
      */
     public void scheduleJob(String group, SourceConfig config)
             throws SchedulerException {
-        String type = config.getType();
-        String name = config.getId();
+        String type             = config.getType();
+        String name             = config.getId();
+        int    intervalInMillis = config.getInterval();
 
         if (!jobMap.containsKey(type)) {
             throw new NoSuchJobTypeException(String.format("no job of type '%s' was found", type));
@@ -133,21 +135,27 @@ public class SchedulingService {
                                   group, name));
         }
 
-        JobDetail job = newJob(jobMap.get(type))
-                .withIdentity(config.getId(), group)
-                .usingJobData(new JobDataMap(config.getConfigData()))
+        createJobSchedule(group, name, jobMap.get(type), config.getConfigData(), intervalInMillis);
+    }
+
+    private void createJobSchedule(String group, String name, Class<? extends Job> jobClass,
+                                   Map jobConfig, int intervalInMillis)
+            throws SchedulerException {
+        JobDetail job = newJob(jobClass)
+                .withIdentity(name, group)
+                .usingJobData(new JobDataMap(jobConfig))
                 .usingJobData(createContextData())
                 .build();
         Trigger trigger = newTrigger()
-                .withIdentity(config.getId(), group)
+                .withIdentity(name, group)
                 .startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                                      .withIntervalInMilliseconds(config.getInterval())
+                                      .withIntervalInMilliseconds(intervalInMillis)
                                       .repeatForever())
                 .build();
         scheduler.scheduleJob(job, trigger);
-        LOG.debug("scheduled job ({}:{}) of type '{}' for {} ms", group, config.getId(), config.getType(),
-                  config.getInterval());
+        LOG.debug("scheduled job ({}:{}) of class '{}' for {} ms", group, name, jobClass,
+                  intervalInMillis);
     }
 
     /**
@@ -157,6 +165,8 @@ public class SchedulingService {
      *         name of job
      * @param group
      *         name of widget
+     *
+     * @return true, if the scheduler knows a job with this name and widget identifier
      *
      * @throws SchedulerException
      *         if there is a problem with the underlying <code>Scheduler</code>
@@ -192,6 +202,8 @@ public class SchedulingService {
      *
      * @param group
      *         identifier of widget the job belongs to
+     *
+     * @return true, if the widget still exists
      *
      * @throws SchedulerException
      *         if there is an internal Scheduler error.

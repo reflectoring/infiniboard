@@ -28,7 +28,7 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
  */
 public class UrlSourceJob extends SourceJob {
 
-    private final static Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
     /**
      * name used for registering this job
