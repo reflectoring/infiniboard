@@ -57,7 +57,7 @@ public class UrlSourceJob extends SourceJob {
             upsertResults(context, jobKey, results);
 
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            LOG.error("could not fetch url {} because {}", url, e);
+            LOG.error("could not fetch url '{}'", url, e);
         }
     }
 

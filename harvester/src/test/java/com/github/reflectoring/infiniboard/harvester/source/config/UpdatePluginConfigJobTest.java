@@ -84,7 +84,7 @@ public class UpdatePluginConfigJobTest {
         idField.set(widgetConfig, widgetLabel);
 
         for (String label : sourceLabels) {
-            widgetConfig.add(new SourceConfig(label, "TestJob", 500, Collections.emptyMap()));
+            widgetConfig.add(new SourceConfig(label, "TestUrlSourceJob", 500, Collections.emptyMap()));
         }
         return widgetConfig;
     }
