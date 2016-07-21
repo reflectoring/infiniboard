@@ -1,0 +1,22 @@
+{
+  "title": "test",
+  "type": "platform-status",
+  "sourceConfigs": [
+    {
+      "id": "version",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://putsreq.com/uh7LA812il8FBDXBjTaB"
+      }
+    },
+    {
+      "id": "status",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://putsreq.com/uh7LA812il8FBDXBjTaB"
+      }
+    }
+  ]
+}
