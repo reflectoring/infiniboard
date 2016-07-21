@@ -7,6 +7,7 @@ import {DashboardService} from './dashboard/dashboard.service';
 import {DashboardHomeComponent} from './dashboard/dashboard-home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WidgetService} from './widget/widget.service';
+import {StatusService} from './widget/platform-status/status.service';
 
 @RouteConfig([{
   path: '/dashboards',
@@ -28,7 +29,8 @@ import {WidgetService} from './widget/widget.service';
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     DashboardService,
-    WidgetService
+    WidgetService,
+    StatusService
   ],
   selector: '[infiniboard]',
   styleUrls: ['app/app.component.css'],
