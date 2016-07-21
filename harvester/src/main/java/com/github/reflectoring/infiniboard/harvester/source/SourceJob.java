@@ -37,9 +37,10 @@ public abstract class SourceJob implements Job {
     }
 
     /**
-     * @param context
-     * @param jobKey
-     * @param configuration
+     * called after checking if the job could be run (the associated widget exists)
+     * @param context spring context to access beans
+     * @param jobKey job name and widget identifier
+     * @param configuration job configuration
      */
     protected abstract void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration);
 }

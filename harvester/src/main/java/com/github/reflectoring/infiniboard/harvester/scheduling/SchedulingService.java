@@ -75,10 +75,6 @@ public class SchedulingService {
     /**
      * registers a class as a job under the given type name <br/>
      * Each type is unique, registering a job for an already existing type name gives an exception.
-     */
-    /**
-     * registers a class as a job under the given type name <br/>
-     * Each type is unique, registering a job for an already existing type name gives an exception.
      *
      * @param type
      *         is the unique key that is used to access the class
