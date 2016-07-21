@@ -46,6 +46,9 @@ public class HarvesterApplication {
 
     /**
      * used to start the spring boot application
+     *
+     * @param args
+     *         start parameters
      */
     public static void main(String[] args)
             throws Exception {

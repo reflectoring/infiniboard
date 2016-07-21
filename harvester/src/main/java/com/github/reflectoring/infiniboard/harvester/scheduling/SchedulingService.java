@@ -47,6 +47,14 @@ public class SchedulingService {
     /**
      * initializes the scheduling service and starts an quartz scheduler
      *
+     * @param context
+     *         the spring context will be inserted into the job configuration so that each job can access the spring
+     *         beans
+     * @param widgetConfigRepository
+     *         used to check for widget deletion
+     * @param sourceDataRepository
+     *         used to clear job data
+     *
      * @throws SchedulerException
      *         if there is a problem with the underlying <code>Scheduler</code>
      */
@@ -67,14 +75,22 @@ public class SchedulingService {
     /**
      * registers a class as a job under the given type name <br/>
      * Each type is unique, registering a job for an already existing type name gives an exception.
+     *
+     * @param type
+     *         is the unique key that is used to access the class
+     * @param clazz
+     *         jobs of the given type are instances of this class
+     *
+     * @throws JobTypeAlreadyRegisteredException
+     *         if the key was already used to register a job
      */
     synchronized public void registerJob(String type, Class<? extends SourceJob> clazz) {
         if (jobMap.containsKey(type)) {
-            throw new RuntimeException(
-                    String.format("job type %s is already registered by %s", type, jobMap.get(type)));
+            throw new JobTypeAlreadyRegisteredException(
+                    String.format("job type '%s' is already registered by '%s'", type, jobMap.get(type)));
         }
         jobMap.put(type, clazz);
-        LOG.debug("registered job {} as '{}'", clazz.getSimpleName(), type);
+        LOG.debug("registered job '{}' as '{}'", clazz.getSimpleName(), type);
     }
 
     /**
@@ -89,8 +105,17 @@ public class SchedulingService {
     /**
      * schedules a source update job with its configuration (containing the update time interval)
      *
+     * @param group
+     *         identifier of associated widget
+     * @param config
+     *         configuration to create job (e.g. type, name, parameters)
+     *
      * @throws SchedulerException
      *         if the Job or Trigger cannot be added to the Scheduler, or there is an internal Scheduler error.
+     * @throws NoSuchJobTypeException
+     *         if the job type was not registered
+     * @throws JobAlreadyScheduledException
+     *         if the job was already scheduled (combination of group and name already used)
      */
     public void scheduleJob(String group, SourceConfig config)
             throws SchedulerException {
@@ -98,13 +123,14 @@ public class SchedulingService {
         String name = config.getId();
 
         if (!jobMap.containsKey(type)) {
-            LOG.error("no job of type {} was found", type);
-            return;
+            throw new NoSuchJobTypeException(String.format("no job of type '%s' was found", type));
         }
 
         if (checkJobExists(name, group)) {
-            LOG.error("job of type {}, group {}, and name{} already exists {} was found", type, group, name);
-            throw new SchedulerException("Job already exists");
+            throw new JobAlreadyScheduledException(
+                    String.format("job of type '%s', group '%s', and name '%s' already exists, could not be scheduled",
+                                  type,
+                                  group, name));
         }
 
         JobDetail job = newJob(jobMap.get(type))
@@ -120,7 +146,7 @@ public class SchedulingService {
                                       .repeatForever())
                 .build();
         scheduler.scheduleJob(job, trigger);
-        LOG.debug("scheduled job ({}:{}) of type {} for {} ms", group, config.getId(), config.getType(),
+        LOG.debug("scheduled job ({}:{}) of type '{}' for {} ms", group, config.getId(), config.getType(),
                   config.getInterval());
     }
 
@@ -143,6 +169,9 @@ public class SchedulingService {
     /**
      * deletes all jobs of given group (aka widget)
      *
+     * @param group
+     *         identifier of widget containing the jobs to delete
+     *
      * @throws SchedulerException
      *         if there is an internal Scheduler error.
      */
@@ -150,16 +179,19 @@ public class SchedulingService {
             throws SchedulerException {
         Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.groupEquals(group));
         if (jobKeys.isEmpty()) {
-            LOG.warn("no jobs found for group {}", group);
+            LOG.warn("no jobs found for group '{}'", group);
             return;
         }
         scheduler.deleteJobs(new ArrayList<>(jobKeys));
-        LOG.debug("canceled jobs of group {}", group);
+        LOG.debug("canceled jobs of group '{}'", group);
     }
 
 
     /**
      * looks if the given group (aka widget) still exists and deletes all associated data and jobs otherwise
+     *
+     * @param group
+     *         identifier of widget the job belongs to
      *
      * @throws SchedulerException
      *         if there is an internal Scheduler error.
@@ -170,7 +202,7 @@ public class SchedulingService {
             return true;
         }
 
-        LOG.debug("no widget {} found - deleting data and canceling jobs");
+        LOG.debug("no widget '{}' found - deleting data and canceling jobs");
         sourceDataRepository.deleteByWidgetId(group);
         cancelJobs(group);
 

@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import com.github.reflectoring.infiniboard.harvester.scheduling.JobAlreadyScheduledException;
+import com.github.reflectoring.infiniboard.harvester.scheduling.NoSuchJobTypeException;
 import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingService;
 import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
@@ -42,20 +44,20 @@ public class UpdatePluginConfigJob extends SourceJob {
                 (lastChecked == null) ? repository.findAll() : repository.findAllByLastModifiedAfter(lastChecked);
         lastChecked = now;
 
-        LOG.debug("updating {} widgets at {}", newWidgets.size(), now.format(DateTimeFormatter.ISO_DATE_TIME));
+        LOG.debug("updating '{}' widgets at '{}'", newWidgets.size(), now.format(DateTimeFormatter.ISO_DATE_TIME));
 
         for (WidgetConfig widget : newWidgets) {
             String widgetId = widget.getId();
             try {
                 schedulingService.cancelJobs(widgetId);
             } catch (SchedulerException e) {
-                LOG.error("failed to remove jobs of widget " + widgetId, e);
+                LOG.error("failed to remove jobs of widget '{}'", widgetId, e);
                 // handling?
             }
             for (SourceConfig source : widget.getSourceConfigs()) {
                 try {
                     schedulingService.scheduleJob(widgetId, source);
-                } catch (SchedulerException e) {
+                } catch (SchedulerException | JobAlreadyScheduledException | NoSuchJobTypeException e) {
                     LOG.error("failed to schedule job", e);
                     // handling?
                 }
