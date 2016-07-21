@@ -52,9 +52,10 @@ public class SchedulingServiceTest {
         schedulingService.registerJob(TEST_JOB, TestJob.class);
     }
 
-    @Test(expected = JobTypeAlreadyRegisteredException.class)
+    @Test
     public void registerJobNotRegisteringTwice()
             throws SchedulerException {
+        expectedException.expect(JobTypeAlreadyRegisteredException.class);
         schedulingService.registerJob(TEST_JOB, TestJob.class);
     }
 

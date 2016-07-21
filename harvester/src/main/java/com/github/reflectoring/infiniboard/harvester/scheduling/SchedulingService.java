@@ -87,10 +87,10 @@ public class SchedulingService {
     synchronized public void registerJob(String type, Class<? extends SourceJob> clazz) {
         if (jobMap.containsKey(type)) {
             throw new JobTypeAlreadyRegisteredException(
-                    String.format("job type %s is already registered by %s", type, jobMap.get(type)));
+                    String.format("job type '%s' is already registered by '%s'", type, jobMap.get(type)));
         }
         jobMap.put(type, clazz);
-        LOG.debug("registered job {} as '{}'", clazz.getSimpleName(), type);
+        LOG.debug("registered job '{}' as '{}'", clazz.getSimpleName(), type);
     }
 
     /**
@@ -123,12 +123,13 @@ public class SchedulingService {
         String name = config.getId();
 
         if (!jobMap.containsKey(type)) {
-            throw new NoSuchJobTypeException(String.format("no job of type %s was found", type));
+            throw new NoSuchJobTypeException(String.format("no job of type '%s' was found", type));
         }
 
         if (checkJobExists(name, group)) {
             throw new JobAlreadyScheduledException(
-                    String.format("job of type %s, group %s, and name%s already exists, could not be scheduled", type,
+                    String.format("job of type '%s', group '%s', and name '%s' already exists, could not be scheduled",
+                                  type,
                                   group, name));
         }
 
@@ -145,7 +146,7 @@ public class SchedulingService {
                                       .repeatForever())
                 .build();
         scheduler.scheduleJob(job, trigger);
-        LOG.debug("scheduled job ({}:{}) of type {} for {} ms", group, config.getId(), config.getType(),
+        LOG.debug("scheduled job ({}:{}) of type '{}' for {} ms", group, config.getId(), config.getType(),
                   config.getInterval());
     }
 
@@ -178,11 +179,11 @@ public class SchedulingService {
             throws SchedulerException {
         Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.groupEquals(group));
         if (jobKeys.isEmpty()) {
-            LOG.warn("no jobs found for group {}", group);
+            LOG.warn("no jobs found for group '{}'", group);
             return;
         }
         scheduler.deleteJobs(new ArrayList<>(jobKeys));
-        LOG.debug("canceled jobs of group {}", group);
+        LOG.debug("canceled jobs of group '{}'", group);
     }
 
 
@@ -201,7 +202,7 @@ public class SchedulingService {
             return true;
         }
 
-        LOG.debug("no widget {} found - deleting data and canceling jobs");
+        LOG.debug("no widget '{}' found - deleting data and canceling jobs");
         sourceDataRepository.deleteByWidgetId(group);
         cancelJobs(group);
 

@@ -44,14 +44,14 @@ public class UpdatePluginConfigJob extends SourceJob {
                 (lastChecked == null) ? repository.findAll() : repository.findAllByLastModifiedAfter(lastChecked);
         lastChecked = now;
 
-        LOG.debug("updating {} widgets at {}", newWidgets.size(), now.format(DateTimeFormatter.ISO_DATE_TIME));
+        LOG.debug("updating '{}' widgets at '{}'", newWidgets.size(), now.format(DateTimeFormatter.ISO_DATE_TIME));
 
         for (WidgetConfig widget : newWidgets) {
             String widgetId = widget.getId();
             try {
                 schedulingService.cancelJobs(widgetId);
             } catch (SchedulerException e) {
-                LOG.error("failed to remove jobs of widget " + widgetId, e);
+                LOG.error("failed to remove jobs of widget '{}'", widgetId, e);
                 // handling?
             }
             for (SourceConfig source : widget.getSourceConfigs()) {
