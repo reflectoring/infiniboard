@@ -30,28 +30,6 @@ public class UpdateSourceConfigJob implements Job {
      */
     public static final String JOBTYPE = "updatePlugins";
 
-    protected void executeInternal(ApplicationContext context, LocalDateTime previousExecutionTime) {
-        SchedulingService schedulingService = context.getBean(SchedulingService.class);
-
-        for (WidgetConfig widget : getUpdatedWidgetConfigs(context, previousExecutionTime)) {
-            String widgetId = widget.getId();
-            try {
-                schedulingService.cancelJobs(widgetId);
-            } catch (SchedulerException e) {
-                LOG.error("failed to remove jobs of widget '{}'", widgetId, e);
-                // handling?
-            }
-            for (SourceConfig source : widget.getSourceConfigs()) {
-                try {
-                    schedulingService.scheduleJob(widgetId, source);
-                } catch (SchedulerException | JobAlreadyScheduledException | NoSuchJobTypeException e) {
-                    LOG.error("failed to schedule job", e);
-                    // handling?
-                }
-            }
-        }
-    }
-
     private List<WidgetConfig> getUpdatedWidgetConfigs(ApplicationContext context,
                                                        LocalDateTime previousExecutionTime) {
 
@@ -72,9 +50,27 @@ public class UpdateSourceConfigJob implements Job {
         LocalDateTime previousExecutionTime = convertToLocalDateTime(context.getPreviousFireTime());
         LOG.debug("executing update source configs at '{}' - getting sources since '{}'",
                   formatIsoDateTime(context.getFireTime()), formatIsoDateTime(previousExecutionTime));
-        JobDataMap         configuration      = context.getJobDetail().getJobDataMap();
+        JobDataMap         configuration      = context.getMergedJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
-        executeInternal(applicationContext, previousExecutionTime);
+        SchedulingService  schedulingService  = applicationContext.getBean(SchedulingService.class);
+
+        for (WidgetConfig widget : getUpdatedWidgetConfigs(applicationContext, previousExecutionTime)) {
+            String widgetId = widget.getId();
+            try {
+                schedulingService.cancelJobs(widgetId);
+            } catch (SchedulerException e) {
+                LOG.error("failed to remove jobs of widget '{}'", widgetId, e);
+                // handling?
+            }
+            for (SourceConfig source : widget.getSourceConfigs()) {
+                try {
+                    schedulingService.scheduleJob(widgetId, source);
+                } catch (SchedulerException | JobAlreadyScheduledException | NoSuchJobTypeException e) {
+                    LOG.error("failed to schedule job", e);
+                    // handling?
+                }
+            }
+        }
     }
 
     private String formatIsoDateTime(LocalDateTime localDateTime) {

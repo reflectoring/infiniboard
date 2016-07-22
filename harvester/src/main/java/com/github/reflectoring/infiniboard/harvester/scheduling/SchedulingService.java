@@ -1,5 +1,7 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.*;
 
 import org.quartz.*;
@@ -36,7 +38,7 @@ public class SchedulingService {
 
     private ApplicationContext context;
 
-    private final Scheduler scheduler;
+    private Scheduler scheduler;
 
     private WidgetConfigRepository widgetConfigRepository;
 
@@ -52,18 +54,19 @@ public class SchedulingService {
      *         used to check for widget deletion
      * @param sourceDataRepository
      *         used to clear job data
-     *
-     * @throws SchedulerException
-     *         if there is a problem with the underlying <code>Scheduler</code>
      */
     @Autowired
     public SchedulingService(ApplicationContext context, WidgetConfigRepository widgetConfigRepository,
-                             SourceDataRepository sourceDataRepository)
-            throws SchedulerException {
+                             SourceDataRepository sourceDataRepository) {
         this.context = context;
         this.widgetConfigRepository = widgetConfigRepository;
         this.sourceDataRepository = sourceDataRepository;
+    }
 
+    @PostConstruct
+    void setupScheduling()
+            throws SchedulerException {
+        LOG.debug("setting up scheduler");
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         Scheduler        newScheduler     = schedulerFactory.getScheduler();
         newScheduler.start();
@@ -72,6 +75,15 @@ public class SchedulingService {
         createJobSchedule(GROUP_HARVESTER, UpdateSourceConfigJob.JOBTYPE, UpdateSourceConfigJob.class,
                           Collections.EMPTY_MAP, 5000);
     }
+
+    @PreDestroy
+    void cleanupScheduling()
+            throws SchedulerException {
+        LOG.debug("shutting down scheduler");
+        scheduler.clear();
+        scheduler.shutdown();
+    }
+
 
     /**
      * registers a class as a job under the given type name <br/>
@@ -220,4 +232,5 @@ public class SchedulingService {
 
         return false;
     }
+
 }
