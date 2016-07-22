@@ -1,0 +1,22 @@
+{
+  "title": "qs",
+  "type": "platform-status",
+  "sourceConfigs": [
+    {
+      "id": "version",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "http://asdasdasdasdasdasdasd.de"
+      }
+    },
+    {
+      "id": "status",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "http://asdasdasdasdasdasdasd.de"
+      }
+    }
+  ]
+}
