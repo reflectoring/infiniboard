@@ -1,7 +1,7 @@
 apply plugin: 'base'
 
 ext {
-    baseVersion = '0.0.1'
+    baseVersion = '0.2.0'
 }
 
 // alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
