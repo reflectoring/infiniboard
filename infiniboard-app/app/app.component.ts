@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {JenkinsJobWidgetComponent} from './widget/jenkins/jenkins-job-widget.component';
@@ -36,5 +36,13 @@ import {StatusService} from './widget/platform-status/status.service';
   templateUrl: 'app/app.component.html',
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  public ngOnInit(): any {
+    // every component which defines the div with the class
+    // content-wrapper must call this fix method on init
+    // to recalculate the height of the window
+    $.AdminLTE.layout.fix();
+  }
+
 }
