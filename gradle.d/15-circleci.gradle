@@ -6,7 +6,7 @@ def getBuildVersion(String baseVersion) {
             version += "-PR${project.pullRequestNumber}"
         }
         version += "-${project.buildNumber}"
-        version += "-${project.gitCommitShort}"
+        version += "-${project.gitCommit}"
 
     } else {
         version += "-local"
@@ -19,7 +19,6 @@ ext {
 
     buildNumber = getEnv('CIRCLE_BUILD_NUM', null)
     gitCommit = getEnv('CIRCLE_SHA1', null)
-    gitCommitShort = getEnv('CIRCLE_SHA1', null)
     pullRequestNumber = getEnv('CIRCLE_PR_NUMBER', null)
     isPullRequest = pullRequestNumber != null
 
@@ -30,7 +29,6 @@ ext {
 println "isCiBuild        : ${isCiBuild}"
 println "buildNumber      : ${buildNumber}"
 println "gitCommit        : ${gitCommit}"
-println "gitCommitShort   : ${gitCommitShort}"
 println "isPullRequest    : ${isPullRequest}"
 println "pullRequestNumber: ${pullRequestNumber}"
 println ""

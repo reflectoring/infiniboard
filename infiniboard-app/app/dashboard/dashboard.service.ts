@@ -23,17 +23,17 @@ export class DashboardService {
   }
 
   private static createDashboard(haljson: any): Dashboard {
-    return new Dashboard(haljson.id, haljson.name, haljson.description, []);
+    return new Dashboard(haljson.id, haljson.title, haljson.description, []);
   }
 
   private static createWidgetConfig(haljson: any): WidgetConfig[] {
     let widgetConfigs: any[] = [];
 
-    if (!(haljson._embedded || {}).widgets) {
+    if (!(haljson._embedded || {}).widgetConfigs) {
       return widgetConfigs;
     }
 
-    for (let widget of haljson._embedded.widgets) {
+    for (let widget of haljson._embedded.widgetConfigs) {
       let widgetConfig = new WidgetConfig(widget.id, 'platform-status', widget.title);
       widgetConfigs.push(widgetConfig);
     }
@@ -62,7 +62,7 @@ export class DashboardService {
     this.headers.append('Accept', 'application/json');
   }
 
-  public getDashboard(id: number): Observable<Dashboard> {
+  public getDashboard(id: String): Observable<Dashboard> {
     return this.http.get(this.actionUrl + '/' + id)
       .map(DashboardService.handleDashboard)
       .catch(this.handleError);
