@@ -36,6 +36,7 @@ node_modules
 nodejs
 bower_components
 typings
+!typings/jquery-simple.d.ts
 
 # repacked client
 quartermaster/src/main/webapp
