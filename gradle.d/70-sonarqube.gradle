@@ -20,8 +20,7 @@ allprojects {
 
     sonarqube {
         properties {
-            property "sonar.projectKey", "infiniboard"
-            property "sonar.projectName", "infiniboard"
+            property "sonar.projectKey", "com.github.reflectoring.infiniboard"
             property "sonar.host.url", "https://sonarqube.com"
             property "sonar.login", getSonarQubeApiKey()
             property "sonar.sourceEncoding", "UTF-8"
