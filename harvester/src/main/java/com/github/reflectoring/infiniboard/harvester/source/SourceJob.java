@@ -15,7 +15,7 @@ import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingServic
  */
 public abstract class SourceJob implements Job {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SourceJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SourceJob.class);
 
     @Override
     public void execute(JobExecutionContext context)
