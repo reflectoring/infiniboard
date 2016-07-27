@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,13 +44,21 @@ public class SchedulingServiceTest {
         //introduce repositorys
         widgetConfigRepository = mock(WidgetConfigRepository.class);
         when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
+        when(applicationContext.getBean(WidgetConfigRepository.class)).thenReturn(widgetConfigRepository);
 
         sourceDataRepository = mock(SourceDataRepository.class);
-
-        schedulingService = new SchedulingService(applicationContext, widgetConfigRepository, sourceDataRepository);
         when(applicationContext.getBean(SchedulingService.class)).thenReturn(schedulingService);
 
+        schedulingService = new SchedulingService(applicationContext, widgetConfigRepository, sourceDataRepository);
+        schedulingService.setupScheduling();
         schedulingService.registerJob(TEST_JOB, TestJob.class);
+        when(applicationContext.getBean(SchedulingService.class)).thenReturn(schedulingService);
+    }
+
+    @After
+    public void cleanup()
+            throws SchedulerException {
+        schedulingService.cleanupScheduling();
     }
 
     @Test
