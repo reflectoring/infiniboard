@@ -34,9 +34,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // route params are always strings
-    // + converts the string to a number
-    let id = +this._routeParams.get('id');
+    let id = this._routeParams.get('id');
 
     this._dashboardService.getDashboard(id).subscribe(
       dashboard => this.initializeDashboard(dashboard),

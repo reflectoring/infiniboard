@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component;
 import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.haljson.Link;
 import com.github.reflectoring.haljson.ResourceMapper;
+import com.github.reflectoring.infiniboard.packrat.dashboard.DashboardConfig;
 import com.github.reflectoring.infiniboard.quartermaster.widget.WidgetConfigMapper;
 
 @Component
-public class DashboardMapper implements ResourceMapper<Dashboard> {
+public class DashboardMapper implements ResourceMapper<DashboardConfig> {
 
     private WidgetConfigMapper widgetConfigMapper;
 
@@ -19,14 +20,14 @@ public class DashboardMapper implements ResourceMapper<Dashboard> {
     }
 
     @Override
-    public HalJsonResource toResource(Dashboard source) {
+    public HalJsonResource toResource(DashboardConfig source) {
 
         HalJsonResource resource = new HalJsonResource();
         resource.add("id", source.getId());
-        resource.add("name", source.getName());
+        resource.add("title", source.getTitle());
         resource.add("description", source.getDescription());
 
-        resource.add("widgets", widgetConfigMapper.toResources(source.getWidgetConfigs()));
+        resource.add("widgetConfigs", widgetConfigMapper.toResources(source.getWidgetConfigs()));
 
         resource.add(new Link("self", "http://localhost:8080/api/dashboards/" + source.getId()));
 
