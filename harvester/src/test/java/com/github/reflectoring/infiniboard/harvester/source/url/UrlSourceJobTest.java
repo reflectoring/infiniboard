@@ -35,11 +35,11 @@ public class UrlSourceJobTest {
     /**
      * overwrites the getHttpClient method to be able to inject mocked client
      */
-    class TestJob extends UrlSourceJob {
+    class TestUrlSourceJob extends UrlSourceJob {
 
         private CloseableHttpClient client;
 
-        public TestJob(CloseableHttpClient client) {
+        public TestUrlSourceJob(CloseableHttpClient client) {
             this.client = client;
         }
 
@@ -60,7 +60,7 @@ public class UrlSourceJobTest {
     public void executeInternalReturnsContent()
             throws IOException {
 
-        TestJob job = new TestJob(prepareHttpClientMock(true));
+        TestUrlSourceJob job = new TestUrlSourceJob(prepareHttpClientMock(true));
         job.executeInternal(applicationContext, new JobKey(SOURCE_ID, WIDGET_ID), createConfigMap());
 
         HashMap<String, Object> expectedData = new HashMap<>();
@@ -73,7 +73,7 @@ public class UrlSourceJobTest {
     public void executeInternalReturnsReasonIfThereIsNoContent()
             throws IOException {
 
-        TestJob job = new TestJob(prepareHttpClientMock(false));
+        TestUrlSourceJob job = new TestUrlSourceJob(prepareHttpClientMock(false));
         job.executeInternal(applicationContext, new JobKey(SOURCE_ID, WIDGET_ID), createConfigMap());
 
         HashMap<String, Object> expectedData = new HashMap<>();

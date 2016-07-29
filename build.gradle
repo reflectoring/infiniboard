@@ -1,12 +1,7 @@
-// extract into gradle.d/70-sonarqube as soon as possible
-plugins {
-    id "org.sonarqube" version "2.0.1"
-}
-
 apply plugin: 'base'
 
 ext {
-    baseVersion = '0.0.1'
+    baseVersion = '0.2.0'
 }
 
 // alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
@@ -27,32 +22,8 @@ allprojects {
             jcenter()
         }
     }
-
-    // extract into gradle.d/70-sonarqube as soon as possible
-    sonarqube {
-        properties {
-            property "sonar.projectKey", "infiniboard"
-            property "sonar.projectName", "infiniboard"
-            property "sonar.host.url", "https://sonarqube.com"
-            property "sonar.login", getSonarQubeApiKey()
-            property "sonar.sourceEncoding", "UTF-8"
-        }
-    }
-}
-
-project(":infiniboard-app") {
-    sonarqube {
-        properties {
-            // as typescript is not supported yet, we have to skip this one
-            skipProject = true
-        }
-    }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion '2.14'
-}
-
-String getSonarQubeApiKey() {
-    return this.getEnv('SONARQUBE_API_KEY', '')
+    gradleVersion '2.14.1'
 }

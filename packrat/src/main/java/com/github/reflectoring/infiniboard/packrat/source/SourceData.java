@@ -30,7 +30,7 @@ public class SourceData {
     }
 
     public void setWidgetId(String widgetId) {
-        widgetId = widgetId;
+        this.widgetId = widgetId;
     }
 
     public String getSourceId() {

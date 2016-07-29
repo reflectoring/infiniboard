@@ -28,8 +28,11 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
  */
 public class UrlSourceJob extends SourceJob {
 
-    private final static Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
+    /**
+     * name used for registering this job
+     */
     public static final String JOBTYPE = "urlSource";
 
     static final String PARAM_STATUS  = "status";
@@ -54,7 +57,7 @@ public class UrlSourceJob extends SourceJob {
             upsertResults(context, jobKey, results);
 
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            LOG.error("could not fetch url {} because {}", url, e);
+            LOG.error("could not fetch url '{}'", url, e);
         }
     }
 
@@ -76,8 +79,6 @@ public class UrlSourceJob extends SourceJob {
         return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
                 .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
                 .build();
-
-        // return HttpClients.createDefault();
     }
 
 }

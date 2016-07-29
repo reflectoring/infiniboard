@@ -2,7 +2,7 @@ machine:
   java:
     version: oraclejdk8
   node:
-    version: 4.4.0
+    version: 6.3.0
   python:
     version: 2.7.3
 
@@ -24,8 +24,9 @@ dependencies:
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
+    - cd infiniboard-app && npm install && cd ..
     - ./gradlew --stacktrace --console=plain build integrationTest
-    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'Skipping SonarQube analysis for PRs!'; fi
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
     - ./gradlew --stacktrace --console=plain buildDocker
 
     # pull image here to cache it and speed up the test

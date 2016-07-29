@@ -15,12 +15,12 @@ import com.github.reflectoring.infiniboard.harvester.scheduling.SchedulingServic
  */
 public abstract class SourceJob implements Job {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SourceJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SourceJob.class);
 
     @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
-        LOG.debug("executing job {} ", getClass().getSimpleName());
+        LOG.debug("executing job '{}' ", getClass().getSimpleName());
         JobDataMap         configuration      = context.getJobDetail().getJobDataMap();
         ApplicationContext applicationContext = (ApplicationContext) configuration.get(SchedulingService.PARAM_CONTEXT);
         SchedulingService  schedulingService  = applicationContext.getBean(SchedulingService.class);
@@ -36,5 +36,15 @@ public abstract class SourceJob implements Job {
         }
     }
 
+    /**
+     * called after checking if the job could be run (the associated widget exists)
+     *
+     * @param context
+     *         spring context to access beans
+     * @param jobKey
+     *         job name and widget identifier
+     * @param configuration
+     *         job configuration
+     */
     protected abstract void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration);
 }
