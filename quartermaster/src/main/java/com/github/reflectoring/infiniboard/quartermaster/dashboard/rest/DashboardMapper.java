@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.haljson.Link;
 import com.github.reflectoring.haljson.ResourceMapper;
-import com.github.reflectoring.infiniboard.quartermaster.widget.WidgetConfigMapper;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.Dashboard;
+import com.github.reflectoring.infiniboard.quartermaster.widget.rest.WidgetConfigMapper;
 
 @Component
 public class DashboardMapper implements ResourceMapper<Dashboard> {

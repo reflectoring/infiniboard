@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.widget;
+package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
 import java.util.List;
 

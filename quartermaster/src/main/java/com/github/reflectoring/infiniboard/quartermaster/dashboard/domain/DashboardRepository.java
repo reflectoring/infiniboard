@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.github.reflectoring.infiniboard.quartermaster.widget.WidgetConfigService;
+import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 
 @Repository
 public class DashboardRepository {

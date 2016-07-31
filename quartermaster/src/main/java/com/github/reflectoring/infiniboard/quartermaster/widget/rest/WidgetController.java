@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.widget;
+package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
 import java.util.List;
 
@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
+import com.github.reflectoring.infiniboard.quartermaster.widget.rest.SourceDataMapper;
+import com.github.reflectoring.infiniboard.quartermaster.widget.rest.WidgetConfigMapper;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;

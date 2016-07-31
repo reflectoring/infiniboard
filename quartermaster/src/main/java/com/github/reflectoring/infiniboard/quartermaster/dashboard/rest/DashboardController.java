@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.reflectoring.haljson.HalJsonResource;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.Dashboard;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardRepository;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
