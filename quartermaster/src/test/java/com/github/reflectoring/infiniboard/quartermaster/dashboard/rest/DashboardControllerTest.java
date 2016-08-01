@@ -1,12 +1,10 @@
 package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
-import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.fromJson;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.fromPagedResourceJson;
@@ -17,9 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DashboardControllerTest extends ControllerTestTemplate {
-
-    @Autowired
-    private WidgetConfigService widgetConfigService;
 
     @Test
     public void getAllDashboards()
@@ -44,8 +39,6 @@ public class DashboardControllerTest extends ControllerTestTemplate {
 
         DashboardResource resource = fromJson(result.getResponse().getContentAsString(), DashboardResource.class);
         assertThat(resource).isNotNull();
-
-        System.out.println(result.getResponse().getContentAsString());
     }
 
 }
