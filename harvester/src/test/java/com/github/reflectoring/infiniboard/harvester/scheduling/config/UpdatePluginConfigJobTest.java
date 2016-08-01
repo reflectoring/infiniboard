@@ -82,8 +82,8 @@ public class UpdatePluginConfigJobTest {
         ArrayList<WidgetConfig> widgetConfigs = new ArrayList<>();
         when(repository.findAll()).thenReturn(widgetConfigs);
 
-        widgetConfigs.add(createWidgetConfig("firstWidget", "one", "two", "three"));
-        widgetConfigs.add(createWidgetConfig("secondWidget", "alpha", "beta", "gamma"));
+        widgetConfigs.add(createWidgetConfig("firstWidget", "widgetType", "one", "two", "three"));
+        widgetConfigs.add(createWidgetConfig("secondWidget", "widgetType", "alpha", "beta", "gamma"));
 
         UpdateSourceConfigJob job = new UpdateSourceConfigJob();
         job.execute(jobExecutionContext);
@@ -99,14 +99,16 @@ public class UpdatePluginConfigJobTest {
 
     }
 
-    private WidgetConfig createWidgetConfig(String widgetLabel, String... sourceLabels)
+    private WidgetConfig createWidgetConfig(String widgetTitle, String widgetType, String... sourceLabels)
             throws IllegalAccessException, NoSuchFieldException {
-        WidgetConfig widgetConfig = new WidgetConfig(widgetLabel);
+        WidgetConfig widgetConfig = new WidgetConfig();
+        widgetConfig.setTitle(widgetTitle);
+        widgetConfig.setType(widgetType);
 
         // making id accessible
         Field idField = WidgetConfig.class.getDeclaredField("id");
         idField.setAccessible(true);
-        idField.set(widgetConfig, widgetLabel);
+        idField.set(widgetConfig, widgetTitle);
 
         for (String label : sourceLabels) {
             widgetConfig.add(new SourceConfig(label, "TestUrlSourceJob", 500, Collections.emptyMap()));

@@ -34,7 +34,7 @@ export class DashboardService {
     }
 
     for (let widget of haljson._embedded.widgets) {
-      let widgetConfig = new WidgetConfig(widget.id, 'platform-status', widget.title);
+      let widgetConfig = new WidgetConfig(widget.id, widget.type, widget.title);
       widgetConfigs.push(widgetConfig);
     }
     return widgetConfigs;

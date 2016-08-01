@@ -24,8 +24,9 @@ public class WidgetConfigMapper implements ResourceMapper<WidgetConfig> {
     public HalJsonResource toResource(WidgetConfig widgetConfig) {
         HalJsonResource resource = new HalJsonResource();
         resource.add("id", widgetConfig.getId());
-        resource.add("lastModified", widgetConfig.getLastModified());
         resource.add("title", widgetConfig.getTitle());
+        resource.add("type", widgetConfig.getType());
+        resource.add("lastModified", widgetConfig.getLastModified());
 
         List<SourceConfig>    sourceConfigs     = widgetConfig.getSourceConfigs();
         List<HalJsonResource> embeddedResources = sourceConfigMapper.toResources(sourceConfigs);

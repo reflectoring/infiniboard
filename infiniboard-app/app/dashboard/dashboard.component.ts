@@ -67,10 +67,10 @@ export class DashboardComponent implements OnInit {
 
   private getWidgetComponentByType(widgetType: string): Type {
     switch (widgetType) {
-      case 'platform-status':
+      case  PlatformStatusWidgetComponent.WIDGETTYPE:
         return PlatformStatusWidgetComponent;
 
-      case 'jenkins-job':
+      case JenkinsJobWidgetComponent.WIDGETTYPE:
         return JenkinsJobWidgetComponent;
     }
   }
