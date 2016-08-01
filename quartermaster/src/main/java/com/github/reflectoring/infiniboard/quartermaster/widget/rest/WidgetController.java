@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
-import com.github.reflectoring.infiniboard.quartermaster.widget.rest.SourceDataMapper;
-import com.github.reflectoring.infiniboard.quartermaster.widget.rest.WidgetConfigMapper;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -22,49 +19,47 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping("/api/widgets")
+@RequestMapping("/api/dashboards/{dashboardId}/widgets")
 public class WidgetController {
 
     private WidgetConfigService widgetService;
-    private WidgetConfigMapper  widgetConfigMapper;
-    private SourceDataMapper    sourceDataMapper;
 
     @Autowired
-    public WidgetController(WidgetConfigService widgetService,
-                            WidgetConfigMapper widgetConfigMapper,
-                            SourceDataMapper sourceDataMapper) {
-
+    public WidgetController(WidgetConfigService widgetService) {
         this.widgetService = widgetService;
-        this.widgetConfigMapper = widgetConfigMapper;
-        this.sourceDataMapper = sourceDataMapper;
     }
 
     @RequestMapping(value = "/{widgetId}", method = GET)
-    public ResponseEntity<HalJsonResource> getWidget(@PathVariable String widgetId) {
+    public ResponseEntity<WidgetConfigResource> getWidget(@PathVariable Integer dashboardId,
+                                                          @PathVariable String widgetId) {
         WidgetConfig widgetConfig = widgetService.loadWidget(widgetId);
 
         if (widgetConfig == null) {
             return new ResponseEntity<>(NOT_FOUND);
         }
 
-        HalJsonResource resource = widgetConfigMapper.toResource(widgetConfig);
+        WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
+        WidgetConfigResource          resource  = assembler.toResource(widgetConfig);
         return new ResponseEntity<>(resource, OK);
     }
 
     @RequestMapping(method = POST)
-    public ResponseEntity<HalJsonResource> getWidget(@RequestBody WidgetConfig widgetConfig) {
-        WidgetConfig    createdWidgetConfig = widgetService.saveWidget(widgetConfig);
-        HalJsonResource resource            = widgetConfigMapper.toResource(createdWidgetConfig);
-
+    public ResponseEntity<WidgetConfigResource> createWidget(@PathVariable Integer dashboardId,
+                                                             @RequestBody WidgetConfigResource widgetConfigResource) {
+        WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
+        WidgetConfig createdWidgetConfig =
+                widgetService.saveWidget(assembler.toEntity(widgetConfigResource));
+        WidgetConfigResource resource = assembler.toResource(createdWidgetConfig);
         return new ResponseEntity<>(resource, OK);
     }
 
     @RequestMapping(value = "/{widgetId}/data", method = GET)
-    public ResponseEntity<List<HalJsonResource>> getData(@PathVariable String widgetId) {
-        List<SourceData>      data         = widgetService.getData(widgetId);
-        List<HalJsonResource> resourceList = sourceDataMapper.toResources(data);
-
-        return new ResponseEntity<>(resourceList, OK);
+    public ResponseEntity<SourceDataResource> getData(@PathVariable Integer dashboardId,
+                                                      @PathVariable String widgetId) {
+        SourceDataResourceAssembler assembler = new SourceDataResourceAssembler(dashboardId, widgetId);
+        List<SourceData>            data      = widgetService.getData(widgetId);
+        SourceDataResource          resource  = assembler.toResource(data);
+        return new ResponseEntity<>(resource, OK);
     }
 
 }

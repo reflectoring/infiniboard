@@ -9,7 +9,7 @@ import com.github.reflectoring.infiniboard.quartermaster.testframework.ServiceMo
 
 /**
  * Spring boot application class that does not scan for MongoDB repositories to enable tests of REST controllers that
- * mock away the repository layer.
+ * mock away the service layer.
  */
 @SpringBootApplication
 @Configuration

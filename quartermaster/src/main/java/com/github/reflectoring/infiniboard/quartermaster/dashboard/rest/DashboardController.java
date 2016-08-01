@@ -1,14 +1,16 @@
 package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.reflectoring.haljson.HalJsonResource;
 import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.Dashboard;
 import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardRepository;
 
@@ -21,33 +23,37 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class DashboardController {
 
     private DashboardRepository repository;
-    private DashboardMapper     dashboardMapper;
+
+    private DashboardResourceAssembler dashboardResourceAssembler;
 
     @Autowired
-    public DashboardController(DashboardRepository repository, DashboardMapper dashboardMapper) {
+    public DashboardController(DashboardRepository repository,
+                               DashboardResourceAssembler dashboardResourceAssembler) {
         this.repository = repository;
-        this.dashboardMapper = dashboardMapper;
+        this.dashboardResourceAssembler = dashboardResourceAssembler;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(method = GET)
-    public ResponseEntity<List<HalJsonResource>> getAllDashboardConfigurations() {
-        List<Dashboard>       dashboards = repository.findAll();
-        List<HalJsonResource> resources  = dashboardMapper.toResources(dashboards);
-
-        return new ResponseEntity<>(resources, OK);
+    public ResponseEntity<PagedResources<DashboardResource>> getAllDashboards(@PageableDefault Pageable pageable,
+                                                                              PagedResourcesAssembler pagedResourcesAssembler) {
+        Page<Dashboard> dashboardsPage = repository.findAll(pageable);
+        PagedResources<DashboardResource> pagedResources =
+                pagedResourcesAssembler.toResource(dashboardsPage, dashboardResourceAssembler);
+        return new ResponseEntity<>(pagedResources, OK);
     }
 
 
     @RequestMapping(value = "/{id}", method = GET)
-    public ResponseEntity<HalJsonResource> getDashboardConfiguration(@PathVariable int id) {
+    public ResponseEntity<DashboardResource> getDashboard(@PathVariable int id) {
         Dashboard dashboard = repository.find(id);
 
         if (dashboard == null) {
             return new ResponseEntity<>(NOT_FOUND);
         }
 
-        HalJsonResource resources = dashboardMapper.toResource(dashboard);
-        return new ResponseEntity<>(resources, OK);
+        DashboardResource resource = dashboardResourceAssembler.toResource(dashboard);
+        return new ResponseEntity<>(resource, OK);
     }
 
 }
