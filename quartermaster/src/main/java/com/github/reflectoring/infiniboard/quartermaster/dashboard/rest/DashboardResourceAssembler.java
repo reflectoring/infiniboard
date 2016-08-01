@@ -4,6 +4,7 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.Dashboard;
+import com.github.reflectoring.infiniboard.quartermaster.widget.rest.WidgetController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -22,7 +23,8 @@ public class DashboardResourceAssembler extends ResourceAssemblerSupport<Dashboa
         resource.setDescription(entity.getDescription());
         resource.add(
                 linkTo(methodOn(DashboardController.class).getDashboard(entity.getId())).withRel("self"));
-        // TODO: add link to WidgetConfigs of the dashboard once REST API for this operation is available
+        resource.add(
+                linkTo(methodOn(WidgetController.class).getWidgets(entity.getId(), null, null)).withRel("widgets"));
         return resource;
     }
 }

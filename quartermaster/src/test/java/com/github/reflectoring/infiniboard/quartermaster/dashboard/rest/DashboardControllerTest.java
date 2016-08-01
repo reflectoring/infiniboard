@@ -44,6 +44,8 @@ public class DashboardControllerTest extends ControllerTestTemplate {
 
         DashboardResource resource = fromJson(result.getResponse().getContentAsString(), DashboardResource.class);
         assertThat(resource).isNotNull();
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
 }
