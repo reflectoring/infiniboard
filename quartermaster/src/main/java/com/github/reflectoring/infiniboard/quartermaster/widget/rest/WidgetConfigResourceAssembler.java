@@ -40,7 +40,7 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
 
     public WidgetConfig toEntity(WidgetConfigResource resource) {
         WidgetConfig entity = new WidgetConfig();
-        entity.setLastModified(LocalDateTime.ofInstant(resource.getLastModified().toInstant(), ZoneId.systemDefault()));
+        entity.setLastModified(LocalDateTime.now());
         entity.setTitle(resource.getTitle());
         entity.setSourceConfigs(resource.getSourceConfigs());
         return entity;
