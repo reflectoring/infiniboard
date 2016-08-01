@@ -22,7 +22,6 @@ public class JsonHelper {
 
     static {
         halMapper = new ObjectMapper();
-        halMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         halMapper.registerModule(new Jackson2HalModule());
     }
 
