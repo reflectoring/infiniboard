@@ -1,15 +1,21 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 
-import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.fromJson;
-import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.toJsonWithoutLinks;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.*;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsPagedResources;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsResource;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.SourceDataFactory.sourceDataList;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfig;
@@ -26,6 +32,9 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
     @Autowired
     private WidgetConfigService widgetService;
+
+    @Autowired
+    private WidgetConfigRepository widgetConfigRepository;
 
     @Test
     public void getWidget()
@@ -68,6 +77,21 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
         SourceDataResource resource = fromJson(result.getResponse().getContentAsString(), SourceDataResource.class);
         assertThat(resource.getSourceData()).hasSize(3);
+    }
+
+    @Test
+    public void getWidgets()
+            throws Exception {
+        when(widgetConfigRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(Arrays.asList(widgetConfig())));
+        MvcResult result = mvc().perform(get("/api/dashboards/1/widgets"))
+                .andExpect(status().isOk())
+                .andExpect(containsPagedResources(WidgetConfigResource.class))
+                .andReturn();
+
+        PagedResources<WidgetConfigResource> resource =
+                fromPagedResourceJson(result.getResponse().getContentAsString(), WidgetConfigResource.class);
+        assertThat(resource.getContent()).hasSize(1);
     }
 
 }
