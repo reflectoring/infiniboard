@@ -1,5 +1,6 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 
 public class WidgetConfigResource extends ResourceSupport {
 
+    @NotNull
     private String title;
 
     private Date lastModified;
