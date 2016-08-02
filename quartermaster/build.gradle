@@ -19,7 +19,6 @@ configurations {
 dependencies {
     compile(
             project(":packrat"),
-            "org.springframework.boot:spring-boot-starter-web:${version_springBoot}",
             "org.springframework.boot:spring-boot-starter-actuator:${version_springBoot}",
             "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}",
             "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
