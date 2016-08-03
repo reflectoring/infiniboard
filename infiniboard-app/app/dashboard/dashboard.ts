@@ -3,15 +3,18 @@ import {WidgetConfig} from './widget-config';
 export class Dashboard {
 
   public id: number;
-  public name: String;
-  public description: String;
+  public name: string;
+  public description: string;
+
+  public widgetConfigsLink: string;
 
   public widgetConfigs: WidgetConfig[];
 
-  public constructor(id: number, name: String, description: String, widgetConfigs: WidgetConfig[]) {
+  public constructor(id: number, name: string, description: string, widgetsLink: string) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.widgetConfigs = widgetConfigs;
+    this.widgetConfigsLink = widgetsLink;
+    this.widgetConfigs = [];
   }
 }
