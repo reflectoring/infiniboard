@@ -1,5 +1,10 @@
 # infiniboard-app
 
+## tooling
+The usage of [nvm](https://github.com/creationix/nvm) is recommended to switch between different versions of node when necessary.
+For Microsoft Windows based development [nvm-windows](https://github.com/coreybutler/nvm-windows) can be used. 
+The currently used node version can be determined by taking a look the machine section of [circle.yml](https://github.com/reflectoring/infiniboard/blob/master/circle.yml).
+
 ## building
 
 ### install dependencies
