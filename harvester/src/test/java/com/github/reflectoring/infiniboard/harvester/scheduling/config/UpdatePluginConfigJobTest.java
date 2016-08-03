@@ -82,8 +82,8 @@ public class UpdatePluginConfigJobTest {
         ArrayList<WidgetConfig> widgetConfigs = new ArrayList<>();
         when(repository.findAll()).thenReturn(widgetConfigs);
 
-        widgetConfigs.add(createWidgetConfig("firstWidget", "widgetType", "one", "two", "three"));
-        widgetConfigs.add(createWidgetConfig("secondWidget", "widgetType", "alpha", "beta", "gamma"));
+        widgetConfigs.add(createWidgetConfig("firstWidget", "widget-type", "one", "two", "three"));
+        widgetConfigs.add(createWidgetConfig("secondWidget", "widget-type", "alpha", "beta", "gamma"));
 
         UpdateSourceConfigJob job = new UpdateSourceConfigJob();
         job.execute(jobExecutionContext);

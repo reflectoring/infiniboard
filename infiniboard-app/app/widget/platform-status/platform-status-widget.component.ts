@@ -12,8 +12,6 @@ import {Status} from './status';
   templateUrl: 'app/widget/platform-status/platform-status-widget.component.html'
 })
 export class PlatformStatusWidgetComponent extends WidgetComponent {
-
-  static WIDGETTYPE: string;
   version: string = 'N/A';
   status: Status = Status.DOWN;
 
@@ -21,7 +19,7 @@ export class PlatformStatusWidgetComponent extends WidgetComponent {
 
   public constructor(widgetService: WidgetService, statusService: StatusService) {
     super(widgetService);
-    PlatformStatusWidgetComponent.WIDGETTYPE = "platform-status";
+    PlatformStatusWidgetComponent.WIDGET_TYPE = 'platform-status';
     this.statusService = statusService;
   }
 

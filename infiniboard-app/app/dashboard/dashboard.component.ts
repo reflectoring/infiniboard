@@ -14,7 +14,6 @@ import {JenkinsJobWidgetComponent} from '../widget/jenkins/jenkins-job-widget.co
 })
 
 export class DashboardComponent implements OnInit {
-
   @Input()
   public dashboard: Dashboard;
 
@@ -67,10 +66,10 @@ export class DashboardComponent implements OnInit {
 
   private getWidgetComponentByType(widgetType: string): Type {
     switch (widgetType) {
-      case  PlatformStatusWidgetComponent.WIDGETTYPE:
+      case  PlatformStatusWidgetComponent.WIDGET_TYPE:
         return PlatformStatusWidgetComponent;
 
-      case JenkinsJobWidgetComponent.WIDGETTYPE:
+      case JenkinsJobWidgetComponent.WIDGET_TYPE:
         return JenkinsJobWidgetComponent;
     }
   }
