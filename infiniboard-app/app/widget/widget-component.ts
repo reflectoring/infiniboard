@@ -2,6 +2,7 @@ import {WidgetService} from './widget.service';
 
 export class WidgetComponent {
 
+  static WIDGET_TYPE: string;
   private id: string;
   private title: string;
   private updateInterval: number;

@@ -7,13 +7,13 @@ import {WidgetService} from '../widget.service';
   templateUrl: 'app/widget/jenkins/jenkins-job-widget.component.html',
 })
 export class JenkinsJobWidgetComponent extends WidgetComponent {
-
   public name: string;
   public duration: string;
   public status: string;
 
   public constructor(widgetService: WidgetService) {
     super(widgetService);
+    JenkinsJobWidgetComponent.WIDGET_TYPE = 'jenkins-job';
   }
 
   public updateData(data: any) {

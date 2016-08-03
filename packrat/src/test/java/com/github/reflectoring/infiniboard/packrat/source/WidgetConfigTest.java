@@ -25,7 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Category(MongoIntegrationTests.class)
 public class WidgetConfigTest {
 
-    private static final String TITLE          = "myFirstWidget";
+    private static final String WIDGETTITLE    = "myFirstWidget";
+    private static final String WIDGETTYPE     = "myFirstWidgetType";
     private static final String UPDATED_WIDGET = "updatedWidget";
 
     @Autowired
@@ -33,14 +34,18 @@ public class WidgetConfigTest {
 
     @Before
     public void setup() {
-        WidgetConfig widget = new WidgetConfig(TITLE);
+        WidgetConfig widget = new WidgetConfig();
+        widget.setTitle(WIDGETTITLE);
+        widget.setType(WIDGETTYPE);
         widget.setLastModified(LocalDateTime.now().minusDays(5));
         widget.add(new SourceConfig("1", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("2", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("3", "TestSource", 500, Collections.emptyMap()));
         repository.save(widget);
 
-        widget = new WidgetConfig(UPDATED_WIDGET);
+        widget = new WidgetConfig();
+        widget.setTitle(UPDATED_WIDGET);
+        widget.setType(WIDGETTYPE);
         widget.setLastModified(LocalDateTime.now());
         widget.add(new SourceConfig("1", "TestSource", 500, Collections.emptyMap()));
         widget.add(new SourceConfig("2", "TestSource", 500, Collections.emptyMap()));
@@ -55,14 +60,14 @@ public class WidgetConfigTest {
 
     @Test
     public void findByTitleReturnsWidgetConfigWithSourceConfigOfSavedType() {
-        WidgetConfig widgetConfig = repository.findByTitle(TITLE);
+        WidgetConfig widgetConfig = repository.findByTitle(WIDGETTITLE);
         assertThat(widgetConfig.getSourceConfigs().get(0)).hasFieldOrPropertyWithValue("id", "1")
                 .hasFieldOrPropertyWithValue("type", "TestSource");
     }
 
     @Test
     public void generatedId() {
-        WidgetConfig widgetConfig = repository.findByTitle(TITLE);
+        WidgetConfig widgetConfig = repository.findByTitle(WIDGETTITLE);
         assertThat(widgetConfig.getId()).isNotEmpty();
     }
 
