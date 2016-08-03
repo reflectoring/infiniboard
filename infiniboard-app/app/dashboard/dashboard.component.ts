@@ -6,6 +6,7 @@ import {DashboardService} from './dashboard.service';
 import {WidgetConfig} from './widget-config';
 import {PlatformStatusWidgetComponent} from '../widget/platform-status/platform-status-widget.component';
 import {JenkinsJobWidgetComponent} from '../widget/jenkins/jenkins-job-widget.component';
+import {WidgetService} from '../widget/widget.service';
 
 @Component({
   selector: 'dashboard',
@@ -18,27 +19,30 @@ export class DashboardComponent implements OnInit {
   @Input()
   public dashboard: Dashboard;
 
+  private widgetService: WidgetService;
+
   private elementRef: ElementRef;
   private dynamicComponentLoader: DynamicComponentLoader;
 
-  private _dashboardService: DashboardService;
-  private _routeParams: RouteParams;
+  private dashboardService: DashboardService;
+  private routeParams: RouteParams;
 
   constructor(dynamicComponentLoader: DynamicComponentLoader, elementRef: ElementRef,
-              dashboardService: DashboardService, routeParams: RouteParams) {
+              dashboardService: DashboardService, widgetService: WidgetService, routeParams: RouteParams) {
 
     this.dynamicComponentLoader = dynamicComponentLoader;
     this.elementRef = elementRef;
-    this._dashboardService = dashboardService;
-    this._routeParams = routeParams;
+    this.dashboardService = dashboardService;
+    this.widgetService = widgetService;
+    this.routeParams = routeParams;
   }
 
   ngOnInit() {
     // route params are always strings
     // + converts the string to a number
-    let id = +this._routeParams.get('id');
+    let id = +this.routeParams.get('id');
 
-    this._dashboardService.getDashboard(id).subscribe(
+    this.dashboardService.getDashboard(id).subscribe(
       dashboard => this.initializeDashboard(dashboard),
       error => console.error(error)
     );
@@ -46,11 +50,13 @@ export class DashboardComponent implements OnInit {
 
   private initializeDashboard(dashboard: Dashboard) {
     this.dashboard = dashboard;
-    this.initializeWidgets();
+    this.widgetService.fetchWidgets(this.dashboard).subscribe(
+      widgetConfigs => this.initializeWidgets(widgetConfigs),
+      error => console.error(error)
+    );
   }
 
-  private initializeWidgets() {
-    let widgetConfigs = this.dashboard.widgetConfigs;
+  private initializeWidgets(widgetConfigs: WidgetConfig[]) {
     widgetConfigs.forEach(widget => this.initializeWidget(widget));
   }
 
@@ -60,7 +66,7 @@ export class DashboardComponent implements OnInit {
     Promise.resolve(promise).then(
       component => {
         component.instance.setUpdateInterval(1000);
-        component.instance.initWidget(widgetConfig.id, widgetConfig.title);
+        component.instance.initWidget(widgetConfig);
         component.instance.updateWidgetData();
       });
   }
@@ -72,6 +78,9 @@ export class DashboardComponent implements OnInit {
 
       case 'jenkins-job':
         return JenkinsJobWidgetComponent;
+
+      default:
+        throw new Error('unknown widget type \'' + widgetType + '\'');
     }
   }
 }

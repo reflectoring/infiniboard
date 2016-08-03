@@ -1,22 +1,16 @@
 import {WidgetService} from './widget.service';
+import {WidgetConfig} from '../dashboard/widget-config';
 
 export class WidgetComponent {
 
-  private id: string;
   private title: string;
   private updateInterval: number;
+  private widgetConfig: WidgetConfig;
+
   private widgetService: WidgetService;
 
   public constructor(widgetService: WidgetService) {
     this.widgetService = widgetService;
-  }
-
-  public getId() {
-    return this.id;
-  }
-
-  public setId(id: string) {
-    this.id = id;
   }
 
   public getTitle(): string {
@@ -35,9 +29,10 @@ export class WidgetComponent {
     this.updateInterval = value;
   }
 
-  public initWidget(id: string, title: string) {
-    this.setId(id);
-    this.setTitle(title);
+
+  public initWidget(widgetConfig: WidgetConfig) {
+    this.widgetConfig = widgetConfig;
+    this.setTitle(widgetConfig.title);
     this.triggerUpdate();
   }
 
@@ -48,7 +43,7 @@ export class WidgetComponent {
   }
 
   public updateWidgetData() {
-    this.widgetService.getWidgetData(this.getId()).subscribe(
+    this.widgetService.fetchWidgetData(this.widgetConfig).subscribe(
       widgetData => {
         if (widgetData.length > 0) {
           this.updateData(widgetData);

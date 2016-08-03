@@ -1,0 +1,77 @@
+diff --git a/quartermaster/src/main/java/com/github/reflectoring/Quartermaster.java b/quartermaster/src/main/java/com/github/reflectoring/Quartermaster.java
+index 6fa9a3b..fc66065 100644
+--- a/quartermaster/src/main/java/com/github/reflectoring/Quartermaster.java
++++ b/quartermaster/src/main/java/com/github/reflectoring/Quartermaster.java
+@@ -2,7 +2,11 @@ package com.github.reflectoring;
+ 
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
+ import org.springframework.boot.builder.SpringApplicationBuilder;
++import org.springframework.context.annotation.Bean;
+ import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
++import org.springframework.web.servlet.config.annotation.CorsRegistry;
++import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
++import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+ 
+ @SpringBootApplication
+ @EnableMongoRepositories(basePackages = "com.github.reflectoring.infiniboard.packrat")
+@@ -12,4 +16,21 @@ public class Quartermaster {
+         new SpringApplicationBuilder().sources(Quartermaster.class).run(args);
+     }
+ 
++    /*
++    * Activates Cross-Origin Resource Sharing (CORS)
++    * for local development of JavaScript client.
++    *
++    * https://de.wikipedia.org/wiki/Cross-Origin_Resource_Sharing
++    */
++    @Bean
++    public WebMvcConfigurer corsConfigurer() {
++        return new WebMvcConfigurerAdapter() {
++            @Override
++            public void addCorsMappings(CorsRegistry registry) {
++                registry.addMapping("/api/**/*")
++                        .allowedOrigins("http://localhost:3000");
++            }
++        };
++    }
++
+ }
+diff --git a/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResource.java b/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResource.java
+index 9842c0e..f2deb8c 100644
+--- a/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResource.java
++++ b/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResource.java
+@@ -6,12 +6,22 @@ import org.springframework.hateoas.ResourceSupport;
+ 
+ public class DashboardResource extends ResourceSupport {
+ 
++    private int number;
++
+     @NotNull
+     private String name;
+ 
+     @NotNull
+     private String description;
+ 
++    public int getNumber() {
++        return number;
++    }
++
++    public void setNumber(int number) {
++        this.number = number;
++    }
++
+     public String getName() {
+         return name;
+     }
+diff --git a/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResourceAssembler.java b/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResourceAssembler.java
+index 484b621..bdcd145 100644
+--- a/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResourceAssembler.java
++++ b/quartermaster/src/main/java/com/github/reflectoring/infiniboard/quartermaster/dashboard/rest/DashboardResourceAssembler.java
+@@ -19,6 +19,7 @@ public class DashboardResourceAssembler extends ResourceAssemblerSupport<Dashboa
+     @Override
+     public DashboardResource toResource(Dashboard entity) {
+         DashboardResource resource = new DashboardResource();
++        resource.setNumber(entity.getId());
+         resource.setName(entity.getName());
+         resource.setDescription(entity.getDescription());
+         resource.add(
