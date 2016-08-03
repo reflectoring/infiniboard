@@ -1,9 +1,13 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
         classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
+        classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
     }
 }
 
@@ -11,6 +15,8 @@ apply plugin: 'spring-boot'
 apply plugin: 'mongo'
 apply plugin: 'docker'
 apply plugin: 'war'
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'org.ajoberstar.github-pages'
 
 configurations {
     providedRuntime
@@ -19,17 +25,21 @@ configurations {
 dependencies {
     compile(
             project(":packrat"),
-            'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-actuator',
+            "org.springframework.boot:spring-boot-starter-actuator:${version_springBoot}",
+            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}",
             "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
     )
 
     providedRuntime(
-            "org.springframework.boot:spring-boot-starter-tomcat"
+            "org.springframework.boot:spring-boot-starter-tomcat:${version_springBoot}"
     )
 
     testCompile(
-            'org.springframework.boot:spring-boot-starter-test',
+            "org.springframework.boot:spring-boot-starter-test:${version_springBoot}",
+            "org.springframework.restdocs:spring-restdocs-mockmvc:${version_springRestDocs}",
+            "org.springframework.restdocs:spring-restdocs-core:${version_springRestDocs}",
+            "com.jayway.jsonpath:json-path:${version_jsonPath}",
+            "junit:junit:${version_junit}"
     )
 }
 
@@ -91,5 +101,28 @@ task buildDocker(type: Docker, dependsOn: build) {
             into stageDir
             include 'application.properties'
         }
+    }
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+    attributes 'snippets': snippetsDir,
+            'version': version,
+            'date': new SimpleDateFormat("yyyy-MM-dd").format(new Date())
+    inputs.dir snippetsDir
+    dependsOn test
+    sourceDir 'src/main/asciidoc'
+    outputDir 'build/doc/restapi'
+}
+
+githubPages {
+    repoUri = 'https://github.com/reflectoring/infiniboard.git'
+    targetBranch = 'gh-pages'
+    pages {
+        from 'build/doc/restapi/html5'
+        into "${version}/docs/restapi"
     }
 }
