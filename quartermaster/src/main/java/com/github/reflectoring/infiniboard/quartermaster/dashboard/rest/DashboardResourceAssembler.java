@@ -19,6 +19,7 @@ public class DashboardResourceAssembler extends ResourceAssemblerSupport<Dashboa
     @Override
     public DashboardResource toResource(Dashboard entity) {
         DashboardResource resource = new DashboardResource();
+        resource.setNumber(entity.getId());
         resource.setName(entity.getName());
         resource.setDescription(entity.getDescription());
         resource.add(

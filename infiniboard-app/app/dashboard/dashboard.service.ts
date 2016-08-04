@@ -2,7 +2,6 @@ import {Injectable} from 'angular2/core';
 import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {Dashboard} from './dashboard';
-import {WidgetConfig} from './widget-config';
 import '../rxjs-operators';
 
 @Injectable()
@@ -15,7 +14,9 @@ export class DashboardService {
   private static extractDashboardList(haljson: any): Dashboard[] {
 
     let result: any[] = [];
-    for (let item of haljson) {
+    let dashboards = (haljson._embedded || {}).dashboardResourceList || {};
+
+    for (let item of dashboards) {
       let dashboard = DashboardService.createDashboard(item);
       result.push(dashboard);
     }
@@ -23,29 +24,13 @@ export class DashboardService {
   }
 
   private static createDashboard(haljson: any): Dashboard {
-    return new Dashboard(haljson.id, haljson.name, haljson.description, []);
+    return new Dashboard(haljson.number, haljson.name, haljson.description, haljson._links.widgets.href);
   }
 
-  private static createWidgetConfig(haljson: any): WidgetConfig[] {
-    let widgetConfigs: any[] = [];
-
-    if (!(haljson._embedded || {}).widgets) {
-      return widgetConfigs;
-    }
-
-    for (let widget of haljson._embedded.widgets) {
-      let widgetConfig = new WidgetConfig(widget.id, 'platform-status', widget.title);
-      widgetConfigs.push(widgetConfig);
-    }
-    return widgetConfigs;
-  }
 
   private static handleDashboard(res: Response): Dashboard {
     let haljson = res.json();
-    let dashboard = DashboardService.createDashboard(haljson);
-    dashboard.widgetConfigs = DashboardService.createWidgetConfig(haljson);
-
-    return dashboard;
+    return DashboardService.createDashboard(haljson);
   }
 
   private static handleDashboardList(res: Response): Dashboard[] {
