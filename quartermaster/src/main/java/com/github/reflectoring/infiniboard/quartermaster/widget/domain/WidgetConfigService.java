@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.widget;
+package com.github.reflectoring.infiniboard.quartermaster.widget.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
