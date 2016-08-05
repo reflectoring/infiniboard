@@ -15,6 +15,10 @@ public class SourceData {
 
     private Map<String, Object> data;
 
+    public SourceData() {
+
+    }
+
     public SourceData(String widgetId, String sourceId, Map<String, Object> data) {
         this.widgetId = widgetId;
         this.sourceId = sourceId;

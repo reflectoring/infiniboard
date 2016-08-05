@@ -1,11 +1,12 @@
 export class WidgetConfig {
-  public id: string;
   public type: string;
   public title: string;
 
-  public constructor(id: string, type: string, title: string) {
-    this.id = id;
+  public dataLink: string;
+
+  public constructor(type: string, title: string, dataLink: string) {
     this.type = type;
     this.title = title;
+    this.dataLink = dataLink;
   }
 }

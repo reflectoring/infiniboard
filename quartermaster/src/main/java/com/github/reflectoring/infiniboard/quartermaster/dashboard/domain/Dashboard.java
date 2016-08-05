@@ -1,4 +1,4 @@
-package com.github.reflectoring.infiniboard.quartermaster.dashboard;
+package com.github.reflectoring.infiniboard.quartermaster.dashboard.domain;
 
 import java.util.ArrayList;
 import java.util.List;
