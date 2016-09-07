@@ -20,7 +20,7 @@
       "scripts": [
         "../node_modules/admin-lte/plugins/jQuery/jquery-2.2.3.min.js",
         "../node_modules/admin-lte/bootstrap/js/bootstrap.min.js",
-        "../node_modules/admin-lte/plugins/iCheck/icheck.min.js"
+        "../node_modules/admin-lte/dist/js/app.min.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
