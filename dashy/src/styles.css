@@ -1,2 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "../node_modules/admin-lte/bootstrap/css/bootstrap.min.css";
+@import "../node_modules/admin-lte/plugins/iCheck/square/blue.css";
+@import "../node_modules/admin-lte/dist/css/AdminLTE.min.css";
