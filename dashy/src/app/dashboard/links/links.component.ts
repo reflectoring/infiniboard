@@ -11,7 +11,7 @@ export class LinksComponent implements OnInit {
 
   public dashboards: Dashboard[];
 
-  constructor(private _dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService) {
   }
 
   ngOnInit() {
@@ -19,12 +19,12 @@ export class LinksComponent implements OnInit {
   }
 
   private getDashboards() {
-    // this._dashboardService.getDashboards().subscribe(
-    //   dashboards => {
-    //     this.dashboards = dashboards;
-    //   },
-    //   error => console.error(error)
-    // );
+    this.dashboardService.getDashboards().subscribe(
+      dashboards => {
+        this.dashboards = dashboards;
+      },
+      error => console.error(error)
+    );
   }
 
 }
