@@ -1,0 +1,8 @@
+<!-- Sidebar Menu -->
+<ul class="sidebar-menu">
+  <li class="header">Dashboards</li>
+  <!-- Optionally, you can add icons to the links -->
+  <li *ngFor="let dashboard of dashboards"
+      [class.active]="dashboard.active"><a [routerLink]="['/dashboards', dashboard.id]"><i class="fa fa-circle-o text-red"></i>
+    <span>{{dashboard.name}}</span></a></li>
+</ul><!-- /.sidebar-menu -->

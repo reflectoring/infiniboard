@@ -26,7 +26,6 @@ export class DashboardService {
     return new Dashboard(haljson.number, haljson.name, haljson.description, haljson._links.widgets.href);
   }
 
-
   private static handleDashboard(res: Response): Dashboard {
     let haljson = res.json();
     return DashboardService.createDashboard(haljson);

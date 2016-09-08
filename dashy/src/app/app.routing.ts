@@ -1,12 +1,13 @@
 import {Routes, RouterModule} from '@angular/router';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import {PageNotImplementedComponent} from './page-not-implemented/page-not-implemented.component';
+import {DashboardListComponent} from './dashboard/dashboard-list/dashboard-list.component';
+import {DashboardDetailComponent} from './dashboard/dashboard-detail/dashboard-detail.component';
 
 export const appRoutes: Routes = [
   {
     path: 'dashboards', children: [
-    {path: '', component: PageNotImplementedComponent},
-    {path: ':dashboardId', component: PageNotImplementedComponent},
+    {path: '', component: DashboardListComponent},
+    {path: ':dashboardId', component: DashboardDetailComponent},
   ]
   },
   {path: '**', component: PageNotFoundComponent}
