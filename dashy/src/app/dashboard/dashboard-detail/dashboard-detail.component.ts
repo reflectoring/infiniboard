@@ -51,23 +51,16 @@ export class DashboardDetailComponent implements OnInit {
   private initializeWidget(widgetConfig: WidgetConfig) {
     let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
     let cf = this.cfr.resolveComponentFactory(widgetComponent);
-    this.viewContainer.createComponent(cf);
-    // let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
-    // Promise.resolve(promise).then(
-    //   component => {
-    //     component.instance.setUpdateInterval(1000);
-    //     component.instance.initWidget(widgetConfig);
-    //     component.instance.updateWidgetData();
-    //   });
+    let componentRef = this.viewContainer.createComponent(cf);
+    let component = componentRef.instance;
+    component.initWidget(widgetConfig);
+    component.updateWidgetData();
   }
 
   private getWidgetComponentByType(widgetType: string): ConcreteType<any> {
     switch (widgetType) {
       case 'platform-status':
         return PlatformStatusWidgetComponent;
-      //
-      // case 'jenkins-job':
-      //   return JenkinsJobWidgetComponent;
 
       default:
         throw new Error('unknown widget type \'' + widgetType + '\'');
