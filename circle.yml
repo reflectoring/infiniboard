@@ -25,7 +25,6 @@ dependencies:
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
     - cd dashy && npm install
-    - ng lint
     - ng build --prod && cd ..
 
     - ./gradlew --stacktrace --console=plain build integrationTest
