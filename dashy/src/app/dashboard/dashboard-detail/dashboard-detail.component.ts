@@ -1,12 +1,17 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewContainerRef, ComponentFactoryResolver, ViewChild} from '@angular/core';
 import {Dashboard} from '../shared/dashboard';
 import {DashboardService} from '../shared/dashboard.service';
 import {WidgetConfig} from '../shared/widget-config';
 import {WidgetService} from '../shared/widget.service';
 import {ActivatedRoute} from '@angular/router';
+import {ConcreteType} from '@angular/core/src/facade/lang';
+import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
 
 @Component({
   selector: 'dashboard-detail',
+  entryComponents: [
+    PlatformStatusWidgetComponent
+  ],
   templateUrl: './dashboard-detail.component.html',
   styleUrls: ['./dashboard-detail.component.css']
 })
@@ -15,9 +20,13 @@ export class DashboardDetailComponent implements OnInit {
   @Input()
   public dashboard: Dashboard;
 
+  @ViewChild('widgets', {read: ViewContainerRef})
+  private viewContainer: ViewContainerRef;
+
   constructor(private dashboardService: DashboardService,
               private widgetService: WidgetService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private cfr: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -41,6 +50,8 @@ export class DashboardDetailComponent implements OnInit {
 
   private initializeWidget(widgetConfig: WidgetConfig) {
     let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
+    let cf = this.cfr.resolveComponentFactory(widgetComponent);
+    this.viewContainer.createComponent(cf);
     // let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
     // Promise.resolve(promise).then(
     //   component => {
@@ -50,10 +61,10 @@ export class DashboardDetailComponent implements OnInit {
     //   });
   }
 
-  private getWidgetComponentByType(widgetType: string): Function {
+  private getWidgetComponentByType(widgetType: string): ConcreteType<any> {
     switch (widgetType) {
-      // case 'platform-status':
-      //   return PlatformStatusWidgetComponent;
+      case 'platform-status':
+        return PlatformStatusWidgetComponent;
       //
       // case 'jenkins-job':
       //   return JenkinsJobWidgetComponent;

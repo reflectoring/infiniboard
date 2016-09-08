@@ -12,6 +12,7 @@ import {DashboardListComponent} from './dashboard/dashboard-list/dashboard-list.
 import {DashboardDetailComponent} from './dashboard/dashboard-detail/dashboard-detail.component';
 import {DashboardSidebarLinksComponent} from './dashboard/dashboard-sidebar-links/dashboard-sidebar-links.component';
 import {WidgetService} from './dashboard/shared/widget.service';
+import { PlatformStatusWidgetComponent } from './dashboard/widget/platform-status-widget/platform-status-widget.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {WidgetService} from './dashboard/shared/widget.service';
     PageNotImplementedComponent,
     DashboardListComponent,
     DashboardDetailComponent,
-    DashboardSidebarLinksComponent
+    DashboardSidebarLinksComponent,
+    PlatformStatusWidgetComponent
   ],
   imports: [
     BrowserModule,
