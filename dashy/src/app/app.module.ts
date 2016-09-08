@@ -13,6 +13,8 @@ import {DashboardDetailComponent} from './dashboard/dashboard-detail/dashboard-d
 import {DashboardSidebarLinksComponent} from './dashboard/dashboard-sidebar-links/dashboard-sidebar-links.component';
 import {WidgetService} from './dashboard/shared/widget.service';
 import {PlatformStatusWidgetComponent} from './dashboard/widget/platform-status-widget/platform-status-widget.component';
+import {StatusColorPipe} from './dashboard/widget/platform-status-widget/status-color.pipe';
+import {StatusIconPipe} from './dashboard/widget/platform-status-widget/status-icon.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {PlatformStatusWidgetComponent} from './dashboard/widget/platform-status-
     DashboardListComponent,
     DashboardDetailComponent,
     DashboardSidebarLinksComponent,
-    PlatformStatusWidgetComponent
+    PlatformStatusWidgetComponent,
+    StatusColorPipe,
+    StatusIconPipe
   ],
   imports: [
     BrowserModule,
