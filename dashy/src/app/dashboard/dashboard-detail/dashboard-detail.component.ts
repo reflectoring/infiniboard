@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Dashboard} from '../shared/dashboard';
 import {DashboardService} from '../shared/dashboard.service';
 import {WidgetConfig} from '../shared/widget-config';
-import {WidgetService} from '../../widget/shared/widget.service';
+import {WidgetService} from '../shared/widget.service';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -40,7 +40,7 @@ export class DashboardDetailComponent implements OnInit {
   }
 
   private initializeWidget(widgetConfig: WidgetConfig) {
-    // let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
+    let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
     // let promise = this.dynamicComponentLoader.loadIntoLocation(widgetComponent, this.elementRef, 'widgets');
     // Promise.resolve(promise).then(
     //   component => {

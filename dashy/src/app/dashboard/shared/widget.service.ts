@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
-import {WidgetConfig} from '../../dashboard/shared/widget-config';
+import {WidgetConfig} from './widget-config';
 import {Observable} from 'rxjs';
-import {Dashboard} from '../../dashboard/shared/dashboard';
+import {Dashboard} from './dashboard';
 
 @Injectable()
 export class WidgetService {

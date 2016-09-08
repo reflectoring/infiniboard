@@ -11,7 +11,7 @@ import {PageNotImplementedComponent} from './page-not-implemented/page-not-imple
 import {DashboardListComponent} from './dashboard/dashboard-list/dashboard-list.component';
 import {DashboardDetailComponent} from './dashboard/dashboard-detail/dashboard-detail.component';
 import {DashboardSidebarLinksComponent} from './dashboard/dashboard-sidebar-links/dashboard-sidebar-links.component';
-import {WidgetService} from './widget/shared/widget.service';
+import {WidgetService} from './dashboard/shared/widget.service';
 
 @NgModule({
   declarations: [
