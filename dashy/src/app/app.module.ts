@@ -15,6 +15,7 @@ import {WidgetService} from './dashboard/shared/widget.service';
 import {PlatformStatusWidgetComponent} from './dashboard/widget/platform-status-widget/platform-status-widget.component';
 import {StatusColorPipe} from './dashboard/widget/platform-status-widget/status-color.pipe';
 import {StatusIconPipe} from './dashboard/widget/platform-status-widget/status-icon.pipe';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {StatusIconPipe} from './dashboard/widget/platform-status-widget/status-i
     routing
   ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     DashboardService,
     WidgetService
   ],
