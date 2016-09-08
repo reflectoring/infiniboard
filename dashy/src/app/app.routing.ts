@@ -3,7 +3,9 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {DashboardListComponent} from './dashboard/dashboard-list/dashboard-list.component';
 import {DashboardDetailComponent} from './dashboard/dashboard-detail/dashboard-detail.component';
 
+
 export const appRoutes: Routes = [
+  {path: '', component: DashboardListComponent},
   {
     path: 'dashboards', children: [
     {path: '', component: DashboardListComponent},
