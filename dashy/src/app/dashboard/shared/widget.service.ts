@@ -56,6 +56,6 @@ export class WidgetService {
   }
 
   private static createWidgetConfig(haljson: any): WidgetConfig {
-    return new WidgetConfig('platform-status', haljson.title, haljson._links.data.href);
+    return new WidgetConfig(haljson.type, haljson.title, haljson._links.data.href);
   }
 }
