@@ -15,7 +15,7 @@ dependencies:
   cache_directories:
     - "~/docker"
     - "~/.npm"
-    - "infiniboard-app/node_modules"
+    - "dashy/node_modules"
 
   override:
     - docker version
