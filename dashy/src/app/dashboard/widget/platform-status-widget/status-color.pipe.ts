@@ -6,7 +6,6 @@ import {Status} from './status.enum';
 })
 export class StatusColorPipe implements PipeTransform {
 
-
   transform(status: Status): string {
 
     switch (status) {

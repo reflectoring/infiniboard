@@ -5,7 +5,6 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {routing} from './app.routing';
-import {LinksComponent} from './dashboard/links/links.component';
 import {DashboardService} from './dashboard/shared/dashboard.service';
 import {PageNotImplementedComponent} from './page-not-implemented/page-not-implemented.component';
 import {DashboardListComponent} from './dashboard/dashboard-list/dashboard-list.component';
@@ -21,7 +20,6 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    LinksComponent,
     PageNotImplementedComponent,
     DashboardListComponent,
     DashboardDetailComponent,
