@@ -26,6 +26,7 @@ dependencies:
 
     - npm install -g angular-cli@webpack
     - cd dashy && npm install
+    - cd dashy && ng lint
     - cd dashy && ng build --prod
 
     - ./gradlew --stacktrace --console=plain build integrationTest
