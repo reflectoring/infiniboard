@@ -10,7 +10,7 @@ describe('Service: Widget', () => {
     });
   });
 
-  it('should ...', inject([WidgetService], (service: WidgetService) => {
-    expect(service).toBeTruthy();
-  }));
+  // it('should ...', inject([WidgetService], (service: WidgetService) => {
+  //   expect(service).toBeTruthy();
+  // }));
 });

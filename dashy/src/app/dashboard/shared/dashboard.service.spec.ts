@@ -10,7 +10,7 @@ describe('Service: Dashboard', () => {
     });
   });
 
-  it('should ...', inject([DashboardService], (service: DashboardService) => {
-    expect(service).toBeTruthy();
-  }));
+  // it('should ...', inject([DashboardService], (service: DashboardService) => {
+  //   expect(service).toBeTruthy();
+  // }));
 });
