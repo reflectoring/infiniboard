@@ -43,8 +43,13 @@ dependencies:
     - docker save java:8 > ~/docker/java.tar
 
   post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
+    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-istanbul/
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - cp -a dashy/build/junit/*.xml $CIRCLE_TEST_REPORTS/junit/
+
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
     - mkdir -p $CIRCLE_TEST_REPORTS/junit-html/
     - find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} $CIRCLE_TEST_REPORTS/junit-html/`echo {} | cut -d / -f2`' \;
 
