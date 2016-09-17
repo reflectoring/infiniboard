@@ -4,7 +4,7 @@ import {DashboardService} from '../shared/dashboard.service';
 import {WidgetConfig} from '../shared/widget-config';
 import {WidgetService} from '../shared/widget.service';
 import {ActivatedRoute} from '@angular/router';
-import {ConcreteType} from '@angular/core/src/facade/lang';
+import {Type} from '@angular/core/src/facade/lang';
 import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
 
 @Component({
@@ -57,7 +57,7 @@ export class DashboardDetailComponent implements OnInit {
     component.updateWidgetData();
   }
 
-  private getWidgetComponentByType(widgetType: string): ConcreteType<any> {
+  private getWidgetComponentByType(widgetType: string): Type<any> {
     switch (widgetType) {
       case 'platform-status':
         return PlatformStatusWidgetComponent;

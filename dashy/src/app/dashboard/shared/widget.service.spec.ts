@@ -1,7 +1,5 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, async, inject } from '@angular/core/testing';
-import { WidgetService } from './widget.service';
+import {TestBed} from '@angular/core/testing';
+import {WidgetService} from './widget.service';
 
 describe('Service: Widget', () => {
   beforeEach(() => {
