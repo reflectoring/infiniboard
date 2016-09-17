@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: './',
+    basePath: '',
     frameworks: ['jasmine', 'angular-cli'],
     plugins: [
       require('karma-jasmine'),
@@ -24,6 +24,10 @@ module.exports = function (config) {
         lcovonly: './build/coverage/coverage.lcov'
       }
     },
+    angularCli: {
+      config: './angular-cli.json',
+      environment: 'dev'
+    },
     junitReporter: {
       outputDir: 'build/junit', // results will be saved as $outputDir/$browserName.xml
       outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
@@ -33,7 +37,6 @@ module.exports = function (config) {
       classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
       properties: {} // key value pair of properties to add to the <properties> section of the report
     },
-    angularCliConfig: './angular-cli.json',
     reporters: ['progress', 'karma-remap-istanbul', 'junit'],
     port: 9876,
     colors: true,
