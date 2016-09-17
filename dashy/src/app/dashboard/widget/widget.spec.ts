@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
 import {Widget} from './widget';
 import {TestBed} from '@angular/core/testing';
 import {WidgetService} from '../shared/widget.service';
@@ -8,7 +6,19 @@ import {Observable} from 'rxjs';
 
 class FakeWidgetService {
   public fetchWidgetData(widgetConfig: WidgetConfig): Observable<any> {
-    return Observable.of({});
+    return Observable.of({
+      'sourceData': [{
+        'id': '57dd991e6690b0f6fdc47cb3',
+        'widgetId': '57dd98a27e21e57c76718bed',
+        'sourceId': 'status',
+        'data': {'content': 'operable', 'status': 200}
+      }, {
+        'id': '57dd99216690b0f6fdc47cbf',
+        'widgetId': '57dd98a27e21e57c76718bed',
+        'sourceId': 'version',
+        'data': {'content': '1.0.3', 'status': 200}
+      }], '_links': {'widget': {'href': 'http://localhost:8080/api/dashboards/1/widgets/57dd98a27e21e57c76718bed'}}
+    });
   }
 }
 
