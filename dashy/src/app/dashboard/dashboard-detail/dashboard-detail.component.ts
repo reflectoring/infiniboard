@@ -1,11 +1,12 @@
-import {Component, OnInit, Input, ViewContainerRef, ComponentFactoryResolver, ViewChild} from "@angular/core";
-import {Dashboard} from "../shared/dashboard";
-import {DashboardService} from "../shared/dashboard.service";
-import {WidgetConfig} from "../shared/widget-config";
-import {WidgetService} from "../shared/widget.service";
-import {ActivatedRoute} from "@angular/router";
-import {Type} from "@angular/core/src/type";
-import {PlatformStatusWidgetComponent} from "../widget/platform-status-widget/platform-status-widget.component";
+import {Component, OnInit, Input, ViewContainerRef, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {Dashboard} from '../shared/dashboard';
+import {DashboardService} from '../shared/dashboard.service';
+import {WidgetConfig} from '../shared/widget-config';
+import {WidgetService} from '../shared/widget.service';
+import {ActivatedRoute} from '@angular/router';
+import {Type} from '@angular/core/src/type';
+import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
+
 
 @Component({
   selector: 'dashboard-detail',
