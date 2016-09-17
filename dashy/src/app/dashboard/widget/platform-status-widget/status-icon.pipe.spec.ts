@@ -10,22 +10,22 @@ describe('Pipe: StatusIcon', () => {
 
   it('transforms UP', () => {
     let pipe = new StatusIconPipe();
-    expect(pipe.transform(Status.UP)).toBe('fa-thumbs-o-up');
+    expect(pipe.transform(Status.UP)).toEqual('fa-thumbs-o-up');
   });
 
   it('transforms MAINTENANCE', () => {
     let pipe = new StatusIconPipe();
-    expect(pipe.transform(Status.MAINTENANCE)).toBe('fa-lock');
+    expect(pipe.transform(Status.MAINTENANCE)).toEqual('fa-lock');
   });
 
   it('transforms UNKNOWN', () => {
     let pipe = new StatusIconPipe();
-    expect(pipe.transform(Status.UNKNOWN)).toBe('fa-question');
+    expect(pipe.transform(Status.UNKNOWN)).toEqual('fa-question');
   });
 
   it('transforms DOWN', () => {
     let pipe = new StatusIconPipe();
-    expect(pipe.transform(Status.DOWN)).toBe('fa-remove');
+    expect(pipe.transform(Status.DOWN)).toEqual('fa-remove');
   });
 
 });

@@ -10,21 +10,21 @@ describe('Pipe: StatusColor', () => {
 
   it('transforms UP', () => {
     let pipe = new StatusColorPipe();
-    expect(pipe.transform(Status.UP)).toBe('bg-green');
+    expect(pipe.transform(Status.UP)).toEqual('bg-green');
   });
 
   it('transforms MAINTENANCE', () => {
     let pipe = new StatusColorPipe();
-    expect(pipe.transform(Status.MAINTENANCE)).toBe('bg-yellow');
+    expect(pipe.transform(Status.MAINTENANCE)).toEqual('bg-yellow');
   });
 
   it('transforms UNKNOWN', () => {
     let pipe = new StatusColorPipe();
-    expect(pipe.transform(Status.UNKNOWN)).toBe('bg-red');
+    expect(pipe.transform(Status.UNKNOWN)).toEqual('bg-red');
   });
 
   it('transforms DOWN', () => {
     let pipe = new StatusColorPipe();
-    expect(pipe.transform(Status.DOWN)).toBe('bg-red');
+    expect(pipe.transform(Status.DOWN)).toEqual('bg-red');
   });
 });
