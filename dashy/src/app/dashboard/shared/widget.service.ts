@@ -17,7 +17,7 @@ export class WidgetService {
     this.headers.append('Accept', 'application/json');
   }
 
-  public fetchWidgetData(widgetConfig: WidgetConfig): Observable<any> {
+  public getWidgetData(widgetConfig: WidgetConfig): Observable<any> {
     return this.http.get(widgetConfig.dataLink)
       .map(WidgetService.handleWidgetData)
       .catch(this.handleError);
@@ -36,7 +36,7 @@ export class WidgetService {
     return Observable.throw(errMsg);
   }
 
-  public fetchWidgets(dashboard: Dashboard): Observable<WidgetConfig[]> {
+  public getWidgets(dashboard: Dashboard): Observable<WidgetConfig[]> {
     return this.http.get(dashboard.widgetConfigsLink)
       .map(WidgetService.extractWidgetConfigList)
       .catch(this.handleError);

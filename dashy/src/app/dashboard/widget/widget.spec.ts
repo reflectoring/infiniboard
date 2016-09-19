@@ -5,7 +5,7 @@ import {WidgetConfig} from '../shared/widget-config';
 import {Observable} from 'rxjs';
 
 class FakeWidgetService {
-  public fetchWidgetData(widgetConfig: WidgetConfig): Observable<any> {
+  public getWidgetData(widgetConfig: WidgetConfig): Observable<any> {
     return Observable.of({
       'sourceData': [{
         'id': '57dd991e6690b0f6fdc47cb3',

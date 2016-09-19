@@ -26,7 +26,7 @@ export class Widget {
   }
 
   public updateWidgetData() {
-    this.widgetService.fetchWidgetData(this.widgetConfig).subscribe(
+    this.widgetService.getWidgetData(this.widgetConfig).subscribe(
       widgetData => {
         if (widgetData.length > 0) {
           this.updateData(widgetData);

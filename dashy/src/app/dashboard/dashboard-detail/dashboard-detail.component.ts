@@ -39,7 +39,7 @@ export class DashboardDetailComponent implements OnInit {
 
   private initializeDashboard(dashboard: Dashboard) {
     this.dashboard = dashboard;
-    this.widgetService.fetchWidgets(this.dashboard).subscribe(
+    this.widgetService.getWidgets(this.dashboard).subscribe(
       widgetConfigs => this.initializeWidgets(widgetConfigs),
       error => console.error(error)
     );
