@@ -15,8 +15,13 @@ class FakeWidgetHttp {
     switch (url) {
       case '/mock/widgets':
         return this.getWidgets();
+      case '/mock/widgets/error':
+        return this.getWidgetsWithError();
+
       case '/mock/data':
         return this.getWidgetData();
+      case '/mock/data/error':
+        return this.getWidgetDataWithError();
 
       default:
         throw new Error('unmocked url: ' + url);
@@ -78,16 +83,20 @@ class FakeWidgetHttp {
     return this.createFakeResponse('/mock/widgets', body);
   }
 
-  private createFakeResponse(url: string, body: any): Observable<Response> {
+  private createFakeResponse(url: string, body: any, status = 200): Observable<Response> {
     let responseOptionsArgs = {
       body: body,
-      status: 200,
+      status: status,
       statusText: 'OK',
       url: url,
       type: ResponseType.Basic
     };
 
     return Observable.of(new Response(new ResponseOptions(responseOptionsArgs)));
+  }
+
+  public getWidgetsWithError(): Observable<Response> {
+    return this.createFakeResponse('/mock/widgets/error', {}, 500);
   }
 
   public getWidgetData(): Observable<Response> {
@@ -105,6 +114,10 @@ class FakeWidgetHttp {
       }], '_links': {'widget': {'href': '/mock/api/dashboards/1/widgets/57dd98a27e21e57c76718bed'}}
     };
     return this.createFakeResponse('/mock/widgets/data', body);
+  }
+
+  public getWidgetDataWithError(): Observable<Response> {
+    return this.createFakeResponse('/mock/data/error', {}, 500);
   }
 }
 
