@@ -67,7 +67,7 @@ task cleanWebappDir(type: Delete) {
 }
 
 task copyClient(type: Copy) {
-    from '../infiniboard-app/build'
+    from '../dashy/dist'
     into 'src/main/webapp'
 }
 

@@ -15,7 +15,7 @@ dependencies:
   cache_directories:
     - "~/docker"
     - "~/.npm"
-    - "infiniboard-app/node_modules"
+    - "dashy/node_modules"
 
   override:
     - docker version
@@ -24,7 +24,12 @@ dependencies:
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
-    - cd infiniboard-app && npm install && cd ..
+    - npm install -g angular-cli@webpack
+    - cd dashy && npm install
+    - cd dashy && ng lint
+    - cd dashy && ng test
+    - cd dashy && ng build --prod
+
     - ./gradlew --stacktrace --console=plain build integrationTest
     - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
     - ./gradlew --stacktrace --console=plain buildDocker
@@ -38,8 +43,13 @@ dependencies:
     - docker save java:8 > ~/docker/java.tar
 
   post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
+    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-istanbul/
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - cp -a dashy/build/junit/*.xml $CIRCLE_TEST_REPORTS/junit/
+
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
     - mkdir -p $CIRCLE_TEST_REPORTS/junit-html/
     - find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} $CIRCLE_TEST_REPORTS/junit-html/`echo {} | cut -d / -f2`' \;
 
@@ -57,6 +67,7 @@ test:
     - echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
     - echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
     - echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+    - echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
 
   post:
     - echo "Running Docker containers"; docker ps -a

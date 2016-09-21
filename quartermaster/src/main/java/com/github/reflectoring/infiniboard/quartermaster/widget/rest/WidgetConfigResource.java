@@ -14,6 +14,8 @@ public class WidgetConfigResource extends ResourceSupport {
     @NotNull
     private String title;
 
+    private String type;
+
     private Date lastModified;
 
     private List<SourceConfig> sourceConfigs = new ArrayList<>();
@@ -24,6 +26,14 @@ public class WidgetConfigResource extends ResourceSupport {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Date getLastModified() {

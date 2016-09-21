@@ -72,6 +72,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
                 .andDo(document("widgets/create",
                                 requestFields(
                                         fields.withPath("title").description("The display title of the widget."),
+                                        fields.withPath("type").description("The type of the widget."),
                                         fields.withPath("lastModified").description(
                                                 "The date the widget's configuration has last been modified."),
                                         fields.withPath("sourceConfigs").description(
