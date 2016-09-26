@@ -28,7 +28,7 @@ allprojects {
     }
 }
 
-project(":infiniboard-app") {
+project(":dashy") {
     sonarqube {
         properties {
             // as typescript is not supported yet, we have to skip this one

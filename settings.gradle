@@ -1,5 +1,5 @@
 include 'quartermaster'
-include 'infiniboard-app'
+include 'dashy'
 include 'harvester'
 include 'test-base'
 include 'packrat'
