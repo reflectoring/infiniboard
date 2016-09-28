@@ -24,7 +24,7 @@ dependencies:
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
 
-    - npm install -g angular-cli@webpack
+    - npm install -g angular-cli@1.0.0-beta.15
     - cd dashy && npm install
     - cd dashy && ng lint
     - cd dashy && ng test
