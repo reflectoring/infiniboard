@@ -18,19 +18,14 @@ apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
 
-configurations {
-    providedRuntime
-}
-
 dependencies {
     compile(
             project(":packrat"),
             "org.springframework.boot:spring-boot-starter-actuator:${version_springBoot}",
-            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}",
-            "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
+            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}"
     )
 
-    providedRuntime(
+    compileOnly(
             "org.springframework.boot:spring-boot-starter-tomcat:${version_springBoot}"
     )
 
