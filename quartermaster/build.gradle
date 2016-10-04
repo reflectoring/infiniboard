@@ -113,8 +113,6 @@ asciidoctor {
     outputDir 'build/doc/restapi'
 }
 
-build.dependsOn asciidoctor
-
 githubPages {
     repoUri = 'git@github.com:reflectoring/infiniboard.git'
     targetBranch = 'gh-pages'
