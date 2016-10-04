@@ -114,10 +114,12 @@ asciidoctor {
 }
 
 githubPages {
-    repoUri = 'https://github.com/reflectoring/infiniboard.git'
+    repoUri = 'git@github.com:reflectoring/infiniboard.git'
     targetBranch = 'gh-pages'
     pages {
         from 'build/doc/restapi/html5'
         into "${version}/docs/restapi"
     }
 }
+
+publishGhPages.dependsOn asciidoctor
