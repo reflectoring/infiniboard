@@ -1,4 +1,4 @@
-[![Build Status](https://circleci.com/gh/reflectoring/infiniboard.svg?style=shield&circle-token=b5481c7e89b830ae2579de7a5303f495a96fc8b2)](https://circleci.com/gh/reflectoring/infiniboard) [![Gradle Status](https://gradleupdate.appspot.com/reflectoring/infiniboard/status.svg?branch=master)](https://gradleupdate.appspot.com/reflectoring/infiniboard/status)
+[![Build Status](https://circleci.com/gh/reflectoring/infiniboard.svg?style=shield&circle-token=b5481c7e89b830ae2579de7a5303f495a96fc8b2)](https://circleci.com/gh/reflectoring/infiniboard) [![Gradle Status](https://gradleupdate.appspot.com/reflectoring/infiniboard/status.svg?branch=master)](https://gradleupdate.appspot.com/reflectoring/infiniboard/status) [ ![Download](https://api.bintray.com/packages/reflectoring/infiniboard/releases/images/download.svg) ](https://bintray.com/reflectoring/infiniboard/releases/_latestVersion)
 
 # infiniboard
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
