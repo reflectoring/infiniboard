@@ -83,10 +83,10 @@ deployment:
 
   bintray:
     branch: master
-    commans:
+    commands:
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
 
-  hub:
+  dockerHub:
     branch: master
     commands:
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
