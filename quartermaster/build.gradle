@@ -118,7 +118,7 @@ githubPages {
     targetBranch = 'gh-pages'
     pages {
         from 'build/doc/restapi/html5'
-        into "${version}/docs/restapi"
+        into "${baseVersion}/docs/restapi"
     }
 }
 
