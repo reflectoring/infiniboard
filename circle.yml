@@ -80,14 +80,13 @@ test:
     - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
-  ghPages:
+  release:
     branch: master
     commands:
+      # update GitHub pages
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
 
-  hub:
-    branch: master
-    commands:
+      # upload docker images to Docker Hub
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi
