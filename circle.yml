@@ -80,6 +80,12 @@ test:
     - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
+
+  bintray:
+    branch: master
+    commans:
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
+
   hub:
     branch: master
     commands:
