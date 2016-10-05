@@ -8,6 +8,7 @@ buildscript {
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
         classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 }
 
@@ -17,6 +18,7 @@ apply plugin: 'docker'
 apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
+apply plugin: 'com.jfrog.bintray'
 
 dependencies {
     compile(
@@ -123,3 +125,34 @@ githubPages {
 }
 
 publishGhPages.dependsOn asciidoctor
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+
+    filesSpec {
+        into version
+        from('build/libs') {
+            include "${project.name}-${project.version}.war"
+        }
+    }
+
+    pkg {
+        userOrg = 'reflectoring'
+        repo = 'infiniboard'
+        name = 'releases'
+        desc = 'official infiniboard release repository'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
+        websiteUrl = 'http://reflectoring.github.io/infiniboard/'
+
+        publicDownloadNumbers = true
+
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
+}
+
+bintrayUpload.dependsOn build

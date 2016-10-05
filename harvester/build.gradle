@@ -2,12 +2,14 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 
 }
 
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
+apply plugin: 'com.jfrog.bintray'
 
 dependencies {
     compile(
@@ -49,3 +51,34 @@ task buildDocker(type: Docker, dependsOn: build) {
         }
     }
 }
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+
+    filesSpec {
+        into version
+        from('build/libs') {
+            include "${project.name}-${project.version}.jar"
+        }
+    }
+
+    pkg {
+        userOrg = 'reflectoring'
+        repo = 'infiniboard'
+        name = 'releases'
+        desc = 'official infiniboard release repository'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
+        websiteUrl = 'http://reflectoring.github.io/infiniboard/'
+
+        publicDownloadNumbers = true
+
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
+}
+
+bintrayUpload.dependsOn build
