@@ -85,7 +85,12 @@ deployment:
     commands:
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
 
-  hub:
+  bintray:
+    branch: master
+    commands:
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
+
+  dockerHub:
     branch: master
     commands:
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
