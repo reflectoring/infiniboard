@@ -63,6 +63,8 @@ bintray {
         }
     }
 
+    publish = true
+
     pkg {
         userOrg = 'reflectoring'
         repo = 'infiniboard'
