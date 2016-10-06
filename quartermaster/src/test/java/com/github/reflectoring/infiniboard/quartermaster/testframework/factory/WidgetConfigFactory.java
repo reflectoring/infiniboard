@@ -13,6 +13,7 @@ public class WidgetConfigFactory {
         widgetConfig.setLastModified(LocalDateTime.now());
         widgetConfig.setTitle("My Little Widget");
         widgetConfig.setId("my_little_widget");
+        widgetConfig.setType("platform-status");
         return widgetConfig;
     }
 
@@ -20,6 +21,7 @@ public class WidgetConfigFactory {
         WidgetConfigResource widgetConfigResource = new WidgetConfigResource();
         widgetConfigResource.setTitle("My Little Widget");
         widgetConfigResource.setLastModified(new Date());
+        widgetConfigResource.setType("platform-status");
         return widgetConfigResource;
     }
 
