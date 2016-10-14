@@ -1,7 +1,13 @@
-apply plugin: 'base'
+plugins {
+    id 'base'
+    id 'com.bmuschko.docker-remote-api' version '3.0.3' apply false
+}
 
 ext {
-    baseVersion = '0.2.0'
+    majorVersion = '0'
+    minorVersion = '2'
+    patchVersion = '0'
+    baseVersion = "${majorVersion}.${minorVersion}.${patchVersion}"
 }
 
 // alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden

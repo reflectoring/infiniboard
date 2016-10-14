@@ -1,10 +1,13 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+
 import java.text.SimpleDateFormat
 
 buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
-        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
         classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
@@ -14,11 +17,11 @@ buildscript {
 
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
-apply plugin: 'docker'
 apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 dependencies {
     compile(
@@ -79,26 +82,80 @@ processResources.mustRunAfter copyClient
 
 build.dependsOn copyClient
 
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tagVersion = 'latest'
-    tag = "${project.dockerGroup}/${war.baseName}"
+docker {
+    registryCredentials {
+        email = System.env.DOCKER_EMAIL
+        username = System.env.DOCKER_USER
+        password = System.env.DOCKER_PASS
+    }
 
-    dockerfile = file('src/main/docker/Dockerfile')
+    if (System.env.DOCKER_HOST) {
+        url = "$System.env.DOCKER_HOST".replace("tcp", "https")
+        if (System.env.DOCKER_CERT_PATH) {
+            certPath = new File(System.env.DOCKER_CERT_PATH)
+
+        }
+    } else {
+        url = 'unix:///var/run/docker.sock'
+    }
+}
+
+task buildImage(type: DockerBuildImage, dependsOn: build) {
+    def dockerDir = file('build/docker')
+    dockerDir.mkdirs()
+
     doFirst {
         copy {
             from("${project.buildDir}/libs/") {
                 rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
             }
-            into stageDir
+            into 'build/docker'
             exclude '*.original'
         }
         copy {
             from "${projectDir}/src/main/docker"
-            into stageDir
+            into 'build/docker'
+            include 'Dockerfile'
             include 'application.properties'
         }
     }
+
+    inputDir = dockerDir
+    tag = "${project.dockerGroup}/${war.baseName}"
+}
+
+
+
+task tagImage() {
+    mustRunAfter buildImage
+
+    dependsOn "tagPatchVersion"
+    dependsOn "tagMinorVersion"
+    dependsOn "tagMajorVersion"
+}
+
+task tagPatchVersion(type: DockerTagImage) {
+    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
+    repository = "${project.dockerGroup}/${war.baseName}"
+    tag = baseVersion
+}
+
+task tagMinorVersion(type: DockerTagImage) {
+    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
+    repository = "${project.dockerGroup}/${war.baseName}"
+    tag = "${project.majorVersion}.${project.minorVersion}"
+}
+
+task tagMajorVersion(type: DockerTagImage) {
+    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
+    repository = "${project.dockerGroup}/${war.baseName}"
+    tag = project.majorVersion
+}
+
+task pushImage(type: DockerPushImage) {
+    mustRunAfter tagImage
+
+    imageName = "${project.dockerGroup}/${war.baseName}"
 }
 
 ext {
