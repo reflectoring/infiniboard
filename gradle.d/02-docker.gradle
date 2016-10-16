@@ -1,0 +1,113 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.bmuschko:gradle-docker-plugin:3.0.3"
+    }
+}
+
+subprojects {
+    afterEvaluate {
+
+        if (plugins.hasPlugin('spring-boot')
+                && plugins.hasPlugin('com.bmuschko.docker-remote-api')
+                && file("${project.projectDir}/src/main/docker").exists()) {
+
+            if (plugins.hasPlugin("war")) {
+                ext.buildArtifactName = war.baseName
+                ext.buildArtifcatExt = 'war'
+            } else {
+                ext.buildArtifactName = jar.baseName
+                ext.buildArtifcatExt = 'jar'
+            }
+
+            docker {
+                registryCredentials {
+                    email = System.env.DOCKER_EMAIL
+                    username = System.env.DOCKER_USER
+                    password = System.env.DOCKER_PASS
+                }
+
+                if (System.env.DOCKER_HOST) {
+                    url = "$System.env.DOCKER_HOST".replace("tcp", "https")
+                    if (System.env.DOCKER_CERT_PATH) {
+                        certPath = new File(System.env.DOCKER_CERT_PATH)
+
+                    }
+                } else {
+                    url = 'unix:///var/run/docker.sock'
+                }
+            }
+
+            task buildImage(type: com.bmuschko.gradle.docker.tasks.image.DockerBuildImage, dependsOn: build) {
+                def dockerDir = file("${project.projectDir}/build/docker")
+                dockerDir.mkdirs()
+
+                doFirst {
+                    copy {
+                        from("${project.buildDir}/libs/") {
+                            rename "${project.buildArtifactName}-.*\\.${project.buildArtifcatExt}", "${project.buildArtifactName}.${project.buildArtifcatExt}"
+                        }
+                        into "${project.buildDir}/docker"
+                        exclude '*.original'
+                    }
+                    copy {
+                        from "${project.projectDir}/src/main/docker"
+                        into "${project.buildDir}/docker"
+                        include 'Dockerfile'
+                        include 'application.properties'
+                    }
+                }
+
+                inputDir = dockerDir
+                tag = getDockerRepository(project)
+            }
+
+
+
+            task tagImage() {
+                mustRunAfter buildImage
+
+                dependsOn "tagPatchVersion"
+                dependsOn "tagMinorVersion"
+                dependsOn "tagMajorVersion"
+            }
+
+            task tagPatchVersion(type: com.bmuschko.gradle.docker.tasks.image.DockerTagImage) {
+                targetImageId { getImageNameWithGroup(project) }
+                repository = getDockerRepository(project)
+
+                tag = baseVersion
+            }
+
+            task tagMinorVersion(type: com.bmuschko.gradle.docker.tasks.image.DockerTagImage) {
+                targetImageId { getImageNameWithGroup(project) }
+                repository = getDockerRepository(project)
+
+                tag = "${project.majorVersion}.${project.minorVersion}"
+            }
+
+            task tagMajorVersion(type: com.bmuschko.gradle.docker.tasks.image.DockerTagImage) {
+                targetImageId { getImageNameWithGroup(project) }
+                repository = getDockerRepository(project)
+
+                tag = project.majorVersion
+            }
+
+            task pushImage(type: com.bmuschko.gradle.docker.tasks.image.DockerPushImage) {
+                mustRunAfter tagImage
+
+                imageName = getDockerRepository(project)
+            }
+        }
+    }
+}
+
+def getImageNameWithGroup(Project project) {
+    project.dockerGroup + '/' + project.buildArtifactName + ':latest'
+}
+
+def getDockerRepository(Project project) {
+    "${project.dockerGroup}/${project.buildArtifactName}"
+}

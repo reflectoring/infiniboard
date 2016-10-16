@@ -1,6 +1,3 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
-import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
 
 import java.text.SimpleDateFormat
 
@@ -22,6 +19,7 @@ apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
+
 
 dependencies {
     compile(
@@ -81,82 +79,6 @@ copyClient.dependsOn cleanWebappDir
 processResources.mustRunAfter copyClient
 
 build.dependsOn copyClient
-
-docker {
-    registryCredentials {
-        email = System.env.DOCKER_EMAIL
-        username = System.env.DOCKER_USER
-        password = System.env.DOCKER_PASS
-    }
-
-    if (System.env.DOCKER_HOST) {
-        url = "$System.env.DOCKER_HOST".replace("tcp", "https")
-        if (System.env.DOCKER_CERT_PATH) {
-            certPath = new File(System.env.DOCKER_CERT_PATH)
-
-        }
-    } else {
-        url = 'unix:///var/run/docker.sock'
-    }
-}
-
-task buildImage(type: DockerBuildImage, dependsOn: build) {
-    def dockerDir = file('build/docker')
-    dockerDir.mkdirs()
-
-    doFirst {
-        copy {
-            from("${project.buildDir}/libs/") {
-                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
-            }
-            into 'build/docker'
-            exclude '*.original'
-        }
-        copy {
-            from "${projectDir}/src/main/docker"
-            into 'build/docker'
-            include 'Dockerfile'
-            include 'application.properties'
-        }
-    }
-
-    inputDir = dockerDir
-    tag = "${project.dockerGroup}/${war.baseName}"
-}
-
-
-
-task tagImage() {
-    mustRunAfter buildImage
-
-    dependsOn "tagPatchVersion"
-    dependsOn "tagMinorVersion"
-    dependsOn "tagMajorVersion"
-}
-
-task tagPatchVersion(type: DockerTagImage) {
-    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
-    repository = "${project.dockerGroup}/${war.baseName}"
-    tag = baseVersion
-}
-
-task tagMinorVersion(type: DockerTagImage) {
-    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
-    repository = "${project.dockerGroup}/${war.baseName}"
-    tag = "${project.majorVersion}.${project.minorVersion}"
-}
-
-task tagMajorVersion(type: DockerTagImage) {
-    targetImageId { project.dockerGroup + '/' + war.baseName + ':latest' }
-    repository = "${project.dockerGroup}/${war.baseName}"
-    tag = project.majorVersion
-}
-
-task pushImage(type: DockerPushImage) {
-    mustRunAfter tagImage
-
-    imageName = "${project.dockerGroup}/${war.baseName}"
-}
 
 ext {
     snippetsDir = file('build/generated-snippets')
