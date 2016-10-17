@@ -27,6 +27,8 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
         WidgetConfigResource resource = new WidgetConfigResource();
         resource.setTitle(entity.getTitle());
         resource.setType(entity.getType());
+        resource.setUrl(entity.getUrl());
+        resource.setDescription(entity.getDescription());
         resource.setLastModified(Date.from(entity.getLastModified().atZone(ZoneId.systemDefault()).toInstant()));
 
         for (SourceConfig config : entity.getSourceConfigs()) {
@@ -45,6 +47,8 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
         entity.setTitle(resource.getTitle());
         entity.setType(resource.getType());
         entity.setSourceConfigs(resource.getSourceConfigs());
+        entity.setUrl(resource.getUrl());
+        entity.setDescription(resource.getDescription());
         return entity;
     }
 }

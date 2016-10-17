@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Widget} from '../widget';
 import {Status} from './status.enum';
 import {WidgetService} from '../../shared/widget.service';
+import {WidgetConfig} from '../../shared/widget-config';
 
 @Component({
   selector: 'platform-status-widget',
@@ -11,10 +12,18 @@ import {WidgetService} from '../../shared/widget.service';
 export class PlatformStatusWidgetComponent extends Widget {
 
   version: string = 'N/A';
+  titleUrl: string = ":)";
+  description: string = "description";
   status: Status = Status.DOWN;
 
   public constructor(private wS: WidgetService) {
     super(wS);
+  }
+
+  public initWidget(widgetConfig: WidgetConfig) {
+    super.initWidget(widgetConfig);
+    this.titleUrl = widgetConfig.titleUrl;
+    this.description = widgetConfig.description;
   }
 
   public updateData(data: any[]) {
@@ -23,7 +32,6 @@ export class PlatformStatusWidgetComponent extends Widget {
       if (sourceData.sourceId === 'version') {
         let versionContent = sourceData.data.content;
         this.setVersionByPlatformStatus(this.status, versionContent);
-
       }
       if (sourceData.sourceId === 'status') {
         this.status = this.getPlatformStatus(sourceData.data.status);
