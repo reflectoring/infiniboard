@@ -1,15 +1,14 @@
 buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
-        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 
 }
 
 apply plugin: 'spring-boot'
-apply plugin: 'docker'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 dependencies {
     compile(
@@ -28,28 +27,6 @@ dependencies {
 bootRepackage {
     mainClass = 'com.github.reflectoring.infiniboard.harvester.HarvesterApplication'
     executable = true
-}
-
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tagVersion = 'latest'
-    tag = "${project.dockerGroup}/${jar.baseName}"
-
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        copy {
-            from("${project.buildDir}/libs/") {
-                rename "${jar.baseName}-.*\\.jar", "${jar.baseName}.jar"
-            }
-            into stageDir
-            exclude '*.original'
-        }
-        copy {
-            from "${projectDir}/src/main/docker"
-            into stageDir
-            include 'application.properties'
-        }
-    }
 }
 
 bintray {

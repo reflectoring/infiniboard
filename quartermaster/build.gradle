@@ -4,7 +4,6 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
-        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
         classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
@@ -14,11 +13,11 @@ buildscript {
 
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
-apply plugin: 'docker'
 apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 dependencies {
     compile(
@@ -78,28 +77,6 @@ copyClient.dependsOn cleanWebappDir
 processResources.mustRunAfter copyClient
 
 build.dependsOn copyClient
-
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tagVersion = 'latest'
-    tag = "${project.dockerGroup}/${war.baseName}"
-
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        copy {
-            from("${project.buildDir}/libs/") {
-                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
-            }
-            into stageDir
-            exclude '*.original'
-        }
-        copy {
-            from "${projectDir}/src/main/docker"
-            into stageDir
-            include 'application.properties'
-        }
-    }
-}
 
 ext {
     snippetsDir = file('build/generated-snippets')
