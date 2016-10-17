@@ -92,16 +92,32 @@ asciidoctor {
     outputDir 'build/doc/restapi'
 }
 
+task preparePages() {
+    doLast {
+        copy {
+            from 'src/main/pages'
+            into "${project.buildDir}/pages"
+        }
+        copy {
+            from 'build/doc/restapi/html5'
+            into "${project.buildDir}/pages/${baseVersion}/docs/restapi"
+
+        }
+    }
+}
+
+preparePages.dependsOn asciidoctor
+
 githubPages {
     repoUri = 'git@github.com:reflectoring/infiniboard.git'
     targetBranch = 'gh-pages'
     pages {
-        from 'build/doc/restapi/html5'
-        into "${baseVersion}/docs/restapi"
+        from "${project.buildDir}/pages"
+        into "."
     }
 }
 
-publishGhPages.dependsOn asciidoctor
+publishGhPages.dependsOn preparePages
 
 bintray {
     user = System.getenv('BINTRAY_USER')
