@@ -41,9 +41,7 @@ subprojects {
 
             task prepareDockerBuild() << {
                 def dockerStagePath = "${project.buildDir}/docker"
-                def dockerStageDir = file(dockerStagePath)
-                def success = dockerStageDir.mkdirs()
-                logger.lifecycle "${dockerStagePath} was created: ${success}"
+                file(dockerStagePath).mkdirs()
 
                 copy {
                     from("${project.buildDir}/libs/") {
