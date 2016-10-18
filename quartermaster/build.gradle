@@ -95,13 +95,8 @@ asciidoctor {
 task preparePages() {
     doLast {
         copy {
-            from 'src/main/pages'
-            into "${project.buildDir}/pages"
-        }
-        copy {
-            from 'build/doc/restapi/html5'
-            into "${project.buildDir}/pages/${baseVersion}/docs/restapi"
-
+            from "${project.buildDir}/doc/restapi/html5"
+            into "${project.buildDir}/pages/restapi"
         }
     }
 }
@@ -113,7 +108,7 @@ githubPages {
     targetBranch = 'gh-pages'
     pages {
         from "${project.buildDir}/pages"
-        into "."
+        into "docs/${baseVersion}"
     }
 }
 
