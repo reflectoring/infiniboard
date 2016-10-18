@@ -30,7 +30,7 @@ dependencies:
     - cd dashy && ng test
     - cd dashy && ng build --prod
 
-    - ./gradlew --stacktrace --console=plain build integrationTest asciidoctor
+    - ./gradlew --stacktrace --console=plain build integrationTest preparePages
     - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
     - ./gradlew --stacktrace --console=plain buildImage tagImage
 
