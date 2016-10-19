@@ -8,7 +8,7 @@ ADD application.properties application.properties
 
 ADD quartermaster.war app.war
 
-RUN bash -c 'touch /app.war'
+RUN touch /app.war
 
 EXPOSE 8080
 EXPOSE 8090

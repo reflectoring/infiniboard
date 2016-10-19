@@ -8,7 +8,7 @@ ADD application.properties application.properties
 
 ADD harvester.jar app.jar
 
-RUN bash -c 'touch /app.jar'
+RUN touch /app.war
 
 EXPOSE 9090
 
