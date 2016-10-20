@@ -11,7 +11,7 @@ class FakeWidgetService {
         'id': '57dd991e6690b0f6fdc47cb3',
         'widgetId': '57dd98a27e21e57c76718bed',
         'sourceId': 'status',
-        'data': {'content': 'operable', 'status': 200} nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbb vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+        'data': {'content': 'operable', 'status': 200}
       }, {
         'id': '57dd99216690b0f6fdc47cbf',
         'widgetId': '57dd98a27e21e57c76718bed',
