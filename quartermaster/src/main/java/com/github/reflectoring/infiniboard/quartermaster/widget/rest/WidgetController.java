@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class WidgetController {
         this.widgetConfigRepository = widgetConfigRepository;
     }
 
-    @RequestMapping(value = "/{widgetId}", method = GET)
+    @RequestMapping(value = "/{widgetId}", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WidgetConfigResource> getWidget(@PathVariable Integer dashboardId,
                                                           @PathVariable String widgetId) {
         WidgetConfig widgetConfig = widgetService.loadWidget(widgetId);
@@ -52,7 +53,7 @@ public class WidgetController {
         return new ResponseEntity<>(resource, OK);
     }
 
-    @RequestMapping(method = POST)
+    @RequestMapping(method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WidgetConfigResource> createWidget(@PathVariable Integer dashboardId,
                                                              @RequestBody WidgetConfigResource widgetConfigResource) {
         WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
@@ -62,7 +63,7 @@ public class WidgetController {
         return new ResponseEntity<>(resource, OK);
     }
 
-    @RequestMapping(value = "/{widgetId}/data", method = GET)
+    @RequestMapping(value = "/{widgetId}/data", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SourceDataResource> getData(@PathVariable Integer dashboardId,
                                                       @PathVariable String widgetId) {
         SourceDataResourceAssembler assembler = new SourceDataResourceAssembler(dashboardId, widgetId);
@@ -72,7 +73,7 @@ public class WidgetController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(method = GET)
+    @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedResources<WidgetConfigResource>> getWidgets(@PathVariable Integer dashboardId,
                                                                            @PageableDefault Pageable pageable,
                                                                            PagedResourcesAssembler pagedResourcesAssembler) {
