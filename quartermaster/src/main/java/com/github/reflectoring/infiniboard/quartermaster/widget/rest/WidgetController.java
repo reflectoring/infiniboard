@@ -53,7 +53,7 @@ public class WidgetController {
         return new ResponseEntity<>(resource, OK);
     }
 
-    @RequestMapping(method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WidgetConfigResource> createWidget(@PathVariable Integer dashboardId,
                                                              @RequestBody WidgetConfigResource widgetConfigResource) {
         WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
