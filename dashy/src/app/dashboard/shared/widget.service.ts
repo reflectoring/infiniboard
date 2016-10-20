@@ -54,6 +54,16 @@ export class WidgetService {
   }
 
   private static createWidgetConfig(haljson: any): WidgetConfig {
-    return new WidgetConfig(haljson.type, haljson.title, haljson._links.data.href);
+    let widgetConfig = new WidgetConfig(haljson.type, haljson.title, haljson._links.data.href);
+
+    if (haljson.titleUrl) {
+      widgetConfig.titleUrl = haljson.titleUrl;
+    }
+
+    if (haljson.description) {
+      widgetConfig.description = haljson.description;
+    }
+
+    return widgetConfig;
   }
 }
