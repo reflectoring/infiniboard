@@ -161,6 +161,7 @@ describe('Service: Widget', () => {
     inject([WidgetService], (service: WidgetService) => {
 
       let widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
+      widgetConfig.titleUrl = 'http://www.foo.bar';
       service.getWidgetData(widgetConfig).subscribe(data => {
         expect(data.length).toEqual(2);
       });
@@ -171,6 +172,7 @@ describe('Service: Widget', () => {
     inject([WidgetService], (service: WidgetService) => {
 
       let widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
+      widgetConfig.description = 'http://www.foo.bar';
       service.getWidgetData(widgetConfig).subscribe(data => {
         expect(data[0].sourceId).toEqual('status');
         expect(data[1].sourceId).toEqual('version');
