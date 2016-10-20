@@ -9,6 +9,11 @@ machine:
   services:
     - docker
 
+general:
+  branches:
+    ignore:
+      - gh-pages
+
 dependencies:
   pre:
     - sudo pip install docker-compose==1.5.2
@@ -30,9 +35,9 @@ dependencies:
     - cd dashy && ng test
     - cd dashy && ng build --prod
 
-    - ./gradlew --stacktrace --console=plain build integrationTest
+    - ./gradlew --stacktrace --console=plain build integrationTest preparePages
     - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
-    - ./gradlew --stacktrace --console=plain buildDocker
+    - ./gradlew --stacktrace --console=plain buildImage tagImage
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
@@ -61,7 +66,9 @@ test:
   pre:
     - docker-compose up -d harvester
     - docker-compose up -d quartermaster
-    - echo "waiting 50 seconds for applications to boot ..."; echo "50..."; sleep 10; echo "40..."; sleep 10; echo "30..."; sleep 10; echo "20..."; sleep 10; echo "10..."; sleep 10; echo "done.";
+    - bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+    - bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+    - bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
 
   override:
     - echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
@@ -78,9 +85,16 @@ test:
     - docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
 
 deployment:
-  hub:
+  release:
     branch: master
     commands:
+      # update GitHub pages
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
+
+      # upload artifacts to bintray
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
+
+      # upload docker images to Docker Hub
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi

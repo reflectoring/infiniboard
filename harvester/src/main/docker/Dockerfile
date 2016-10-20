@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER Matthias Balke <mathias.balke@googlemail.com>
 
@@ -8,7 +8,7 @@ ADD application.properties application.properties
 
 ADD harvester.jar app.jar
 
-RUN bash -c 'touch /app.jar'
+RUN touch /app.war
 
 EXPOSE 9090
 

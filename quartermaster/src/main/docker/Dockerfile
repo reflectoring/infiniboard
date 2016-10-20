@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER Matthias Balke <mathias.balke@googlemail.com>
 
@@ -8,7 +8,7 @@ ADD application.properties application.properties
 
 ADD quartermaster.war app.war
 
-RUN bash -c 'touch /app.war'
+RUN touch /app.war
 
 EXPOSE 8080
 EXPOSE 8090
