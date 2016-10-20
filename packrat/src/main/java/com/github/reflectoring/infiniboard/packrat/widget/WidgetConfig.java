@@ -17,7 +17,7 @@ public class WidgetConfig {
 
     private String type;
 
-    private String url;
+    private String titleUrl;
 
     private String description;
 
@@ -56,12 +56,12 @@ public class WidgetConfig {
         this.type = type;
     }
 
-    public String getUrl() {
-        return url;
+    public String getTitleUrl() {
+        return titleUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTitleUrl(String url) {
+        this.titleUrl = url;
     }
 
     public String getDescription() {

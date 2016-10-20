@@ -2,8 +2,9 @@
   <div class="info-box">
     <span class="info-box-icon {{status | statusColor }}"><i class="fa {{status | statusIcon}}"></i></span>
     <div class="info-box-content">
-      <span class="info-box-text">{{title}} {{titleUrl}}</span>
-      <span class="info-box-number">{{version}} {{description}}</span>
+      <span *ngIf="titleUrl" class="info-box-text"><a [href]="titleUrl" target="_blank">{{title}}</a></span>
+      <span *ngIf="!titleUrl" class="info-box-text">{{title}}</span>
+      <span class="info-box-number">{{version}}</span>
       <span class="info-box-text">{{description}}</span>
     </div><!-- /.info-box-content -->
   </div><!-- /.info-box -->

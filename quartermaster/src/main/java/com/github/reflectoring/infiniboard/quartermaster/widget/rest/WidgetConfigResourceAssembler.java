@@ -1,5 +1,8 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,9 +12,6 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.quartermaster.dashboard.rest.DashboardController;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<WidgetConfig, WidgetConfigResource> {
 
@@ -27,14 +27,12 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
         WidgetConfigResource resource = new WidgetConfigResource();
         resource.setTitle(entity.getTitle());
         resource.setType(entity.getType());
-        resource.setUrl(entity.getUrl());
+        resource.setTitleUrl(entity.getTitleUrl());
         resource.setDescription(entity.getDescription());
         resource.setLastModified(Date.from(entity.getLastModified().atZone(ZoneId.systemDefault()).toInstant()));
-
         for (SourceConfig config : entity.getSourceConfigs()) {
             resource.getSourceConfigs().add(config);
         }
-
         resource.add(linkTo(methodOn(WidgetController.class).getWidget(dashboardId, entity.getId())).withRel("self"));
         resource.add(linkTo(methodOn(DashboardController.class).getDashboard(dashboardId)).withRel("dashboard"));
         resource.add(linkTo(methodOn(WidgetController.class).getData(dashboardId, entity.getId())).withRel("data"));
@@ -47,7 +45,7 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
         entity.setTitle(resource.getTitle());
         entity.setType(resource.getType());
         entity.setSourceConfigs(resource.getSourceConfigs());
-        entity.setUrl(resource.getUrl());
+        entity.setTitleUrl(resource.getTitleUrl());
         entity.setDescription(resource.getDescription());
         return entity;
     }

@@ -1,11 +1,14 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 
@@ -16,8 +19,10 @@ public class WidgetConfigResource extends ResourceSupport {
 
     private String type;
 
-    private String url;
+    @JsonInclude(JsonInclude.Include.NON_ABSENT)
+    private String titleUrl;
 
+    @JsonInclude(JsonInclude.Include.NON_ABSENT)
     private String description;
 
     private Date lastModified;
@@ -40,12 +45,12 @@ public class WidgetConfigResource extends ResourceSupport {
         this.type = type;
     }
 
-    public String getUrl() {
-        return url;
+    public String getTitleUrl() {
+        return titleUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTitleUrl(String url) {
+        this.titleUrl = url;
     }
 
     public String getDescription() {
