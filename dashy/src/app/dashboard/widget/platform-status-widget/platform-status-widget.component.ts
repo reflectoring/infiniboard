@@ -13,7 +13,7 @@ export class PlatformStatusWidgetComponent extends Widget {
 
   version: string = 'N/A';
   titleUrl: string;
-  description: string = "description";
+  description: string;
   status: Status = Status.DOWN;
 
   public constructor(private wS: WidgetService) {

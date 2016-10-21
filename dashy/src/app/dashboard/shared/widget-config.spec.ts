@@ -27,5 +27,6 @@ describe('WidgetConfig', () => {
   it('constructor() should set widgetConfig.dataLink', () => {
     let link = '/mock/data';
     let widgetConfig = new WidgetConfig('platform-status', 'Test Platform', link);
+    expect(widgetConfig.dataLink).toEqual(link);
   });
 });
