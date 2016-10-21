@@ -3,7 +3,8 @@ package com.github.reflectoring.infiniboard.quartermaster.testframework;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Collection of ResultMatchers to be used in MockMvc's fluent API.

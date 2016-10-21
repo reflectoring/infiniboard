@@ -4,33 +4,29 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
-        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
         classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 }
 
 apply plugin: 'spring-boot'
 apply plugin: 'mongo'
-apply plugin: 'docker'
 apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.github-pages'
-
-configurations {
-    providedRuntime
-}
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 dependencies {
     compile(
             project(":packrat"),
             "org.springframework.boot:spring-boot-starter-actuator:${version_springBoot}",
-            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}",
-            "org.tuckey:urlrewritefilter:${version_url_rewrite_filter}"
+            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}"
     )
 
-    providedRuntime(
+    compileOnly(
             "org.springframework.boot:spring-boot-starter-tomcat:${version_springBoot}"
     )
 
@@ -82,28 +78,6 @@ processResources.mustRunAfter copyClient
 
 build.dependsOn copyClient
 
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tagVersion = 'latest'
-    tag = "${project.dockerGroup}/${war.baseName}"
-
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        copy {
-            from("${project.buildDir}/libs/") {
-                rename "${war.baseName}-.*\\.war", "${war.baseName}.war"
-            }
-            into stageDir
-            exclude '*.original'
-        }
-        copy {
-            from "${projectDir}/src/main/docker"
-            into stageDir
-            include 'application.properties'
-        }
-    }
-}
-
 ext {
     snippetsDir = file('build/generated-snippets')
 }
@@ -118,11 +92,57 @@ asciidoctor {
     outputDir 'build/doc/restapi'
 }
 
-githubPages {
-    repoUri = 'https://github.com/reflectoring/infiniboard.git'
-    targetBranch = 'gh-pages'
-    pages {
-        from 'build/doc/restapi/html5'
-        into "${version}/docs/restapi"
+task preparePages() {
+    doLast {
+        copy {
+            from "${project.buildDir}/doc/restapi/html5"
+            into "${project.buildDir}/pages/restapi"
+        }
     }
 }
+
+preparePages.dependsOn asciidoctor
+
+githubPages {
+    repoUri = 'git@github.com:reflectoring/infiniboard.git'
+    targetBranch = 'gh-pages'
+    pages {
+        from "${project.buildDir}/pages"
+        into "docs/${baseVersion}"
+    }
+}
+
+publishGhPages.dependsOn preparePages
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+
+    filesSpec {
+        into version
+        from('build/libs') {
+            include "${project.name}-${project.version}.war"
+        }
+    }
+
+    publish = true
+
+    pkg {
+        userOrg = 'reflectoring'
+        repo = 'infiniboard'
+        name = 'releases'
+        desc = 'official infiniboard release repository'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
+        websiteUrl = 'http://reflectoring.github.io/infiniboard/'
+
+        publicDownloadNumbers = true
+
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
+}
+
+bintrayUpload.dependsOn build

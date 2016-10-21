@@ -1,13 +1,14 @@
 buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
-        classpath "se.transmode.gradle:gradle-docker:${version_gradleDocker}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 
 }
 
 apply plugin: 'spring-boot'
-apply plugin: 'docker'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.bmuschko.docker-remote-api'
 
 dependencies {
     compile(
@@ -28,24 +29,35 @@ bootRepackage {
     executable = true
 }
 
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tagVersion = 'latest'
-    tag = "${project.dockerGroup}/${jar.baseName}"
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
 
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        copy {
-            from("${project.buildDir}/libs/") {
-                rename "${jar.baseName}-.*\\.jar", "${jar.baseName}.jar"
-            }
-            into stageDir
-            exclude '*.original'
+    filesSpec {
+        into version
+        from('build/libs') {
+            include "${project.name}-${project.version}.jar"
         }
-        copy {
-            from "${projectDir}/src/main/docker"
-            into stageDir
-            include 'application.properties'
+    }
+
+    publish = true
+
+    pkg {
+        userOrg = 'reflectoring'
+        repo = 'infiniboard'
+        name = 'releases'
+        desc = 'official infiniboard release repository'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
+        websiteUrl = 'http://reflectoring.github.io/infiniboard/'
+
+        publicDownloadNumbers = true
+
+        version {
+            name = project.version
+            released = new Date()
         }
     }
 }
+
+bintrayUpload.dependsOn build

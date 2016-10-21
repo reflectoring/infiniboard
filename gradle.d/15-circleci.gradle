@@ -2,15 +2,18 @@ def getBuildVersion(String baseVersion) {
     def version = baseVersion;
 
     if (project.isCiBuild) {
+
+        version += ".${project.buildNumber}"
+
         if (project.isPullRequest) {
             version += "-PR${project.pullRequestNumber}"
         }
-        version += "-${project.buildNumber}"
-        version += "-${project.gitCommitShort}"
 
     } else {
         version += "-local"
     }
+
+    return version
 }
 
 ext {
@@ -19,7 +22,6 @@ ext {
 
     buildNumber = getEnv('CIRCLE_BUILD_NUM', null)
     gitCommit = getEnv('CIRCLE_SHA1', null)
-    gitCommitShort = getEnv('CIRCLE_SHA1', null)
     pullRequestNumber = getEnv('CIRCLE_PR_NUMBER', null)
     isPullRequest = pullRequestNumber != null
 
@@ -27,10 +29,9 @@ ext {
     getBuildVersion = this.&getBuildVersion
 }
 
-println "isCiBuild        : ${isCiBuild}"
-println "buildNumber      : ${buildNumber}"
-println "gitCommit        : ${gitCommit}"
-println "gitCommitShort   : ${gitCommitShort}"
-println "isPullRequest    : ${isPullRequest}"
-println "pullRequestNumber: ${pullRequestNumber}"
-println ""
+logger.lifecycle "isCiBuild        : ${isCiBuild}"
+logger.lifecycle "buildNumber      : ${buildNumber}"
+logger.lifecycle "gitCommit        : ${gitCommit}"
+logger.lifecycle "isPullRequest    : ${isPullRequest}"
+logger.lifecycle "pullRequestNumber: ${pullRequestNumber}"
+logger.lifecycle ""
