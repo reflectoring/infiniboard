@@ -9,6 +9,11 @@ machine:
   services:
     - docker
 
+general:
+  branches:
+    ignore:
+      - gh-pages
+
 dependencies:
   pre:
     - sudo pip install docker-compose==1.5.2
