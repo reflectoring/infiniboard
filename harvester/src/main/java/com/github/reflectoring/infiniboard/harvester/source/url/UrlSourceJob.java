@@ -1,15 +1,19 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
+import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -35,18 +39,18 @@ public class UrlSourceJob extends SourceJob {
      */
     public static final String JOBTYPE = "urlSource";
 
-    static final String PARAM_STATUS = "status";
-    static final String PARAM_CONTENT = "content";
-    static final String PARAM_URL = "url";
+    static final String PARAM_STATUS             = "status";
+    static final String PARAM_CONTENT            = "content";
+    static final String PARAM_URL                = "url";
     static final String PARAM_DISABLE_SSL_VERIFY = "disableSslVerification";
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
-        String url = configuration.get(PARAM_URL).toString();
+        String  url              = configuration.get(PARAM_URL).toString();
         boolean disableSslVerify = isSslVerificationDisabled(configuration);
 
         try (CloseableHttpClient httpClient = getHttpClient(disableSslVerify)) {
-            HttpGet httpGet = new HttpGet(url);
+            HttpGet               httpGet  = new HttpGet(url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
 
             HashMap<String, Object> results = new HashMap<>();
@@ -59,6 +63,28 @@ public class UrlSourceJob extends SourceJob {
 
             upsertResults(context, jobKey, results);
 
+        } catch (SSLHandshakeException e) {
+            String message =
+                    MessageFormat.format("Could not establish SSL connection to '{0}'. '{1}' is set to '{2}'.", url,
+                                         PARAM_DISABLE_SSL_VERIFY,
+                                         disableSslVerify);
+            if (disableSslVerify) {
+                LOG.warn(message);
+            } else {
+                LOG.error(message);
+            }
+        } catch (HttpHostConnectException e) {
+            String message =
+                    MessageFormat.format("Could not establish connection to '{0}'. '{1}' is set to '{2}'.", url,
+                                         PARAM_DISABLE_SSL_VERIFY,
+                                         disableSslVerify);
+            if (disableSslVerify) {
+                LOG.warn(message);
+            } else {
+                LOG.error(message);
+            }
+        } catch (UnknownHostException e) {
+            LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             LOG.error("could not fetch url '{}'", url, e);
         }
@@ -74,8 +100,8 @@ public class UrlSourceJob extends SourceJob {
     }
 
     private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
-        SourceDataRepository repository = context.getBean(SourceDataRepository.class);
-        SourceData existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
+        SourceDataRepository repository   = context.getBean(SourceDataRepository.class);
+        SourceData           existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
         if (existingData != null) {
             existingData.setData(results);
         } else {
