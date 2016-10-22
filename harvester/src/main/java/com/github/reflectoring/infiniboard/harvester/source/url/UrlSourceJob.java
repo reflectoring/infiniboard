@@ -65,9 +65,8 @@ public class UrlSourceJob extends SourceJob {
 
         } catch (SSLHandshakeException e) {
             String message =
-                    MessageFormat.format("Could not establish SSL connection to '{0}'. '{1}' is set to '{2}'.", url,
-                                         PARAM_DISABLE_SSL_VERIFY,
-                                         disableSslVerify);
+                    String.format("Could not establish SSL connection to '%s'. '%s' is set to '%s'.",
+                                         url, PARAM_DISABLE_SSL_VERIFY, disableSslVerify);
             if (disableSslVerify) {
                 LOG.warn(message);
             } else {
@@ -75,9 +74,8 @@ public class UrlSourceJob extends SourceJob {
             }
         } catch (HttpHostConnectException e) {
             String message =
-                    MessageFormat.format("Could not establish connection to '{0}'. '{1}' is set to '{2}'.", url,
-                                         PARAM_DISABLE_SSL_VERIFY,
-                                         disableSslVerify);
+                    String.format("Could not establish connection to '%s'. '%s' is set to '%s'.",
+                                    url, PARAM_DISABLE_SSL_VERIFY, disableSslVerify);
             if (disableSslVerify) {
                 LOG.warn(message);
             } else {
