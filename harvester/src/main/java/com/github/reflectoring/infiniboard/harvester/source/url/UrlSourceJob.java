@@ -35,15 +35,18 @@ public class UrlSourceJob extends SourceJob {
      */
     public static final String JOBTYPE = "urlSource";
 
-    static final String PARAM_STATUS  = "status";
+    static final String PARAM_STATUS = "status";
     static final String PARAM_CONTENT = "content";
-    static final String PARAM_URL     = "url";
+    static final String PARAM_URL = "url";
+    static final String PARAM_DISABLE_SSL_VERIFY = "disableSslVerify";
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
         String url = configuration.get(PARAM_URL).toString();
-        try (CloseableHttpClient httpClient = getHttpClient()) {
-            HttpGet               httpGet  = new HttpGet(url);
+        boolean disableSslVerify = isSslVerificationDisabled(configuration);
+
+        try (CloseableHttpClient httpClient = getHttpClient(disableSslVerify)) {
+            HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
 
             HashMap<String, Object> results = new HashMap<>();
@@ -61,9 +64,18 @@ public class UrlSourceJob extends SourceJob {
         }
     }
 
+    private boolean isSslVerificationDisabled(Map configuration) {
+        Object o = configuration.get(PARAM_DISABLE_SSL_VERIFY);
+        if (o == null) {
+            return false;
+        }
+
+        return Boolean.valueOf(o.toString());
+    }
+
     private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
-        SourceDataRepository repository   = context.getBean(SourceDataRepository.class);
-        SourceData           existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
+        SourceDataRepository repository = context.getBean(SourceDataRepository.class);
+        SourceData existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
         if (existingData != null) {
             existingData.setData(results);
         } else {
@@ -72,13 +84,17 @@ public class UrlSourceJob extends SourceJob {
         repository.save(existingData);
     }
 
-    CloseableHttpClient getHttpClient()
-            throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    private CloseableHttpClient getHttpClient(boolean disableSslVerify) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-        // simple SSL hack, should be temporary (https://github.com/reflectoring/infiniboard/issues/40)
-        return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
-                .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
-                .build();
+        if (disableSslVerify) {
+            return HttpClients
+                    .custom()
+                    .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                    .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
+                    .build();
+        }
+
+        return HttpClients.createDefault();
     }
 
 }
