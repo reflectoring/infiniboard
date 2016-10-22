@@ -38,7 +38,7 @@ public class UrlSourceJob extends SourceJob {
     static final String PARAM_STATUS = "status";
     static final String PARAM_CONTENT = "content";
     static final String PARAM_URL = "url";
-    static final String PARAM_DISABLE_SSL_VERIFY = "disableSslVerify";
+    static final String PARAM_DISABLE_SSL_VERIFY = "disableSslVerification";
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
@@ -84,7 +84,7 @@ public class UrlSourceJob extends SourceJob {
         repository.save(existingData);
     }
 
-    private CloseableHttpClient getHttpClient(boolean disableSslVerify) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    CloseableHttpClient getHttpClient(boolean disableSslVerify) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
         if (disableSslVerify) {
             return HttpClients

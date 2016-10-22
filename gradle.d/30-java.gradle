@@ -13,11 +13,11 @@ subprojects {
         }
 
         dependencies {
-            compile (
+            compile(
                     "org.apache.commons:commons-lang3:${version_commons_lang}",
                     "commons-io:commons-io:${version_commons_io}",
             )
-            testCompile (
+            testCompile(
                     project(':test-base'),
             )
         }
@@ -25,6 +25,16 @@ subprojects {
         jacoco {
             toolVersion = version_jacoco
         }
+
+        jacocoTestReport {
+            reports {
+                xml.enabled false
+                csv.enabled false
+                html.destination "${buildDir}/jacoco/html"
+            }
+        }
+
+        build.dependsOn jacocoTestReport
 
         compileJava {
             sourceCompatibility = version_java

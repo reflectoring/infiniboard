@@ -44,7 +44,7 @@ public class UrlSourceJobTest {
         }
 
         @Override
-        CloseableHttpClient getHttpClient() {
+        CloseableHttpClient getHttpClient(boolean disableSslVerify) {
             return client;
         }
     }
