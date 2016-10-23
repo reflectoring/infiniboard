@@ -38,17 +38,17 @@ public class UrlSourceJob extends SourceJob {
      */
     public static final String JOBTYPE = "urlSource";
 
-    static final String PARAM_STATUS             = "status";
-    static final String PARAM_CONTENT            = "content";
-    static final String PARAM_URL                = "url";
-    static final String PARAM_DISABLE_SSL_VERIFY = "disableSslVerification";
+    static final String PARAM_STATUS            = "status";
+    static final String PARAM_CONTENT           = "content";
+    static final String PARAM_URL               = "url";
+    static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
         String  url              = configuration.get(PARAM_URL).toString();
-        boolean disableSslVerify = isSslVerificationDisabled(configuration);
+        boolean enableSslVerify = isSslVerificationEnabled(configuration);
 
-        try (CloseableHttpClient httpClient = getHttpClient(disableSslVerify)) {
+        try (CloseableHttpClient httpClient = getHttpClient(enableSslVerify)) {
             HttpGet               httpGet  = new HttpGet(url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
 
@@ -63,23 +63,11 @@ public class UrlSourceJob extends SourceJob {
             upsertResults(context, jobKey, results);
 
         } catch (SSLHandshakeException e) {
-            String message =
-                    String.format("Could not establish SSL connection to '%s'. '%s' is set to '%s'.",
-                                         url, PARAM_DISABLE_SSL_VERIFY, disableSslVerify);
-            if (disableSslVerify) {
-                LOG.warn(message);
-            } else {
-                LOG.error(message);
-            }
+            String msg = "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+            logConnectionError(msg, url, enableSslVerify, e);
         } catch (HttpHostConnectException e) {
-            String message =
-                    String.format("Could not establish connection to '%s'. '%s' is set to '%s'.",
-                                    url, PARAM_DISABLE_SSL_VERIFY, disableSslVerify);
-            if (disableSslVerify) {
-                LOG.warn(message);
-            } else {
-                LOG.error(message);
-            }
+            String msg = "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+            logConnectionError(msg, url, enableSslVerify, e);
         } catch (UnknownHostException e) {
             LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
@@ -87,10 +75,19 @@ public class UrlSourceJob extends SourceJob {
         }
     }
 
-    private boolean isSslVerificationDisabled(Map configuration) {
-        Object o = configuration.get(PARAM_DISABLE_SSL_VERIFY);
+    private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
+        String message = String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
+        if (enableSslVerify) {
+            LOG.error(message);
+        } else {
+            LOG.warn(message);
+        }
+    }
+
+    private boolean isSslVerificationEnabled(Map configuration) {
+        Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
         if (o == null) {
-            return false;
+            return true;
         }
 
         return Boolean.valueOf(o.toString());
