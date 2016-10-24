@@ -23,10 +23,10 @@ import static org.mockito.Mockito.*;
 
 public class UrlSourceJobTest {
 
-    private static final String SOURCE_ID  = "sourceId";
-    private static final String WIDGET_ID  = "widgetId";
-    private static final String MY_CONTENT = "myContent";
-    private static final String MY_REASON  = "myReason";
+    private static final String SOURCE_ID = "sourceId";
+    private static final String WIDGET_ID = "widgetId";
+    private static final String TEST_CONTENT = "test content";
+    private static final String REASON_OK = "OK";
 
     private ApplicationContext applicationContext;
 
@@ -35,7 +35,7 @@ public class UrlSourceJobTest {
     /**
      * overwrites the getHttpClient method to be able to inject mocked client
      */
-    class TestUrlSourceJob extends UrlSourceJob {
+    private class TestUrlSourceJob extends UrlSourceJob {
 
         private CloseableHttpClient client;
 
@@ -65,7 +65,7 @@ public class UrlSourceJobTest {
 
         HashMap<String, Object> expectedData = new HashMap<>();
         expectedData.put(UrlSourceJob.PARAM_STATUS, HttpStatus.SC_OK);
-        expectedData.put(UrlSourceJob.PARAM_CONTENT, MY_CONTENT);
+        expectedData.put(UrlSourceJob.PARAM_CONTENT, TEST_CONTENT);
         verify(repository).save(refEq(new SourceData(WIDGET_ID, SOURCE_ID, expectedData)));
     }
 
@@ -78,34 +78,33 @@ public class UrlSourceJobTest {
 
         HashMap<String, Object> expectedData = new HashMap<>();
         expectedData.put(UrlSourceJob.PARAM_STATUS, HttpStatus.SC_OK);
-        expectedData.put(UrlSourceJob.PARAM_CONTENT, MY_REASON);
+        expectedData.put(UrlSourceJob.PARAM_CONTENT, REASON_OK);
         verify(repository).save(refEq(new SourceData(WIDGET_ID, SOURCE_ID, expectedData)));
     }
 
     private HashMap<String, Object> createConfigMap() {
         HashMap<String, Object> config = new HashMap<>();
-        config.put(UrlSourceJob.PARAM_URL, "myUrl");
+        config.put(UrlSourceJob.PARAM_URL, "http://www.google.de");
         return config;
     }
 
     /**
-     * @param withContent
-     *         defines if an entity should be returned (otherwise simulating an empty result)
+     * @param withContent defines if an entity should be returned (otherwise simulating an empty result)
      */
     private CloseableHttpClient prepareHttpClientMock(boolean withContent)
             throws IOException {
-        CloseableHttpClient   httpClient   = mock(CloseableHttpClient.class);
+        CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
         CloseableHttpResponse httpResponse = mock(CloseableHttpResponse.class);
         when(httpClient.execute(any(HttpGet.class))).thenReturn(httpResponse);
         StatusLine statusLine = mock(StatusLine.class);
         when(httpResponse.getStatusLine()).thenReturn(statusLine);
         when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
-        when(statusLine.getReasonPhrase()).thenReturn(MY_REASON);
+        when(statusLine.getReasonPhrase()).thenReturn(REASON_OK);
 
         if (withContent) {
             HttpEntity httpEntity = mock(HttpEntity.class);
             when(httpResponse.getEntity()).thenReturn(httpEntity);
-            when(httpEntity.getContent()).thenReturn(new ByteArrayInputStream(MY_CONTENT.getBytes()));
+            when(httpEntity.getContent()).thenReturn(new ByteArrayInputStream(TEST_CONTENT.getBytes()));
         }
 
         return httpClient;

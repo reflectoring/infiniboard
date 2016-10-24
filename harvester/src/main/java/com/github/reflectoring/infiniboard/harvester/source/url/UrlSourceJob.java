@@ -36,7 +36,7 @@ public class UrlSourceJob extends SourceJob {
     /**
      * name used for registering this job
      */
-    public static final String JOBTYPE = "urlSource";
+    static final String JOB_TYPE = "urlSource";
 
     static final String PARAM_STATUS            = "status";
     static final String PARAM_CONTENT           = "content";
@@ -44,7 +44,7 @@ public class UrlSourceJob extends SourceJob {
     static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
     @Override
-    protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
+    protected void executeInternal(ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
         String  url              = configuration.get(PARAM_URL).toString();
         boolean enableSslVerify = isSslVerificationEnabled(configuration);
 
@@ -75,6 +75,15 @@ public class UrlSourceJob extends SourceJob {
         }
     }
 
+    private boolean isSslVerificationEnabled(Map<String, Object> configuration) {
+        Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
+        if (o == null) {
+            return true;
+        }
+
+        return Boolean.valueOf(o.toString());
+    }
+
     private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
         String message = String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
         if (enableSslVerify) {
@@ -82,15 +91,6 @@ public class UrlSourceJob extends SourceJob {
         } else {
             LOG.warn(message);
         }
-    }
-
-    private boolean isSslVerificationEnabled(Map configuration) {
-        Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
-        if (o == null) {
-            return true;
-        }
-
-        return Boolean.valueOf(o.toString());
     }
 
     private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
