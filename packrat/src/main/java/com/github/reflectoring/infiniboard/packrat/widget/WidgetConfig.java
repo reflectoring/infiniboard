@@ -17,6 +17,10 @@ public class WidgetConfig {
 
     private String type;
 
+    private String titleUrl;
+
+    private String description;
+
     private LocalDateTime lastModified = LocalDateTime.now();
 
     private List<SourceConfig> sourceConfigs = new ArrayList<>();
@@ -50,6 +54,22 @@ public class WidgetConfig {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTitleUrl() {
+        return titleUrl;
+    }
+
+    public void setTitleUrl(String url) {
+        this.titleUrl = url;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getLastModified() {
