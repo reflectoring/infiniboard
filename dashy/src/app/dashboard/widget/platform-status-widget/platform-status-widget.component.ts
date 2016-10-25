@@ -12,8 +12,6 @@ import {WidgetConfig} from '../../shared/widget-config';
 export class PlatformStatusWidgetComponent extends Widget {
 
   version: string = 'N/A';
-  titleUrl: string;
-  description: string;
   status: Status = Status.DOWN;
 
   public constructor(private wS: WidgetService) {
@@ -22,10 +20,6 @@ export class PlatformStatusWidgetComponent extends Widget {
 
   public initWidget(widgetConfig: WidgetConfig) {
     super.initWidget(widgetConfig);
-    this.titleUrl = widgetConfig.titleUrl;
-    this.description = widgetConfig.description;
-
-    console.log(widgetConfig);
   }
 
   public updateData(data: any[]) {
