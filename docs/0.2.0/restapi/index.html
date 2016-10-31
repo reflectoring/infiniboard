@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<meta name="author" content="v0.2.0-local, 2016-10-18">
+<meta name="author" content="v0.2.0.244, 2016-10-20">
 <title>infiniboard REST API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -423,7 +423,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>infiniboard REST API</h1>
 <div class="details">
-<span id="author" class="author">v0.2.0-local, 2016-10-18</span><br>
+<span id="author" class="author">v0.2.0.244, 2016-10-20</span><br>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -516,7 +516,7 @@ Host: localhost</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 571
 
 {
@@ -567,7 +567,7 @@ Host: localhost</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 270
 
 {
@@ -674,7 +674,7 @@ Content-Length: 123
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1476817045896,
+  "lastModified" : 1476985046248,
   "sourceConfigs" : [ ]
 }</code></pre>
 </div>
@@ -685,13 +685,13 @@ Content-Length: 123
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 436
 
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1476817045896,
+  "lastModified" : 1476985046248,
   "sourceConfigs" : [ ],
   "_links" : {
     "self" : {
@@ -725,7 +725,7 @@ Host: localhost</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 766
 
 {
@@ -733,7 +733,7 @@ Content-Length: 766
     "widgetConfigResourceList" : [ {
       "title" : "My Little Widget",
       "type" : "platform-status",
-      "lastModified" : 1476817045810,
+      "lastModified" : 1476985045763,
       "sourceConfigs" : [ ],
       "_links" : {
         "self" : {
@@ -780,13 +780,13 @@ Host: localhost</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 436
 
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1476817045865,
+  "lastModified" : 1476985046136,
   "sourceConfigs" : [ ],
   "_links" : {
     "self" : {
@@ -820,7 +820,7 @@ Host: localhost</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json;charset=UTF-8
+Content-Type: application/json;charset=UTF-8
 Content-Length: 627
 
 {
@@ -864,7 +864,7 @@ Content-Length: 627
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-10-18 20:37:09 MESZ
+Last updated 2016-10-20 17:30:43 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
