@@ -2,95 +2,98 @@
 v{version}, {date}
 :doctype: book
 :icons: font
+// choose theme from https://highlightjs.org/static/demo/
 :source-highlighter: highlightjs
+:highlightjs-theme: darkula
 :toc: left
-:toclevels: 2
+:toclevels: 3
 :sectlinks:
+:sectnums:
 
-= Introduction
+== Introduction
 
 infiniboard is a general purpose dashboard application to create a dashboard for a software development
 project. This document describes the REST API to the infiniboard server to be used by the infiniboard
 client application.
 
-= Resources
+== Resources
 
 This section describes the resources you can interact with using the REST API. For each REST operation
 an example request and example response are given.
 
-== Dashboard
+=== Dashboard
 The dashboard resource represents a dashboard consisting of a collection of widgets.
 
-=== Hypermedia Links
+==== Hypermedia Links
 
 include::{snippets}/dashboards/get/links.adoc[]
 
-=== Listing all Dashboards
+==== Listing all Dashboards
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/dashboards/list/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/dashboards/list/http-response.adoc[]
 
-=== Loading a single Dashboard
+==== Loading a single Dashboard
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/dashboards/get/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/dashboards/get/http-response.adoc[]
 
-== Widget
+=== Widget
 
-=== Structure
+==== Structure
 
 include::{snippets}/widgets/create/request-fields.adoc[]
 
-=== Hypermedia Links
+==== Hypermedia Links
 
 include::{snippets}/widgets/get/links.adoc[]
 
-=== Creating a Widget within a Dashboard
+==== Creating a Widget within a Dashboard
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/widgets/create/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/widgets/create/http-response.adoc[]
 
-=== Listing all Widgets of a Dashboard
+==== Listing all Widgets of a Dashboard
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/widgets/list/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/widgets/list/http-response.adoc[]
 
-=== Loading a single Widget of a Dashboard
+==== Loading a single Widget of a Dashboard
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/widgets/get/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/widgets/get/http-response.adoc[]
 
-=== Loading the data for a single Widget
+==== Loading the data for a single Widget
 
-==== Example Request
+===== Example Request
 
 include::{snippets}/widgets/data/list/http-request.adoc[]
 
-==== Example Response
+===== Example Response
 
 include::{snippets}/widgets/data/list/http-response.adoc[]
