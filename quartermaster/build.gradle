@@ -86,7 +86,8 @@ ext {
 asciidoctor {
     attributes 'snippets': snippetsDir,
             'version': version,
-            'date': new SimpleDateFormat("yyyy-MM-dd").format(new Date())
+            'date': new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
+            'stylesheet': 'themes/github.css'
     inputs.dir snippetsDir
     dependsOn test
     sourceDir 'src/main/asciidoc'
