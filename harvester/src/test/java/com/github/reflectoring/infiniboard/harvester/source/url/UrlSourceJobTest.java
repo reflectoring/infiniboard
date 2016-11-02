@@ -23,17 +23,17 @@ import static org.mockito.Mockito.*;
 
 public class UrlSourceJobTest {
 
-    private static final String SOURCE_ID = "sourceId";
-    private static final String WIDGET_ID = "widgetId";
+    private static final String SOURCE_ID    = "sourceId";
+    private static final String WIDGET_ID    = "widgetId";
     private static final String TEST_CONTENT = "test content";
-    private static final String REASON_OK = "OK";
+    private static final String REASON_OK    = "OK";
 
     private ApplicationContext applicationContext;
 
     private SourceDataRepository repository;
 
-    /**
-     * overwrites the getHttpClient method to be able to inject mocked client
+    /*
+     * overwrites the configureHttpClient method to be able to inject mocked client.
      */
     private class TestUrlSourceJob extends UrlSourceJob {
 
@@ -44,7 +44,7 @@ public class UrlSourceJobTest {
         }
 
         @Override
-        CloseableHttpClient getHttpClient(boolean disableSslVerify) {
+        CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
             return client;
         }
     }
@@ -69,6 +69,12 @@ public class UrlSourceJobTest {
         verify(repository).save(refEq(new SourceData(WIDGET_ID, SOURCE_ID, expectedData)));
     }
 
+    private HashMap<String, Object> createConfigMap() {
+        HashMap<String, Object> config = new HashMap<>();
+        config.put(UrlSourceJob.PARAM_URL, "http://www.google.de");
+        return config;
+    }
+
     @Test
     public void executeInternalReturnsReasonIfThereIsNoContent()
             throws IOException {
@@ -82,18 +88,13 @@ public class UrlSourceJobTest {
         verify(repository).save(refEq(new SourceData(WIDGET_ID, SOURCE_ID, expectedData)));
     }
 
-    private HashMap<String, Object> createConfigMap() {
-        HashMap<String, Object> config = new HashMap<>();
-        config.put(UrlSourceJob.PARAM_URL, "http://www.google.de");
-        return config;
-    }
-
     /**
-     * @param withContent defines if an entity should be returned (otherwise simulating an empty result)
+     * @param withContent
+     *         defines if an entity should be returned (otherwise simulating an empty result)
      */
     private CloseableHttpClient prepareHttpClientMock(boolean withContent)
             throws IOException {
-        CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
+        CloseableHttpClient   httpClient   = mock(CloseableHttpClient.class);
         CloseableHttpResponse httpResponse = mock(CloseableHttpResponse.class);
         when(httpClient.execute(any(HttpGet.class))).thenReturn(httpResponse);
         StatusLine statusLine = mock(StatusLine.class);

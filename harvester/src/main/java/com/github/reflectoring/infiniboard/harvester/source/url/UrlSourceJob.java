@@ -1,5 +1,6 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -27,14 +28,14 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 
 /**
- * job to retrieve UrlSource (configured via DB)
+ * Job to retrieve content from an URL.
  */
 public class UrlSourceJob extends SourceJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
-    /**
-     * name used for registering this job
+    /*
+     * Name used for registering this job.
      */
     static final String JOB_TYPE = "urlSource";
 
@@ -45,10 +46,10 @@ public class UrlSourceJob extends SourceJob {
 
     @Override
     protected void executeInternal(ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
-        String  url              = configuration.get(PARAM_URL).toString();
+        String  url             = configuration.get(PARAM_URL).toString();
         boolean enableSslVerify = isSslVerificationEnabled(configuration);
 
-        try (CloseableHttpClient httpClient = getHttpClient(enableSslVerify)) {
+        try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
             HttpGet               httpGet  = new HttpGet(url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
 
@@ -104,17 +105,23 @@ public class UrlSourceJob extends SourceJob {
         repository.save(existingData);
     }
 
-    CloseableHttpClient getHttpClient(boolean disableSslVerify) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    CloseableHttpClient configureHttpClient(boolean enableSslVerify)
+            throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-        if (disableSslVerify) {
-            return HttpClients
-                    .custom()
-                    .setSSLHostnameVerifier(new NoopHostnameVerifier())
-                    .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
-                    .build();
+        if (enableSslVerify) {
+            return HttpClients.createDefault();
         }
 
-        return HttpClients.createDefault();
+        SSLContext sslContext =
+                new SSLContextBuilder()
+                        .loadTrustMaterial(null, (x509Certificates, s) -> true)
+                        .build();
+
+        return HttpClients
+                .custom()
+                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .setSSLContext(sslContext)
+                .build();
     }
 
 }
