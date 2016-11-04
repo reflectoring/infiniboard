@@ -2,7 +2,7 @@
   "title": "prod",
   "type": "platform-status",
   "titleUrl": "http://putsreq.com/YH3ItymF2wFhiAi6ADD1",
-  "description": "Testplatform",
+  "description": "Test Platform",
   "sourceConfigs": [
     {
       "id": "version",
