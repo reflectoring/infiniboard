@@ -3,6 +3,8 @@ import {WidgetConfig} from './widget-config';
 describe('WidgetConfig', () => {
   it('should create an instance', () => {
     let widgetConfig = new WidgetConfig('platform-status', 'Test Platform', '/mock/data');
+    widgetConfig.titleUrl = 'http://www.foo.bar';
+    widgetConfig.description = 'This is our Testplatform'
     expect(widgetConfig).toBeTruthy();
   });
 
