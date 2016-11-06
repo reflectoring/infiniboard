@@ -1,0 +1,11 @@
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+
+# temp
+*.*~
+
+# Mac OS X
+.DS_Store
