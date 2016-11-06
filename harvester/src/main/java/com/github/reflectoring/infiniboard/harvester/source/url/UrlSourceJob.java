@@ -1,7 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
@@ -9,6 +7,9 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -39,9 +40,9 @@ public class UrlSourceJob extends SourceJob {
      */
     static final String JOB_TYPE = "urlSource";
 
-    static final String PARAM_STATUS            = "status";
-    static final String PARAM_CONTENT           = "content";
-    static final String PARAM_URL               = "url";
+    static final String PARAM_STATUS = "status";
+    static final String PARAM_CONTENT = "content";
+    static final String PARAM_URL = "url";
     static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
     @Override
@@ -71,7 +72,7 @@ public class UrlSourceJob extends SourceJob {
             logConnectionError(msg, url, enableSslVerify, e);
         } catch (UnknownHostException e) {
             LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+        } catch (IOException e) {
             LOG.error("could not fetch url '{}'", url, e);
         }
     }
@@ -95,8 +96,8 @@ public class UrlSourceJob extends SourceJob {
     }
 
     private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
-        SourceDataRepository repository   = context.getBean(SourceDataRepository.class);
-        SourceData           existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
+        SourceDataRepository repository = context.getBean(SourceDataRepository.class);
+        SourceData existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
         if (existingData != null) {
             existingData.setData(results);
         } else {
@@ -105,17 +106,20 @@ public class UrlSourceJob extends SourceJob {
         repository.save(existingData);
     }
 
-    CloseableHttpClient configureHttpClient(boolean enableSslVerify)
-            throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
 
         if (enableSslVerify) {
             return HttpClients.createDefault();
         }
 
-        SSLContext sslContext =
-                new SSLContextBuilder()
-                        .loadTrustMaterial(null, (x509Certificates, s) -> true)
-                        .build();
+        SSLContext sslContext = null;
+        try {
+            sslContext = new SSLContextBuilder()
+                .loadTrustMaterial(null, (x509Certificates, s) -> true)
+                .build();
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            LOG.error("Could not create ssl context", e);
+        }
 
         return HttpClients
                 .custom()
