@@ -18,10 +18,6 @@ export class PlatformStatusWidgetComponent extends Widget {
     super(wS);
   }
 
-  public initWidget(widgetConfig: WidgetConfig) {
-    super.initWidget(widgetConfig);
-  }
-
   public updateData(data: any[]) {
     for (let sourceData of data) {
 
