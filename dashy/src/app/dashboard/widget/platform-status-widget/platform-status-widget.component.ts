@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Widget} from '../widget';
 import {Status} from './status.enum';
 import {WidgetService} from '../../shared/widget.service';
-import {WidgetConfig} from '../../shared/widget-config';
 
 @Component({
   selector: 'platform-status-widget',
