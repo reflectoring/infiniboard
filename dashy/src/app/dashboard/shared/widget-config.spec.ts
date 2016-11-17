@@ -2,7 +2,10 @@ import {WidgetConfig} from './widget-config';
 
 describe('WidgetConfig', () => {
   it('should create an instance', () => {
-    expect(new WidgetConfig('platform-status', 'Test Platform', '/mock/data')).toBeTruthy();
+    let widgetConfig = new WidgetConfig('platform-status', 'Test Platform', '/mock/data');
+    widgetConfig.titleUrl = 'http://www.foo.bar';
+    widgetConfig.description = 'This is our Testplatform';
+    expect(widgetConfig).toBeTruthy();
   });
 
   it('constructor() should set widgetConfig.type', () => {

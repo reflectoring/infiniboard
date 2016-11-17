@@ -1,6 +1,8 @@
 {
   "title": "prod",
   "type": "platform-status",
+  "titleUrl": "http://putsreq.com/YH3ItymF2wFhiAi6ADD1",
+  "description": "Test Platform",
   "sourceConfigs": [
     {
       "id": "version",
@@ -14,6 +16,7 @@
       "id": "status",
       "type": "urlSource",
       "interval": 10000,
+      "widgetUrl": "http://putsreq.com/YH3ItymF2wFhiAi6ADD1",
       "configData": {
         "url": "http://putsreq.com/YH3ItymF2wFhiAi6ADD1"
       }
