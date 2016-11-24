@@ -1,15 +1,20 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -24,25 +29,28 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 
 /**
- * job to retrieve UrlSource (configured via DB)
+ * Job to retrieve content from an URL.
  */
 public class UrlSourceJob extends SourceJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
-    /**
-     * name used for registering this job
+    /*
+     * Name used for registering this job.
      */
-    public static final String JOBTYPE = "urlSource";
+    static final String JOB_TYPE = "urlSource";
 
-    static final String PARAM_STATUS  = "status";
+    static final String PARAM_STATUS = "status";
     static final String PARAM_CONTENT = "content";
-    static final String PARAM_URL     = "url";
+    static final String PARAM_URL = "url";
+    static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
     @Override
-    protected void executeInternal(ApplicationContext context, JobKey jobKey, Map configuration) {
-        String url = configuration.get(PARAM_URL).toString();
-        try (CloseableHttpClient httpClient = getHttpClient()) {
+    protected void executeInternal(ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
+        String  url             = configuration.get(PARAM_URL).toString();
+        boolean enableSslVerify = isSslVerificationEnabled(configuration);
+
+        try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
             HttpGet               httpGet  = new HttpGet(url);
             CloseableHttpResponse response = httpClient.execute(httpGet);
 
@@ -56,14 +64,40 @@ public class UrlSourceJob extends SourceJob {
 
             upsertResults(context, jobKey, results);
 
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+        } catch (SSLHandshakeException e) {
+            String msg = "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+            logConnectionError(msg, url, enableSslVerify, e);
+        } catch (HttpHostConnectException e) {
+            String msg = "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+            logConnectionError(msg, url, enableSslVerify, e);
+        } catch (UnknownHostException e) {
+            LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
+        } catch (IOException e) {
             LOG.error("could not fetch url '{}'", url, e);
         }
     }
 
+    private boolean isSslVerificationEnabled(Map<String, Object> configuration) {
+        Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
+        if (o == null) {
+            return true;
+        }
+
+        return Boolean.valueOf(o.toString());
+    }
+
+    private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
+        String message = String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
+        if (enableSslVerify) {
+            LOG.error(message);
+        } else {
+            LOG.warn(message);
+        }
+    }
+
     private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
-        SourceDataRepository repository   = context.getBean(SourceDataRepository.class);
-        SourceData           existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
+        SourceDataRepository repository = context.getBean(SourceDataRepository.class);
+        SourceData existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
         if (existingData != null) {
             existingData.setData(results);
         } else {
@@ -72,12 +106,25 @@ public class UrlSourceJob extends SourceJob {
         repository.save(existingData);
     }
 
-    CloseableHttpClient getHttpClient()
-            throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
 
-        // simple SSL hack, should be temporary (https://github.com/reflectoring/infiniboard/issues/40)
-        return HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
-                .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build())
+        if (enableSslVerify) {
+            return HttpClients.createDefault();
+        }
+
+        SSLContext sslContext = null;
+        try {
+            sslContext = new SSLContextBuilder()
+                .loadTrustMaterial(null, (x509Certificates, s) -> true)
+                .build();
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            LOG.error("Could not create ssl context", e);
+        }
+
+        return HttpClients
+                .custom()
+                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .setSSLContext(sslContext)
                 .build();
     }
 
