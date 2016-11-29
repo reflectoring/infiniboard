@@ -22,7 +22,7 @@ public class UrlSourceJobRegistrar {
     @Autowired
     public UrlSourceJobRegistrar(SchedulingService schedulingService) {
         this.schedulingService = schedulingService;
-        this.schedulingService.registerJob(UrlSourceJob.JOBTYPE, UrlSourceJob.class);
+        this.schedulingService.registerJob(UrlSourceJob.JOB_TYPE, UrlSourceJob.class);
     }
 
 }

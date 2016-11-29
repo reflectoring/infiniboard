@@ -23,7 +23,6 @@ export class PlatformStatusWidgetComponent extends Widget {
       if (sourceData.sourceId === 'version') {
         let versionContent = sourceData.data.content;
         this.setVersionByPlatformStatus(this.status, versionContent);
-
       }
       if (sourceData.sourceId === 'status') {
         this.status = this.getPlatformStatus(sourceData.data.status);
