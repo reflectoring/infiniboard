@@ -5,6 +5,8 @@ export class Widget {
   title: string;
   updateInterval: number = 1000;
   widgetConfig: WidgetConfig;
+  titleUrl: string;
+  description: string;
 
   public constructor(private widgetService: WidgetService) {
   }
@@ -16,6 +18,8 @@ export class Widget {
   public initWidget(widgetConfig: WidgetConfig) {
     this.widgetConfig = widgetConfig;
     this.title = widgetConfig.title;
+    this.titleUrl = widgetConfig.titleUrl;
+    this.description = widgetConfig.description;
     this.triggerUpdate();
   }
 

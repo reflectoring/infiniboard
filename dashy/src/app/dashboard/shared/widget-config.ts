@@ -1,8 +1,9 @@
 export class WidgetConfig {
-  public type: string;
-  public title: string;
-
-  public dataLink: string;
+  type: string;
+  title: string;
+  titleUrl: string;
+  description: string;
+  dataLink: string;
 
   public constructor(type: string, title: string, dataLink: string) {
     this.type = type;
