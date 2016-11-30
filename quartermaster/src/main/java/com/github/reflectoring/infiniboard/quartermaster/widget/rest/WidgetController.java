@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,8 @@ import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -53,7 +57,8 @@ public class WidgetController {
         return new ResponseEntity<>(resource, OK);
     }
 
-    @RequestMapping(method = POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = POST, produces = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WidgetConfigResource> createWidget(@PathVariable Integer dashboardId,
                                                              @RequestBody WidgetConfigResource widgetConfigResource) {
         WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
@@ -82,6 +87,17 @@ public class WidgetController {
         PagedResources<WidgetConfigResource> pagedResources =
                 pagedResourcesAssembler.toResource(widgetConfigPage, assembler);
         return new ResponseEntity<>(pagedResources, OK);
+    }
+
+    @RequestMapping(value = "/all", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resources<WidgetConfigResource> getAllWidgets(@PathVariable Integer dashboardId) {
+
+        List<WidgetConfig>            widgetConfigs = widgetConfigRepository.findAll();
+        WidgetConfigResourceAssembler assembler     = new WidgetConfigResourceAssembler(dashboardId);
+        List<WidgetConfigResource>    resources     = assembler.toResources(widgetConfigs);
+
+        Link self = linkTo(methodOn(WidgetController.class).getAllWidgets(dashboardId)).withRel("self");
+        return new Resources<>(resources, self);
     }
 
 }

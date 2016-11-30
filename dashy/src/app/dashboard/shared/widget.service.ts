@@ -36,44 +36,18 @@ export class WidgetService {
   }
 
   public getWidgets(dashboard: Dashboard): Observable<WidgetConfig[]> {
-    return this.getWidgetsFromUrl(dashboard.widgetConfigsLink)
-  }
-
-  private getWidgetsFromUrl(url: string): Observable<WidgetConfig[]> {
-    console.log('getting page: ' + url);
-    return this.http.get(url)
-      .map(res => {
-        let results = this.extractWidgetConfigList(this, res);
-
-        console.log(results);
-
-        if (((res.json()._links || {}).next || {}).href || {}) {
-          // more pages to come
-          console.log('found next page: ' + res.json()._links.next.href)
-          let nextPageResults = this.getWidgetsFromUrl(res.json()._links.next.href);
-          nextPageResults.forEach(next => {
-            console.log("results of next page");
-            console.log(next);
-            results.concat(next);});
-        }
-
-        console.log("all results");
-        console.log(results);
-
-        return results;
-
-      })
+    return this.http.get(dashboard.widgetConfigsLink)
+      .map(WidgetService.extractWidgetConfigList)
       .catch(this.handleError);
   }
 
-  private extractWidgetConfigList(context: any, res: Response): WidgetConfig[] {
+  private static extractWidgetConfigList(res: Response): WidgetConfig[] {
     let haljson: any = res.json();
     let widgetConfigs: any = ((haljson._embedded || {}).widgetConfigResourceList || {});
     let result: any[] = [];
 
     for (let item of widgetConfigs) {
       let widgetConfig = WidgetService.createWidgetConfig(item);
-      console.log(widgetConfig);
       result.push(widgetConfig);
     }
 
