@@ -23,7 +23,7 @@ export class DashboardService {
   }
 
   private static createDashboard(haljson: any): Dashboard {
-    return new Dashboard(haljson.number, haljson.name, haljson.description, haljson._links.widgets.href);
+    return new Dashboard(haljson.number, haljson.name, haljson.description, haljson._links['all-widgets'].href);
   }
 
   private static handleDashboard(res: Response): Dashboard {
@@ -60,6 +60,7 @@ export class DashboardService {
     let errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
+    console.error(error);
     return Observable.throw(errMsg);
   }
 }
