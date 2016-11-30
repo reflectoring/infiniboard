@@ -60,6 +60,7 @@ export class DashboardService {
     let errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
+    console.error(error);
     return Observable.throw(errMsg);
   }
 }
