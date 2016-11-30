@@ -26,6 +26,8 @@ public class DashboardResourceAssembler extends ResourceAssemblerSupport<Dashboa
                 linkTo(methodOn(DashboardController.class).getDashboard(entity.getId())).withRel("self"));
         resource.add(
                 linkTo(methodOn(WidgetController.class).getWidgets(entity.getId(), null, null)).withRel("widgets"));
+        resource.add(
+                linkTo(methodOn(WidgetController.class).getAllWidgets(entity.getId())).withRel("all-widgets"));
         return resource;
     }
 }

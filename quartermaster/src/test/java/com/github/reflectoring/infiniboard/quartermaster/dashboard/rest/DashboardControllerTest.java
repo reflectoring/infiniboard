@@ -41,7 +41,9 @@ public class DashboardControllerTest extends ControllerTestTemplate {
                                 links(halLinks(),
                                       linkWithRel("self").description("Link to the dashboard itself."),
                                       linkWithRel("widgets").description(
-                                              "Link to the collection of widgets configured for this dashboard."))))
+                                              "Link to the paged collection of widgets configured for this dashboard."),
+                                      linkWithRel("all-widgets").description(
+                                              "Link to the unpaged collection of widgets configured for this dashboard."))))
                 .andReturn();
 
         DashboardResource resource = fromJson(result.getResponse().getContentAsString(), DashboardResource.class);

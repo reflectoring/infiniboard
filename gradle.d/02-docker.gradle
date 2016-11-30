@@ -39,22 +39,24 @@ subprojects {
                 }
             }
 
-            task prepareDockerBuild() << {
-                def dockerStagePath = "${project.buildDir}/docker"
-                file(dockerStagePath).mkdirs()
+            task prepareDockerBuild() {
+                doLast {
+                    def dockerStagePath = "${project.buildDir}/docker"
+                    file(dockerStagePath).mkdirs()
 
-                copy {
-                    from("${project.buildDir}/libs/") {
-                        rename "${project.buildArtifactName}-.*\\.${project.buildArtifcatExt}", "${project.buildArtifactName}.${project.buildArtifcatExt}"
+                    copy {
+                        from("${project.buildDir}/libs/") {
+                            rename "${project.buildArtifactName}-.*\\.${project.buildArtifcatExt}", "${project.buildArtifactName}.${project.buildArtifcatExt}"
+                        }
+                        into dockerStagePath
+                        exclude '*.original'
                     }
-                    into dockerStagePath
-                    exclude '*.original'
-                }
-                copy {
-                    from "${project.projectDir}/src/main/docker"
-                    into dockerStagePath
-                    include 'Dockerfile'
-                    include 'application.properties'
+                    copy {
+                        from "${project.projectDir}/src/main/docker"
+                        into dockerStagePath
+                        include 'Dockerfile'
+                        include 'application.properties'
+                    }
                 }
             }
 

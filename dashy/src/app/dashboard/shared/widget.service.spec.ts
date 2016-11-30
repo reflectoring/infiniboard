@@ -13,8 +13,8 @@ class FakeWidgetHttp {
     console.log(url);
 
     switch (url) {
-      case '/mock/widgets':
-        return this.getWidgets();
+      case '/mock/api/dashboards/1/widgets/all':
+        return this.getUnpagedWidgets();
       case '/mock/widgets/error':
         return this.getWidgetsWithError();
 
@@ -28,7 +28,7 @@ class FakeWidgetHttp {
     }
   }
 
-  private getWidgets() {
+  private getUnpagedWidgets() {
     let body = {
       '_embedded': {
         'widgetConfigResourceList': [{
@@ -71,16 +71,34 @@ class FakeWidgetHttp {
             'dashboard': {'href': '/mock/api/dashboards/1'},
             'data': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be7/data'}
           }
+        }, {
+          'title': 'prod',
+          'type': 'platform-status',
+          'lastModified': 1474140249062,
+          'sourceConfigs': [{
+            'id': 'version',
+            'type': 'urlSource',
+            'interval': 10000,
+            'configData': {'url': 'https://putsreq.com/eT3fqDqHnnNKureYOuOe'}
+          }, {
+            'id': 'status',
+            'type': 'urlSource',
+            'interval': 10000,
+            'configData': {'url': 'https://putsreq.com/eT3fqDqHnnNKureYOuOe'}
+          }],
+          '_links': {
+            'self': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be5'},
+            'dashboard': {'href': '/mock/api/dashboards/1'},
+            'data': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be5/data'}
+          }
         }]
       },
       '_links': {
-        'first': {'href': '/mock/api/dashboards/1/widgets?page=0&size=10'},
-        'self': {'href': '/mock/api/dashboards/1/widgets'},
-        'last': {'href': '/mock/api/dashboards/1/widgets?page=0&size=10'}
-      },
-      'page': {'size': 10, 'totalElements': 2, 'totalPages': 1, 'number': 0}
+        'self': {'href': '/mock/api/dashboards/1/widgets/all'}
+
+      }
     };
-    return this.createFakeResponse('/mock/widgets', body);
+    return this.createFakeResponse('/mock/api/dashboards/1/widgets/all', body);
   }
 
   private createFakeResponse(url: string, body: any, status = 200): Observable<Response> {
@@ -121,7 +139,7 @@ class FakeWidgetHttp {
   }
 }
 
-let dashboard = new Dashboard(3, 'Testing', 'test reports', '/mock/widgets');
+let dashboard = new Dashboard(3, 'Testing', 'test reports', '/mock/api/dashboards/1/widgets/all');
 
 describe('Service: Widget', () => {
   beforeEach(() => {
@@ -143,9 +161,9 @@ describe('Service: Widget', () => {
     expect(widgetConfigs).toBeTruthy();
   }));
 
-  it('getWidgets() returns a list of two widget configs', inject([WidgetService], (service: WidgetService) => {
+  it('getWidgets() returns a list of three widget configs', inject([WidgetService], (service: WidgetService) => {
     service.getWidgets(dashboard).subscribe(widgetConfigs => {
-      expect(widgetConfigs.length).toEqual(2);
+      expect(widgetConfigs.length).toEqual(3);
     });
   }));
 
