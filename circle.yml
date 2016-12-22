@@ -15,29 +15,23 @@ general:
       - gh-pages
 
 dependencies:
-  pre:
-    - sudo pip install docker-compose==1.5.2
+
   cache_directories:
     - "~/docker"
     - "~/.npm"
     - "dashy/node_modules"
 
-  override:
+  pre:
+    - sudo pip install docker-compose==1.5.2
+    - cd dashy && npm install
+    - npm install -g angular-cli@1.0.0-beta.15
+    - ./gradlew --stacktrace --console=plain resolveDependencies
+
     - docker version
     - docker info
     - docker-compose version
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
-
-    - npm install -g angular-cli@1.0.0-beta.15
-    - cd dashy && npm install
-    - cd dashy && ng lint
-    - cd dashy && ng test
-    - cd dashy && ng build --prod
-
-    - ./gradlew --stacktrace --console=plain build integrationTest preparePages
-    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
-    - ./gradlew --stacktrace --console=plain buildImage tagImage
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
@@ -47,36 +41,62 @@ dependencies:
     - docker save mongo > ~/docker/mongo.tar
     - docker save java:8 > ~/docker/java.tar
 
-  post:
+  override:
+    - cd dashy && ng build --prod
+
+    # build backend, run integration tests and prepare GitHub pages
+    - ./gradlew --stacktrace --console=plain build -x test
+
+test:
+  pre:
+    # archive build-artifacts
+    - mkdir -p $CIRCLE_ARTIFACTS/build-artifacts
+    - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
+    - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
+
+  override:
+    # run Angular2 linting and unit tests
+    - cd dashy && ng lint
+    - cd dashy && ng test
+
+    # archive Angular2 test results
     - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
     - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-istanbul/
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - cp -a dashy/build/junit/*.xml $CIRCLE_TEST_REPORTS/junit/
 
-    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    # run backend unit and integration tests
+    - ./gradlew --stacktrace --console=plain build integrationTest
 
+    # archive backend test results
+    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - mkdir -p $CIRCLE_TEST_REPORTS/junit-html/
     - find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} $CIRCLE_TEST_REPORTS/junit-html/`echo {} | cut -d / -f2`' \;
 
-    - mkdir -p $CIRCLE_ARTIFACTS/build-artifacts
-    - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
-    - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
+    # prepare GitHub pages
+    - ./gradlew --stacktrace --console=plain preparePages
 
-test:
-  pre:
+    # analyse Java code using sonarqube.com
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+    # sonar.login and sonar.github.oauth is needed even for PR analysis
+    # ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+  post:
+    # build docker images
+    - ./gradlew --stacktrace --console=plain buildImage tagImage
+
+    # testing the docker image
     - docker-compose up -d harvester
     - docker-compose up -d quartermaster
     - bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
     - bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
     - bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
 
-  override:
     - echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
     - echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
     - echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
     - echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
 
-  post:
     - echo "Running Docker containers"; docker ps -a
     - echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
     - mkdir -p $CIRCLE_TEST_REPORTS/docker/
