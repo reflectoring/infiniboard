@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from "@angular/http";
-import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
-import {Info} from "./info";
+import {Headers, Http, Response} from '@angular/http';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {Info} from './info';
 
 @Injectable()
 export class InfoService {

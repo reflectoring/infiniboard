@@ -15,7 +15,7 @@ import {PlatformStatusWidgetComponent} from './dashboard/widget/platform-status-
 import {StatusColorPipe} from './dashboard/widget/platform-status-widget/status-color.pipe';
 import {StatusIconPipe} from './dashboard/widget/platform-status-widget/status-icon.pipe';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import {InfoService} from "./shared/info.service";
+import {InfoService} from './shared/info.service';
 
 @NgModule({
   declarations: [

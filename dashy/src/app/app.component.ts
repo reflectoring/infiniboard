@@ -1,5 +1,5 @@
-import {Component, OnInit} from "@angular/core";
-import {InfoService} from "./shared/info.service";
+import {Component, OnInit} from '@angular/core';
+import {InfoService} from './shared/info.service';
 
 @Component({
   selector: 'dashy-root',
