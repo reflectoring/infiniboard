@@ -22,6 +22,7 @@ dependencies:
     - "dashy/node_modules"
 
   pre:
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then echo "no PR: env $CIRCLE_PR_NUMBER"; else echo "its a PR: env $CIRCLE_PR_NUMBER"; fi
     - sudo pip install docker-compose==1.5.2
     - cd dashy && npm install
     - npm install -g angular-cli@1.0.0-beta.15
