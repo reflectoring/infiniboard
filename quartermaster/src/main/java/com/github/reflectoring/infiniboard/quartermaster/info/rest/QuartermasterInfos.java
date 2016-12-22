@@ -10,7 +10,7 @@ public enum QuartermasterInfos {
 
     public static final String PROPERTIES_FILE = "quartermaster.properties";
 
-    private String key;
+    private String     key;
     private Properties properties;
 
     QuartermasterInfos(String key) {
@@ -31,9 +31,11 @@ public enum QuartermasterInfos {
         }
     }
 
-    private Properties loadProperties() throws IOException {
-        Properties props = new Properties();
-        InputStream is = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+    private Properties loadProperties()
+            throws IOException {
+
+        Properties  props = new Properties();
+        InputStream is    = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
 
         if (is == null) {
             throw new FileNotFoundException(PROPERTIES_FILE + " not found in classpath!");
