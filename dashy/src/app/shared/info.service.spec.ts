@@ -20,7 +20,13 @@ describe('Service: Info', () => {
     });
   });
 
-  it('should ...', inject([InfoService], (service: InfoService) => {
+  it('should create an instance', inject([InfoService], (service: InfoService) => {
     expect(service).toBeTruthy();
+
+    it('and getDashboards() returns a list of dashboards', () => {
+      service.getServerInfo().subscribe(info => {
+        expect(info.version).toBe('1.2.3.123');
+      });
+    });
   }));
 });
