@@ -22,7 +22,6 @@ dependencies:
     - "dashy/node_modules"
 
   pre:
-    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then echo "no PR: env $CIRCLE_PR_NUMBER"; else echo "its a PR: env $CIRCLE_PR_NUMBER"; fi
     - sudo pip install docker-compose==1.5.2
     - cd dashy && npm install
     - npm install -g angular-cli@1.0.0-beta.15
@@ -54,6 +53,8 @@ test:
     - mkdir -p $CIRCLE_ARTIFACTS/build-artifacts
     - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
     - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
+
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then echo "no PR"; else echo "its a PR"; fi
 
   override:
     # run Angular2 linting and unit tests
