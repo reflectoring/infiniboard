@@ -38,9 +38,5 @@ project(":dashy") {
 }
 
 String getSonarQubeApiKey() {
-    def sonarApiKey = this.getEnv('SONARQUBE_API_KEY', '')
-    if (sonarApiKey.isEmpty()) {
-        logger.warn("environment variable 'SONARQUBE_API_KEY' not set!")
-    }
-    return sonarApiKey
+    return this.getEnv('SONARQUBE_API_KEY', '')
 }

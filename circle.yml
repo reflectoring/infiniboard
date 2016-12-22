@@ -54,8 +54,6 @@ test:
     - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
     - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
 
-    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then echo "no PR"; else echo "its a PR"; fi
-
   override:
     # run Angular2 linting and unit tests
     - cd dashy && ng lint
@@ -79,7 +77,9 @@ test:
     - ./gradlew --stacktrace --console=plain preparePages
 
     # analyse Java code using sonarqube.com
-    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+    - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+    # sonar.login and sonar.github.oauth is needed even for PR analysis
+    # ./gradlew --stacktrace --console=plain sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
 
   post:
     # build docker images
