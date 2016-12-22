@@ -42,7 +42,6 @@ dependencies:
     - docker save java:8 > ~/docker/java.tar
 
   override:
-    - cd dashy && ng lint
     - cd dashy && ng build --prod
 
     # build backend, run integration tests and prepare GitHub pages
@@ -56,7 +55,8 @@ test:
     - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
 
   override:
-    # run Angular2 unit tests
+    # run Angular2 linting and unit tests
+    - cd dashy && ng lint
     - cd dashy && ng test
 
     # archive Angular2 test results
