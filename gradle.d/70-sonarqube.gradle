@@ -15,9 +15,7 @@ buildscript {
 // you have to use the plugin's fully qualified class name, rather than its ID
 apply plugin: org.sonarqube.gradle.SonarQubePlugin
 
-
 allprojects {
-
     sonarqube {
         properties {
             property "sonar.projectKey", "com.github.reflectoring.infiniboard"
