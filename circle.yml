@@ -24,14 +24,14 @@ dependencies:
   pre:
     - sudo pip install docker-compose==1.5.2
     - cd dashy && npm install
-    - ./gradlew resolveDependencies
+    - npm install -g angular-cli@1.0.0-beta.15
+    - ./gradlew --stacktrace --console=plain resolveDependencies
 
     - docker version
     - docker info
     - docker-compose version
     - if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
     - if [[ -e ~/docker/java.tar ]]; then docker load --input ~/docker/java.tar; fi
-    - npm install -g angular-cli@1.0.0-beta.15
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
