@@ -35,11 +35,12 @@ dependencies:
 
     # pull image here to cache it and speed up the test
     - docker pull mongo:3.2
+    - docker pull openjdk:8-jdk-alpine
     - docker images
 
     - mkdir -p ~/docker
     - docker save mongo > ~/docker/mongo.tar
-    - docker save java:8 > ~/docker/java.tar
+    - docker save openjdk:8-jdk-alpine > ~/docker/java.tar
 
   override:
     - cd dashy && ng build --prod

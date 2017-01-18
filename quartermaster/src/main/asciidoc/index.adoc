@@ -97,3 +97,16 @@ include::{snippets}/widgets/data/list/http-request.adoc[]
 ===== Example Response
 
 include::{snippets}/widgets/data/list/http-response.adoc[]
+
+=== Server Info
+The server info resource represents information about the server running.
+
+==== Loading the server version
+
+===== Example Request
+
+include::{snippets}/api/info/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/api/info/http-response.adoc[]
