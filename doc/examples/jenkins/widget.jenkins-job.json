@@ -1,0 +1,14 @@
+{
+  "title": "workflow job",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://ci.jenkins.io/job/Core/job/jenkins/job/master/api/json"
+      }
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import {StatusColorPipe} from './dashboard/widget/platform-status-widget/status-
 import {StatusIconPipe} from './dashboard/widget/platform-status-widget/status-icon.pipe';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {InfoService} from './shared/info.service';
+import { JenkinsWidgetComponent } from './dashboard/widget/jenkins/jenkins-widget.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {InfoService} from './shared/info.service';
     DashboardSidebarLinksComponent,
     PlatformStatusWidgetComponent,
     StatusColorPipe,
-    StatusIconPipe
+    StatusIconPipe,
+    JenkinsWidgetComponent
   ],
   imports: [
     BrowserModule,
