@@ -1,0 +1,14 @@
+{
+  "title": "red",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://jenkins.qa.ubuntu.com/view/Trusty/view/All/job/autopilot-autopilot-temp-dev-trusty-amd64-ci/api/json"
+      }
+    }
+  ]
+}

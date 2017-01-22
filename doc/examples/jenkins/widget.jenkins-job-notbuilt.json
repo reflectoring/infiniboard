@@ -1,0 +1,14 @@
+{
+  "title": "not built",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://jenkins.qa.ubuntu.com/view/Trusty/view/All/job/trusty-adt-libpng-armhf/api/json"
+      }
+    }
+  ]
+}

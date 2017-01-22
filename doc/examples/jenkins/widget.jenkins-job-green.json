@@ -1,0 +1,14 @@
+{
+  "title": "green",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://jenkins.qa.ubuntu.com/view/Trusty/view/All/job/address-book-service-trusty-armhf-ci/api/json"
+      }
+    }
+  ]
+}
