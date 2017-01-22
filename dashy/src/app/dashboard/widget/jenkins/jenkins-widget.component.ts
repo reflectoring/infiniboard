@@ -12,7 +12,7 @@ import {JobType} from './job-type.enum';
 export class JenkinsWidgetComponent extends Widget {
 
   name: string = '';
-  status: BuildStatus = BuildStatus.UNKNOWN;
+  status: BuildStatus = BuildStatus.NOT_BUILT;
   url: string = '';
   lastBuildNo: string = '';
   type: JobType = JobType.UNKNOWN;
