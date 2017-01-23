@@ -6,6 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
@@ -31,12 +32,25 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
         resource.setDescription(entity.getDescription());
         resource.setLastModified(Date.from(entity.getLastModified().atZone(ZoneId.systemDefault()).toInstant()));
         for (SourceConfig config : entity.getSourceConfigs()) {
-            resource.getSourceConfigs().add(config);
+            resource.getSourceConfigs().add(removeCredentials(config));
         }
         resource.add(linkTo(methodOn(WidgetController.class).getWidget(dashboardId, entity.getId())).withRel("self"));
         resource.add(linkTo(methodOn(DashboardController.class).getDashboard(dashboardId)).withRel("dashboard"));
         resource.add(linkTo(methodOn(WidgetController.class).getData(dashboardId, entity.getId())).withRel("data"));
         return resource;
+    }
+
+    private SourceConfig removeCredentials(SourceConfig config) {
+        Map<String, Object> configData = config.getConfigData();
+        if (configData.containsKey("password")) {
+            configData.remove("password");
+        }
+
+        if (configData.containsKey("username")) {
+            configData.remove("username");
+        }
+
+        return config;
     }
 
     public WidgetConfig toEntity(WidgetConfigResource resource) {
