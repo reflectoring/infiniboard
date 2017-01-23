@@ -42,7 +42,7 @@ bintray {
     key = System.getenv('BINTRAY_KEY')
 
     filesSpec {
-        into version
+        into '.'
         from('build/libs') {
             include "${project.name}-${project.version}.jar"
         }
