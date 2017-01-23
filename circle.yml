@@ -110,7 +110,7 @@ deployment:
     branch: master
     commands:
       # set git author info
-      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then git config --global user.name "reflectoring bot" && git config --global user.email $BOT_EMAIL
+      - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then git config --global user.name "reflectoring bot" && git config --global user.email $BOT_EMAIL; else echo 'Skipping Git config for PRs!'; fi
 
       # update GitHub pages
       - if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
