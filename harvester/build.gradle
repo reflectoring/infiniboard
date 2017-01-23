@@ -52,8 +52,8 @@ bintray {
 
     pkg {
         userOrg = 'reflectoring'
-        repo = 'infiniboard'
-        name = 'releases'
+        repo = 'releases'
+        name = 'infiniboard'
         desc = 'official infiniboard release repository'
         licenses = ['MIT']
         vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
