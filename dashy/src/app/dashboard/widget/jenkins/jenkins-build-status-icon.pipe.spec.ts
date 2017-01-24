@@ -1,8 +1,15 @@
 import {JenkinsBuildStatusIconPipe} from './jenkins-build-status-icon.pipe';
 import {BuildStatus} from './build-status.enum';
-import {inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-describe('Pipe: BuildStatusImage', () => {
+describe('Pipe: BuildStatusIcon', () => {
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [JenkinsBuildStatusIconPipe]
+    });
+  });
+
   it('create an instance', inject([JenkinsBuildStatusIconPipe], (pipe: JenkinsBuildStatusIconPipe) => {
     expect(pipe).toBeTruthy();
 

@@ -1,8 +1,14 @@
 import {JenkinsBuildStatusColorPipe} from './jenkins-build-status-color.pipe';
 import {BuildStatus} from './build-status.enum';
-import {inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-describe('Pipe: BuildStatus', () => {
+describe('Pipe: BuildStatusColor', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [JenkinsBuildStatusColorPipe]
+    });
+  });
+
   it('create an instance', inject([JenkinsBuildStatusColorPipe], (pipe: JenkinsBuildStatusColorPipe) => {
     expect(pipe).toBeTruthy();
 
