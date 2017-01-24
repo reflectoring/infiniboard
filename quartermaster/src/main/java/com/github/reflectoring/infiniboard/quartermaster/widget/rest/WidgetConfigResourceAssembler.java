@@ -43,11 +43,11 @@ public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<Widg
     private SourceConfig removeCredentials(SourceConfig config) {
         Map<String, Object> configData = config.getConfigData();
         if (configData.containsKey("password")) {
-            configData.remove("password");
+            configData.put("password", "**********");
         }
 
         if (configData.containsKey("username")) {
-            configData.remove("username");
+            configData.put("username", "**********");
         }
 
         return config;
