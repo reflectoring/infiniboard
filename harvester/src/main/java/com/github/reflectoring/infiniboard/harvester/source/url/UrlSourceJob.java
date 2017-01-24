@@ -65,7 +65,13 @@ public class UrlSourceJob extends SourceJob {
 
         try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
             HttpGet httpGet = new HttpGet(url);
-            CloseableHttpResponse response = httpClient.execute(httpGet, clientContext);
+
+            CloseableHttpResponse response;
+            if (clientContext != null) {
+                response = httpClient.execute(httpGet,clientContext);
+            } else {
+                response = httpClient.execute(httpGet);
+            }
 
             HashMap<String, Object> results = new HashMap<>();
             results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
