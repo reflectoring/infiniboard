@@ -20,7 +20,7 @@ file('gradle.d').listFiles().sort().each {
 allprojects {
     group = 'com.github.reflectoring.infiniboard'
     // creates the continuous delivery release version
-    // s. gradle.d/10-snap-ci.gradle
+    // s. gradle.d/15-circleci.gradle
     version = project.getBuildVersion(baseVersion)
 
     buildscript {
@@ -28,8 +28,4 @@ allprojects {
             jcenter()
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion '3.1'
 }
