@@ -64,20 +64,32 @@ export class JenkinsWidgetComponent extends Widget {
       case 'notbuilt':
         return BuildStatus.NOT_BUILT;
 
+      case 'notbuilt_anime':
+        return BuildStatus.NOT_BUILT_BUILDING;
+
       case 'disabled':
         return BuildStatus.DISABLED;
 
       case 'blue':
         return BuildStatus.BLUE;
 
+      case 'blue_anime':
+        return BuildStatus.BLUE_BUILDING;
+
       case 'yellow':
         return BuildStatus.YELLOW;
+
+      case 'yellow_anime':
+        return BuildStatus.YELLOW_BUILDING;
 
       case 'aborted':
         return BuildStatus.ABORTED;
 
       case 'red':
         return BuildStatus.RED;
+
+      case 'red_anime':
+        return BuildStatus.RED_BUILDING;
 
 
       default:

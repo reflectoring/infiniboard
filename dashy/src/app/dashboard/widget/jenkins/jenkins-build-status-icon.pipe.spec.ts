@@ -40,5 +40,22 @@ describe('Pipe: BuildStatusIcon', () => {
     it('transforms UNKNOWN', () => {
       expect(pipe.transform(BuildStatus.UNKNOWN)).toEqual('fa-bomb');
     });
+
+    it('transforms NOT_BUILT_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.NOT_BUILT_BUILDING)).toEqual('fa-refresh');
+    });
+
+    it('transforms BLUE_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.BLUE_BUILDING)).toEqual('fa-refresh');
+    });
+
+    it('transforms YELLOW_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.YELLOW_BUILDING)).toEqual('fa-refresh');
+    });
+
+    it('transforms RED_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.RED_BUILDING)).toEqual('fa-refresh');
+    });
+
   }));
 });

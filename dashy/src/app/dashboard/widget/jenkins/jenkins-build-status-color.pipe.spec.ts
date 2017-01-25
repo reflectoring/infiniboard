@@ -16,6 +16,10 @@ describe('Pipe: BuildStatusColor', () => {
       expect(pipe.transform(BuildStatus.NOT_BUILT)).toEqual('bg-gray');
     });
 
+    it('transforms NOT_BUILT_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.NOT_BUILT_BUILDING)).toEqual('bg-gray');
+    });
+
     it('transforms DISABLED', () => {
       expect(pipe.transform(BuildStatus.DISABLED)).toEqual('bg-gray');
     });
@@ -24,12 +28,24 @@ describe('Pipe: BuildStatusColor', () => {
       expect(pipe.transform(BuildStatus.BLUE)).toEqual('bg-green');
     });
 
+    it('transforms BLUE_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.BLUE_BUILDING)).toEqual('bg-green');
+    });
+
     it('transforms YELLOW', () => {
       expect(pipe.transform(BuildStatus.YELLOW)).toEqual('bg-yellow');
     });
 
+    it('transforms YELLOW_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.YELLOW_BUILDING)).toEqual('bg-yellow');
+    });
+
     it('transforms RED', () => {
       expect(pipe.transform(BuildStatus.RED)).toEqual('bg-red');
+    });
+
+    it('transforms RED_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.RED_BUILDING)).toEqual('bg-red');
     });
 
     it('transforms ABORTED', () => {
