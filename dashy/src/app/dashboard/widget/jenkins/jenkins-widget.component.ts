@@ -24,7 +24,7 @@ export class JenkinsWidgetComponent extends Widget {
   public updateData(data: any[]) {
     for (let sourceData of data) {
       if (sourceData.sourceId === 'jenkins') {
-        if (sourceData.data.status != 200) {
+        if (sourceData.data.status !== 200) {
           console.error('Cannot fetch URL of configured Jenkins job');
           console.error(sourceData.data.content);
           return;
