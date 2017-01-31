@@ -73,7 +73,7 @@ public class SchedulingService {
         scheduler = newScheduler;
 
         createJobSchedule(GROUP_HARVESTER, UpdateSourceConfigJob.JOBTYPE, UpdateSourceConfigJob.class,
-                          Collections.EMPTY_MAP, 5000);
+                          Collections.emptyMap(), 5000);
     }
 
     @PreDestroy
