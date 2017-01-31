@@ -24,8 +24,7 @@ dependencies:
   pre:
     - sudo pip install docker-compose==1.5.2
     - cd dashy && npm install
-    - ng --version
-    - npm install -g angular-cli@1.0.0-beta.15
+    - cd dashy && ./node_modules/.bin/ng --version
     - ./gradlew --stacktrace --console=plain resolveDependencies
 
     - docker version
@@ -44,7 +43,7 @@ dependencies:
     - docker save openjdk:8-jdk-alpine > ~/docker/java.tar
 
   override:
-    - cd dashy && ng build --prod
+    - cd dashy && ./node_modules/.bin/ng build --prod
 
     # build backend, run integration tests and prepare GitHub pages
     - ./gradlew --stacktrace --console=plain build -x test
@@ -58,8 +57,8 @@ test:
 
   override:
     # run Angular2 linting and unit tests
-    - cd dashy && ng lint
-    - cd dashy && ng test
+    - cd dashy && ./node_modules/.bin/ng lint
+    - cd dashy && ./node_modules/.bin/ng test
 
     # archive Angular2 test results
     - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
