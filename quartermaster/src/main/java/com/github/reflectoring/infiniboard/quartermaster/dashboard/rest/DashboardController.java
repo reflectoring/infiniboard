@@ -38,7 +38,7 @@ public class DashboardController {
     @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedResources<DashboardResource>> getAllDashboards(@PageableDefault Pageable pageable,
                                                                               PagedResourcesAssembler pagedResourcesAssembler) {
-        Page<Dashboard> dashboardsPage = repository.findAll(pageable);
+        Page<Dashboard> dashboardsPage = repository.findAll();
         PagedResources<DashboardResource> pagedResources =
                 pagedResourcesAssembler.toResource(dashboardsPage, dashboardResourceAssembler);
         return new ResponseEntity<>(pagedResources, OK);

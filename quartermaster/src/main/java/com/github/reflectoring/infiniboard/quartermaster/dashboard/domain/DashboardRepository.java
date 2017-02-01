@@ -21,20 +21,20 @@ public class DashboardRepository {
 
     public Page<Dashboard> findAll() {
         ArrayList<Dashboard> dashboards = new ArrayList<>();
-        dashboards.add(getSupportDashboardMock());
+        dashboards.add(getSupportDashboardMock(1));
         return new PageImpl<>(dashboards);
     }
 
-    private Dashboard getSupportDashboardMock() {
-        Dashboard dashboard = new Dashboard(1, "Development", "Just what you need");
+    private Dashboard getSupportDashboardMock(int id) {
+        Dashboard dashboard = new Dashboard(id, "Development", "Just what you need");
 
         dashboard.setWidgetConfigs(widgetConfigService.loadWidgets());
 
         return dashboard;
     }
 
-    public Dashboard find() {
-        return getSupportDashboardMock();
+    public Dashboard find(int id) {
+        return getSupportDashboardMock(id);
     }
 
 }
