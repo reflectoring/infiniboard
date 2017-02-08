@@ -7,6 +7,7 @@ subprojects {
     if (file('src/main/java').exists()) {
         apply plugin: 'jacoco'
         apply plugin: 'java'
+        apply plugin: 'com.diffplug.gradle.spotless'
 
         repositories {
             jcenter()
@@ -20,6 +21,13 @@ subprojects {
             testCompile(
                     project(':test-base'),
             )
+        }
+
+        spotless {
+            java {
+                googleJavaFormat()
+                paddedCell()
+            }
         }
 
         jacoco {
