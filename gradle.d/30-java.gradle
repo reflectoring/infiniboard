@@ -37,7 +37,6 @@ subprojects {
         spotless {
             java {
                 googleJavaFormat()
-                paddedCell()
             }
         }
 
