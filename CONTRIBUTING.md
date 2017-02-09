@@ -27,7 +27,7 @@ If you have any questions, get in touch.
 
 ### Submit an Idea
 If you have an idea, submit it to the [issue tracker](https://github.com/reflectoring/infiniboard/issues)
-for discussion. I will let you know my thoughts. If you want to develop your idea
+for discussion. We will let you know our thoughts. If you want to develop your idea
 yourself, you can do so and submit a pull request.
 
 ## Coding Conventions
