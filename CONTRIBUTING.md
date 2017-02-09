@@ -1,4 +1,4 @@
-# Contributing to coderadar
+# Contributing to infiniboard
 
 Thanks for donating your time to developing infiniboard! This is the most
 valuable contribution you can make.
