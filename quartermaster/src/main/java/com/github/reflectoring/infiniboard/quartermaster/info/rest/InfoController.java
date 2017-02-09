@@ -24,18 +24,18 @@ public class InfoController {
 
     private PropertiesService propertiesService;
 
-    @Autowired
-    public InfoController(PropertiesService propertiesService) {
-        this.propertiesService = propertiesService;
-    }
+  @Autowired
+  public InfoController(PropertiesService propertiesService) {
+    this.propertiesService = propertiesService;
+  }
 
-    @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InfoResource> getAllDashboards() {
-        return new ResponseEntity<>(getInfoResource(), OK);
-    }
+  @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<InfoResource> getAllDashboards() {
+    return new ResponseEntity<>(getInfoResource(), OK);
+  }
 
-    private InfoResource getInfoResource() {
-        InfoResource resource = new InfoResource();
+  private InfoResource getInfoResource() {
+    InfoResource resource = new InfoResource();
 
         try {
             Properties properties = propertiesService.loadProperties("quartermaster.properties");
@@ -46,7 +46,6 @@ public class InfoController {
             resource.setVersion("N/A");
         }
 
-        return resource;
-    }
-
+    return resource;
+  }
 }

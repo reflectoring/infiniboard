@@ -1,5 +1,10 @@
 package com.github.reflectoring.infiniboard.quartermaster.testframework;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.snippet.Attributes.key;
+
+import com.github.reflectoring.infiniboard.quartermaster.ControllerTestApp;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -23,78 +28,71 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.github.reflectoring.infiniboard.quartermaster.ControllerTestApp;
-
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.snippet.Attributes.key;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ControllerTestApp.class)
 @WebAppConfiguration
 public abstract class ControllerTestTemplate {
 
-    private MockMvc mvc;
+  private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext applicationContext;
+  @Autowired private WebApplicationContext applicationContext;
 
-    @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");
+  @Rule
+  public JUnitRestDocumentation restDocumentation =
+      new JUnitRestDocumentation("build/generated-snippets");
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+  @Before
+  public void setup() {
+    MockitoAnnotations.initMocks(this);
 
-        mvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-                .apply(MockMvcRestDocumentation.documentationConfiguration(this.restDocumentation))
-                .build();
+    mvc =
+        MockMvcBuilders.webAppContextSetup(applicationContext)
+            .apply(MockMvcRestDocumentation.documentationConfiguration(this.restDocumentation))
+            .build();
+  }
+
+  @SuppressWarnings("unchecked")
+  protected <T> ConstrainedFields<T> fields(Class<T> clazz) {
+    return new ConstrainedFields(clazz);
+  }
+
+  public static class ConstrainedFields<T> {
+
+    private final ConstraintDescriptions constraintDescriptions;
+
+    ConstrainedFields(Class<T> input) {
+      this.constraintDescriptions = new ConstraintDescriptions(input);
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> ConstrainedFields<T> fields(Class<T> clazz) {
-        return new ConstrainedFields(clazz);
+    public FieldDescriptor withPath(String path) {
+      return fieldWithPath(path)
+          .attributes(
+              key("constraints")
+                  .value(
+                      StringUtils.collectionToDelimitedString(
+                          this.constraintDescriptions.descriptionsForProperty(path), ". ")));
     }
+  }
 
-    public static class ConstrainedFields<T> {
+  /**
+   * Wraps the static document() method of RestDocs and configures it to pretty print request and
+   * response JSON structures.
+   */
+  protected RestDocumentationResultHandler document(String identifier, Snippet... snippets) {
+    return MockMvcRestDocumentation.document(
+        identifier, preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()), snippets);
+  }
 
-        private final ConstraintDescriptions constraintDescriptions;
+  protected MockMvc mvc() {
+    return mvc;
+  }
 
-        ConstrainedFields(Class<T> input) {
-            this.constraintDescriptions = new ConstraintDescriptions(input);
-        }
+  protected JsonPathResponseFieldsSnippet responseFieldsInPath(
+      String jsonPath, FieldDescriptor... fieldDescriptors) {
+    return new JsonPathResponseFieldsSnippet(jsonPath, fieldDescriptors);
+  }
 
-        public FieldDescriptor withPath(String path) {
-            return fieldWithPath(path).attributes(key("constraints").value(StringUtils
-                                                                                   .collectionToDelimitedString(
-                                                                                           this.constraintDescriptions
-                                                                                                   .descriptionsForProperty(
-                                                                                                           path),
-                                                                                           ". ")));
-        }
-    }
-
-    /**
-     * Wraps the static document() method of RestDocs and configures it to pretty print request and response JSON
-     * structures.
-     */
-    protected RestDocumentationResultHandler document(String identifier, Snippet... snippets) {
-        return MockMvcRestDocumentation.document(identifier,
-                                                 preprocessRequest(prettyPrint()),
-                                                 preprocessResponse(prettyPrint()),
-                                                 snippets);
-    }
-
-    protected MockMvc mvc() {
-        return mvc;
-    }
-
-    protected JsonPathResponseFieldsSnippet responseFieldsInPath(String jsonPath, FieldDescriptor... fieldDescriptors) {
-        return new JsonPathResponseFieldsSnippet(jsonPath, fieldDescriptors);
-    }
-
-    protected LinksSnippet linksInPath(String jsonPath, LinkDescriptor... linkDescriptors) {
-        return new JsonPathLinksSnippet(jsonPath, linkDescriptors);
-    }
-
+  protected LinksSnippet linksInPath(String jsonPath, LinkDescriptor... linkDescriptors) {
+    return new JsonPathLinksSnippet(jsonPath, linkDescriptors);
+  }
 }

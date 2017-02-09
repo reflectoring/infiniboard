@@ -1,5 +1,8 @@
 package com.github.reflectoring.infiniboard.harvester.source.url;
 
+import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
+import com.github.reflectoring.infiniboard.packrat.source.SourceData;
+import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,10 +12,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -33,21 +34,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
-import com.github.reflectoring.infiniboard.packrat.source.SourceData;
-import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
-
-/**
- * Job to retrieve content from an URL.
- */
+/** Job to retrieve content from an URL. */
 public class UrlSourceJob extends SourceJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UrlSourceJob.class);
 
-    /*
-     * Name used for registering this job.
-     */
-    static final String JOB_TYPE = "urlSource";
+  /*
+   * Name used for registering this job.
+   */
+  static final String JOB_TYPE = "urlSource";
 
     static final String PARAM_STATUS = "status";
     static final String PARAM_CONTENT = "content";
@@ -73,57 +68,60 @@ public class UrlSourceJob extends SourceJob {
                 response = httpClient.execute(httpGet);
             }
 
-            HashMap<String, Object> results = new HashMap<>();
-            results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
-            if (response.getEntity() != null) {
-                results.put(PARAM_CONTENT, IOUtils.toString(response.getEntity().getContent()));
-            } else {
-                results.put(PARAM_CONTENT, response.getStatusLine().getReasonPhrase());
-            }
+      HashMap<String, Object> results = new HashMap<>();
+      results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
+      if (response.getEntity() != null) {
+        results.put(PARAM_CONTENT, IOUtils.toString(response.getEntity().getContent()));
+      } else {
+        results.put(PARAM_CONTENT, response.getStatusLine().getReasonPhrase());
+      }
 
-            upsertResults(context, jobKey, results);
+      upsertResults(context, jobKey, results);
 
-        } catch (SSLHandshakeException e) {
-            String msg = "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
-            logConnectionError(msg, url, enableSslVerify, e);
-        } catch (HttpHostConnectException e) {
-            String msg = "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
-            logConnectionError(msg, url, enableSslVerify, e);
-        } catch (UnknownHostException e) {
-            LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
-        } catch (IOException e) {
-            LOG.error("could not fetch url '{}'", url, e);
-        }
+    } catch (SSLHandshakeException e) {
+      String msg = "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+      logConnectionError(msg, url, enableSslVerify, e);
+    } catch (HttpHostConnectException e) {
+      String msg = "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
+      logConnectionError(msg, url, enableSslVerify, e);
+    } catch (UnknownHostException e) {
+      LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
+    } catch (IOException e) {
+      LOG.error("could not fetch url '{}'", url, e);
+    }
+  }
+
+  private boolean isSslVerificationEnabled(Map<String, Object> configuration) {
+    Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
+    if (o == null) {
+      return true;
     }
 
-    private boolean isSslVerificationEnabled(Map<String, Object> configuration) {
-        Object o = configuration.get(PARAM_ENABLE_SSL_VERIFY);
-        if (o == null) {
-            return true;
-        }
+    return Boolean.valueOf(o.toString());
+  }
 
-        return Boolean.valueOf(o.toString());
+  private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
+    String message =
+        String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
+    if (enableSslVerify) {
+      LOG.error(message);
+    } else {
+      LOG.warn(message);
     }
+  }
 
-    private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
-        String message = String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
-        if (enableSslVerify) {
-            LOG.error(message);
-        } else {
-            LOG.warn(message);
-        }
+  private void upsertResults(
+      ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
+    SourceDataRepository repository = context.getBean(SourceDataRepository.class);
+    SourceData existingData =
+        repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
+    if (existingData != null) {
+      existingData.setData(results);
+    } else {
+      existingData = new SourceData(jobKey.getGroup(), jobKey.getName(), results);
     }
-
-    private void upsertResults(ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
-        SourceDataRepository repository = context.getBean(SourceDataRepository.class);
-        SourceData existingData = repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
-        if (existingData != null) {
-            existingData.setData(results);
-        } else {
-            existingData = new SourceData(jobKey.getGroup(), jobKey.getName(), results);
-        }
-        repository.save(existingData);
-    }
+    repository.save(existingData);
+  }
 
     private <T> T getConfiguration(Map<String, Object> configuration, String key, Class<T> clazz) {
         Object o = configuration.get(key);

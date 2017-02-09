@@ -3,6 +3,9 @@ package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
+import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.rest.DashboardController;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -10,18 +13,15 @@ import java.util.Map;
 
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
-import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
-import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
-import com.github.reflectoring.infiniboard.quartermaster.dashboard.rest.DashboardController;
+public class WidgetConfigResourceAssembler
+    extends ResourceAssemblerSupport<WidgetConfig, WidgetConfigResource> {
 
-public class WidgetConfigResourceAssembler extends ResourceAssemblerSupport<WidgetConfig, WidgetConfigResource> {
+  private Integer dashboardId;
 
-    private Integer dashboardId;
-
-    public WidgetConfigResourceAssembler(Integer dashboardId) {
-        super(WidgetController.class, WidgetConfigResource.class);
-        this.dashboardId = dashboardId;
-    }
+  public WidgetConfigResourceAssembler(Integer dashboardId) {
+    super(WidgetController.class, WidgetConfigResource.class);
+    this.dashboardId = dashboardId;
+  }
 
     @Override
     public WidgetConfigResource toResource(WidgetConfig entity) {

@@ -16,6 +16,9 @@ $ ./gradlew cleanIdea idea
 ## building components
 Each components has specific instruction on how it is build defined in its `Readme.md`.
 
+## Want to contribute?
+See the [contribution guide](https://github.com/reflectoring/infiniboard/blob/master/CONTRIBUTING.md).
+
 ## license
 
 > The MIT License (MIT)

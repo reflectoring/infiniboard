@@ -2,11 +2,23 @@ project.ext {
     MongoIntegrationTests = 'com.github.reflectoring.infiniboard.test.categories.MongoIntegrationTests'
 }
 
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:${version_spotless}"
+    }
+}
+
 subprojects {
 
     if (file('src/main/java').exists()) {
         apply plugin: 'jacoco'
         apply plugin: 'java'
+        apply plugin: com.diffplug.gradle.spotless.SpotlessPlugin
 
         repositories {
             jcenter()
@@ -20,6 +32,12 @@ subprojects {
             testCompile(
                     project(':test-base'),
             )
+        }
+
+        spotless {
+            java {
+                googleJavaFormat()
+            }
         }
 
         jacoco {
