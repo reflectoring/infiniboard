@@ -10,19 +10,19 @@ public class InfoResource extends ResourceSupport {
     return version;
   }
 
-    public void setVersion(String version) {
-        this.version = version;
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public boolean equals(Object that) {
+    if (!super.equals(that)) {
+      return false;
     }
 
-    public boolean equals(Object that) {
-        if (!super.equals(that)) {
-            return false;
-        }
-
-        InfoResource thatResource = (InfoResource) that;
-        if (version.equals(thatResource.getVersion())) {
-            return true;
-        }
-        return false;
+    InfoResource thatResource = (InfoResource) that;
+    if (version.equals(thatResource.getVersion())) {
+      return true;
     }
+    return false;
+  }
 }

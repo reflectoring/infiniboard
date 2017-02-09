@@ -20,7 +20,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -44,29 +43,30 @@ public class UrlSourceJob extends SourceJob {
    */
   static final String JOB_TYPE = "urlSource";
 
-    static final String PARAM_STATUS = "status";
-    static final String PARAM_CONTENT = "content";
-    static final String PARAM_URL = "url";
-    static final String PARAM_USERNAME = "username";
-    static final String PARAM_PASSWORD = "password";
-    static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
+  static final String PARAM_STATUS = "status";
+  static final String PARAM_CONTENT = "content";
+  static final String PARAM_URL = "url";
+  static final String PARAM_USERNAME = "username";
+  static final String PARAM_PASSWORD = "password";
+  static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
-    @Override
-    protected void executeInternal(ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
-        String url = configuration.get(PARAM_URL).toString();
-        boolean enableSslVerify = isSslVerificationEnabled(configuration);
-        CredentialsProvider credentialsProvider = configureBasicAuthentication(configuration);
-        HttpClientContext clientContext = configureContext(credentialsProvider, url);
+  @Override
+  protected void executeInternal(
+      ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
+    String url = configuration.get(PARAM_URL).toString();
+    boolean enableSslVerify = isSslVerificationEnabled(configuration);
+    CredentialsProvider credentialsProvider = configureBasicAuthentication(configuration);
+    HttpClientContext clientContext = configureContext(credentialsProvider, url);
 
-        try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
-            HttpGet httpGet = new HttpGet(url);
+    try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
+      HttpGet httpGet = new HttpGet(url);
 
-            CloseableHttpResponse response;
-            if (clientContext != null) {
-                response = httpClient.execute(httpGet,clientContext);
-            } else {
-                response = httpClient.execute(httpGet);
-            }
+      CloseableHttpResponse response;
+      if (clientContext != null) {
+        response = httpClient.execute(httpGet, clientContext);
+      } else {
+        response = httpClient.execute(httpGet);
+      }
 
       HashMap<String, Object> results = new HashMap<>();
       results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
@@ -123,71 +123,72 @@ public class UrlSourceJob extends SourceJob {
     repository.save(existingData);
   }
 
-    private <T> T getConfiguration(Map<String, Object> configuration, String key, Class<T> clazz) {
-        Object o = configuration.get(key);
+  private <T> T getConfiguration(Map<String, Object> configuration, String key, Class<T> clazz) {
+    Object o = configuration.get(key);
 
-        if (o == null) {
-            return null;
-        }
-
-        return clazz.cast(o);
+    if (o == null) {
+      return null;
     }
 
-    private CredentialsProvider configureBasicAuthentication(Map<String, Object> configuration) {
+    return clazz.cast(o);
+  }
 
-        String username = getConfiguration(configuration, PARAM_USERNAME, String.class);
-        String password = getConfiguration(configuration, PARAM_PASSWORD, String.class);
+  private CredentialsProvider configureBasicAuthentication(Map<String, Object> configuration) {
 
-        if (username == null || password == null) {
-            return null;
-        }
+    String username = getConfiguration(configuration, PARAM_USERNAME, String.class);
+    String password = getConfiguration(configuration, PARAM_PASSWORD, String.class);
 
-        CredentialsProvider provider = new BasicCredentialsProvider();
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
-        provider.setCredentials(AuthScope.ANY, credentials);
-
-        return provider;
+    if (username == null || password == null) {
+      return null;
     }
 
-    private HttpClientContext configureContext(CredentialsProvider credentialsProvider, String url) {
-        if (credentialsProvider != null) {
-            try {
-                URL targetUrl = new URL(url);
+    CredentialsProvider provider = new BasicCredentialsProvider();
+    UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
+    provider.setCredentials(AuthScope.ANY, credentials);
 
-                HttpHost targetHost = new HttpHost(targetUrl.getHost(), targetUrl.getPort(), targetUrl.getProtocol());
-                AuthCache authCache = new BasicAuthCache();
-                authCache.put(targetHost, new BasicScheme());
+    return provider;
+  }
 
-                final HttpClientContext context = HttpClientContext.create();
-                context.setCredentialsProvider(credentialsProvider);
-                context.setAuthCache(authCache);
+  private HttpClientContext configureContext(CredentialsProvider credentialsProvider, String url) {
+    if (credentialsProvider != null) {
+      try {
+        URL targetUrl = new URL(url);
 
-                return context;
-            } catch (MalformedURLException e) {
-                LOG.error("Cannot parse URL '{}'", url, e);
-            }
-        }
-        return null;
+        HttpHost targetHost =
+            new HttpHost(targetUrl.getHost(), targetUrl.getPort(), targetUrl.getProtocol());
+        AuthCache authCache = new BasicAuthCache();
+        authCache.put(targetHost, new BasicScheme());
+
+        final HttpClientContext context = HttpClientContext.create();
+        context.setCredentialsProvider(credentialsProvider);
+        context.setAuthCache(authCache);
+
+        return context;
+      } catch (MalformedURLException e) {
+        LOG.error("Cannot parse URL '{}'", url, e);
+      }
+    }
+    return null;
+  }
+
+  CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
+
+    HttpClientBuilder builder = HttpClientBuilder.create();
+
+    if (enableSslVerify) {
+      return builder.build();
     }
 
-    CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
-
-        HttpClientBuilder builder = HttpClientBuilder.create();
-
-        if (enableSslVerify) {
-            return builder.build();
-        }
-
-        SSLContext sslContext = null;
-        try {
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
-        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            LOG.error("Could not create ssl context", e);
-        }
-
-        builder.setSSLHostnameVerifier(new NoopHostnameVerifier()).setSSLContext(sslContext);
-
-        return builder.build();
+    SSLContext sslContext = null;
+    try {
+      sslContext =
+          new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
+    } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+      LOG.error("Could not create ssl context", e);
     }
 
+    builder.setSSLHostnameVerifier(new NoopHostnameVerifier()).setSSLContext(sslContext);
+
+    return builder.build();
+  }
 }

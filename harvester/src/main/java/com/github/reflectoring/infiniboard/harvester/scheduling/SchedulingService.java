@@ -66,9 +66,13 @@ public class SchedulingService {
     newScheduler.start();
     scheduler = newScheduler;
 
-        createJobSchedule(GROUP_HARVESTER, UpdateSourceConfigJob.JOBTYPE, UpdateSourceConfigJob.class,
-                          Collections.emptyMap(), 5000);
-    }
+    createJobSchedule(
+        GROUP_HARVESTER,
+        UpdateSourceConfigJob.JOBTYPE,
+        UpdateSourceConfigJob.class,
+        Collections.emptyMap(),
+        5000);
+  }
 
   @PreDestroy
   void cleanupScheduling() throws SchedulerException {
