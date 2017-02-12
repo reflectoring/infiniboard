@@ -1,0 +1,14 @@
+{
+  "title": "folder",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://ci.jenkins.io/job/Infrastructure/api/json"
+      }
+    }
+  ]
+}

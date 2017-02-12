@@ -1,0 +1,15 @@
+{
+  "title": "yellow",
+  "description": "a yellow jenkins job",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://jenkins.qa.ubuntu.com/view/Trusty/view/All/job/autopilot-testrunner-otto-trusty-debug-fjg/api/json"
+      }
+    }
+  ]
+}

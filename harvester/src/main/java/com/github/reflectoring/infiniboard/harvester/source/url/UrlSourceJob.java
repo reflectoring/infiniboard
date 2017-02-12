@@ -4,6 +4,8 @@ import com.github.reflectoring.infiniboard.harvester.source.SourceJob;
 import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -13,12 +15,18 @@ import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.*;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.quartz.JobKey;
 import org.slf4j.Logger;
@@ -38,6 +46,8 @@ public class UrlSourceJob extends SourceJob {
   static final String PARAM_STATUS = "status";
   static final String PARAM_CONTENT = "content";
   static final String PARAM_URL = "url";
+  static final String PARAM_USERNAME = "username";
+  static final String PARAM_PASSWORD = "password";
   static final String PARAM_ENABLE_SSL_VERIFY = "enableSslVerification";
 
   @Override
@@ -45,10 +55,18 @@ public class UrlSourceJob extends SourceJob {
       ApplicationContext context, JobKey jobKey, Map<String, Object> configuration) {
     String url = configuration.get(PARAM_URL).toString();
     boolean enableSslVerify = isSslVerificationEnabled(configuration);
+    CredentialsProvider credentialsProvider = configureBasicAuthentication(configuration);
+    HttpClientContext clientContext = configureContext(credentialsProvider, url);
 
     try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
       HttpGet httpGet = new HttpGet(url);
-      CloseableHttpResponse response = httpClient.execute(httpGet);
+
+      CloseableHttpResponse response;
+      if (clientContext != null) {
+        response = httpClient.execute(httpGet, clientContext);
+      } else {
+        response = httpClient.execute(httpGet);
+      }
 
       HashMap<String, Object> results = new HashMap<>();
       results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
@@ -105,10 +123,60 @@ public class UrlSourceJob extends SourceJob {
     repository.save(existingData);
   }
 
+  private <T> T getConfiguration(Map<String, Object> configuration, String key, Class<T> clazz) {
+    Object o = configuration.get(key);
+
+    if (o == null) {
+      return null;
+    }
+
+    return clazz.cast(o);
+  }
+
+  private CredentialsProvider configureBasicAuthentication(Map<String, Object> configuration) {
+
+    String username = getConfiguration(configuration, PARAM_USERNAME, String.class);
+    String password = getConfiguration(configuration, PARAM_PASSWORD, String.class);
+
+    if (username == null || password == null) {
+      return null;
+    }
+
+    CredentialsProvider provider = new BasicCredentialsProvider();
+    UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
+    provider.setCredentials(AuthScope.ANY, credentials);
+
+    return provider;
+  }
+
+  private HttpClientContext configureContext(CredentialsProvider credentialsProvider, String url) {
+    if (credentialsProvider != null) {
+      try {
+        URL targetUrl = new URL(url);
+
+        HttpHost targetHost =
+            new HttpHost(targetUrl.getHost(), targetUrl.getPort(), targetUrl.getProtocol());
+        AuthCache authCache = new BasicAuthCache();
+        authCache.put(targetHost, new BasicScheme());
+
+        final HttpClientContext context = HttpClientContext.create();
+        context.setCredentialsProvider(credentialsProvider);
+        context.setAuthCache(authCache);
+
+        return context;
+      } catch (MalformedURLException e) {
+        LOG.error("Cannot parse URL '{}'", url, e);
+      }
+    }
+    return null;
+  }
+
   CloseableHttpClient configureHttpClient(boolean enableSslVerify) {
 
+    HttpClientBuilder builder = HttpClientBuilder.create();
+
     if (enableSslVerify) {
-      return HttpClients.createDefault();
+      return builder.build();
     }
 
     SSLContext sslContext = null;
@@ -119,9 +187,8 @@ public class UrlSourceJob extends SourceJob {
       LOG.error("Could not create ssl context", e);
     }
 
-    return HttpClients.custom()
-        .setSSLHostnameVerifier(new NoopHostnameVerifier())
-        .setSSLContext(sslContext)
-        .build();
+    builder.setSSLHostnameVerifier(new NoopHostnameVerifier()).setSSLContext(sslContext);
+
+    return builder.build();
   }
 }

@@ -70,7 +70,7 @@ public class SchedulingService {
         GROUP_HARVESTER,
         UpdateSourceConfigJob.JOBTYPE,
         UpdateSourceConfigJob.class,
-        Collections.EMPTY_MAP,
+        Collections.emptyMap(),
         5000);
   }
 

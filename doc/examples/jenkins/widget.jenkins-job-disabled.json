@@ -1,0 +1,14 @@
+{
+  "title": "disabled",
+  "type": "jenkins",
+  "sourceConfigs": [
+    {
+      "id": "jenkins",
+      "type": "urlSource",
+      "interval": 10000,
+      "configData": {
+        "url": "https://ci.openshift.redhat.com/jenkins/job/openshift_org_-_commons_nightly_build/api/json"
+      }
+    }
+  ]
+}

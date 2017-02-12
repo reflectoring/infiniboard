@@ -6,11 +6,13 @@ import {WidgetService} from '../shared/widget.service';
 import {ActivatedRoute} from '@angular/router';
 import {Type} from '@angular/core/src/type';
 import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
+import {JenkinsWidgetComponent} from '../widget/jenkins/jenkins-widget.component';
 
 
 @Component({
   selector: 'dashboard-detail',
   entryComponents: [
+    JenkinsWidgetComponent,
     PlatformStatusWidgetComponent
   ],
   templateUrl: './dashboard-detail.component.html',
@@ -62,6 +64,9 @@ export class DashboardDetailComponent implements OnInit {
     switch (widgetType) {
       case 'platform-status':
         return PlatformStatusWidgetComponent;
+
+      case 'jenkins':
+        return JenkinsWidgetComponent;
 
       default:
         throw new Error('unknown widget type \'' + widgetType + '\'');

@@ -9,6 +9,7 @@ import com.github.reflectoring.infiniboard.quartermaster.dashboard.rest.Dashboar
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 public class WidgetConfigResourceAssembler
@@ -31,7 +32,7 @@ public class WidgetConfigResourceAssembler
     resource.setLastModified(
         Date.from(entity.getLastModified().atZone(ZoneId.systemDefault()).toInstant()));
     for (SourceConfig config : entity.getSourceConfigs()) {
-      resource.getSourceConfigs().add(config);
+      resource.getSourceConfigs().add(removeCredentials(config));
     }
     resource.add(
         linkTo(methodOn(WidgetController.class).getWidget(dashboardId, entity.getId()))
@@ -42,6 +43,19 @@ public class WidgetConfigResourceAssembler
         linkTo(methodOn(WidgetController.class).getData(dashboardId, entity.getId()))
             .withRel("data"));
     return resource;
+  }
+
+  private SourceConfig removeCredentials(SourceConfig config) {
+    Map<String, Object> configData = config.getConfigData();
+    if (configData.containsKey("password")) {
+      configData.put("password", "**********");
+    }
+
+    if (configData.containsKey("username")) {
+      configData.put("username", "**********");
+    }
+
+    return config;
   }
 
   public WidgetConfig toEntity(WidgetConfigResource resource) {

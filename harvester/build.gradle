@@ -6,7 +6,7 @@ buildscript {
 
 }
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
 

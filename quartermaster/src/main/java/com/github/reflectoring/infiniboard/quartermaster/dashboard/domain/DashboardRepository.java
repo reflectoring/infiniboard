@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,14 +17,14 @@ public class DashboardRepository {
     this.widgetConfigService = widgetConfigService;
   }
 
-  public Page<Dashboard> findAll(Pageable pageable) {
+  public Page<Dashboard> findAll() {
     ArrayList<Dashboard> dashboards = new ArrayList<>();
-    dashboards.add(getSupportDashboardMock());
+    dashboards.add(getSupportDashboardMock(1));
     return new PageImpl<>(dashboards);
   }
 
-  private Dashboard getSupportDashboardMock() {
-    Dashboard dashboard = new Dashboard(1, "Development", "Just what you need");
+  private Dashboard getSupportDashboardMock(int id) {
+    Dashboard dashboard = new Dashboard(id, "Development", "Just what you need");
 
     dashboard.setWidgetConfigs(widgetConfigService.loadWidgets());
 
@@ -33,6 +32,6 @@ public class DashboardRepository {
   }
 
   public Dashboard find(int id) {
-    return getSupportDashboardMock();
+    return getSupportDashboardMock(id);
   }
 }

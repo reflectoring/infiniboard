@@ -9,7 +9,7 @@ buildscript {
 
 subprojects {
     afterEvaluate {
-        if (plugins.hasPlugin('spring-boot')
+        if (plugins.hasPlugin('org.springframework.boot')
                 && plugins.hasPlugin('com.bmuschko.docker-remote-api')
                 && file("${project.projectDir}/src/main/docker").exists()) {
 
