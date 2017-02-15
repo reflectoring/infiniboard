@@ -3,6 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
+        // needed to use classes from plugin within buildscript
         classpath "com.bmuschko:gradle-docker-plugin:${version_gradle_docker}"
     }
 }

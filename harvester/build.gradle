@@ -1,11 +1,3 @@
-buildscript {
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
-    }
-
-}
-
 apply plugin: 'org.springframework.boot'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
