@@ -5,6 +5,7 @@ import {WidgetConfig} from '../shared/widget-config';
 import {WidgetService} from '../shared/widget.service';
 import {ActivatedRoute} from '@angular/router';
 import {Type} from '@angular/core/src/type';
+import 'rxjs/add/operator/mergeMap';
 import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
 import {JenkinsWidgetComponent} from '../widget/jenkins/jenkins-widget.component';
 
@@ -52,10 +53,10 @@ export class DashboardDetailComponent implements OnInit {
   }
 
   private initializeWidget(widgetConfig: WidgetConfig) {
-    let widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
-    let cf = this.cfr.resolveComponentFactory(widgetComponent);
-    let componentRef = this.viewContainer.createComponent(cf);
-    let component = componentRef.instance;
+    const widgetComponent = this.getWidgetComponentByType(widgetConfig.type);
+    const cf = this.cfr.resolveComponentFactory(widgetComponent);
+    const componentRef = this.viewContainer.createComponent(cf);
+    const component = componentRef.instance;
     component.initWidget(widgetConfig);
     component.updateWidgetData();
   }

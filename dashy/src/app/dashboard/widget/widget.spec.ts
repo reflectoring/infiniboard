@@ -2,7 +2,7 @@ import {Widget} from './widget';
 import {TestBed} from '@angular/core/testing';
 import {WidgetService} from '../shared/widget.service';
 import {WidgetConfig} from '../shared/widget-config';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 class FakeWidgetService {
   public getWidgetData(widgetConfig: WidgetConfig): Observable<any> {
@@ -31,7 +31,7 @@ describe('Widget', () => {
   });
 
   it('should create an instance', () => {
-    let widgetService = TestBed.get(WidgetService);
+    const widgetService = TestBed.get(WidgetService);
     expect(new Widget(widgetService)).toBeTruthy();
   });
 });

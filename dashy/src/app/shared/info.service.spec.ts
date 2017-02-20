@@ -1,7 +1,7 @@
 import {TestBed, inject} from '@angular/core/testing';
 import {InfoService} from './info.service';
 import {Info} from './info';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {Http} from '@angular/http';
 
 

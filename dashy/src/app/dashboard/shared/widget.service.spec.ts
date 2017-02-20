@@ -2,7 +2,7 @@ import {inject, TestBed} from '@angular/core/testing';
 import {WidgetService} from './widget.service';
 import {Response, ResponseOptions, ResponseType, Http} from '@angular/http';
 import {Dashboard} from './dashboard';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {WidgetConfig} from './widget-config';
 
 
@@ -29,7 +29,7 @@ class FakeWidgetHttp {
   }
 
   private getUnpagedWidgets() {
-    let body = {
+    const body = {
       '_embedded': {
         'widgetConfigResourceList': [{
           'title': 'dev',
@@ -102,7 +102,7 @@ class FakeWidgetHttp {
   }
 
   private createFakeResponse(url: string, body: any, status = 200): Observable<Response> {
-    let responseOptionsArgs = {
+    const responseOptionsArgs = {
       body: body,
       status: status,
       statusText: 'OK',
@@ -118,7 +118,7 @@ class FakeWidgetHttp {
   }
 
   public getWidgetData(): Observable<Response> {
-    let body: any = {
+    const body: any = {
       'sourceData': [{
         'id': '57dd991e6690b0f6fdc47cb3',
         'widgetId': '57dd98a27e21e57c76718bed',
@@ -139,7 +139,7 @@ class FakeWidgetHttp {
   }
 }
 
-let dashboard = new Dashboard(3, 'Testing', 'test reports', '/mock/api/dashboards/1/widgets/all');
+const dashboard = new Dashboard(3, 'Testing', 'test reports', '/mock/api/dashboards/1/widgets/all');
 
 describe('Service: Widget', () => {
   beforeEach(() => {
@@ -157,7 +157,7 @@ describe('Service: Widget', () => {
   }));
 
   it('getWidgets() returns a list of widget configs', inject([WidgetService], (service: WidgetService) => {
-    let widgetConfigs = service.getWidgets(dashboard);
+    const widgetConfigs = service.getWidgets(dashboard);
     expect(widgetConfigs).toBeTruthy();
   }));
 
@@ -178,7 +178,7 @@ describe('Service: Widget', () => {
   it('getWidgetData() returns an untyped object containing two widget data objects',
     inject([WidgetService], (service: WidgetService) => {
 
-      let widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
+      const widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
       service.getWidgetData(widgetConfig).subscribe(data => {
         expect(data.length).toEqual(2);
       });
@@ -188,7 +188,7 @@ describe('Service: Widget', () => {
   it('getWidgetData() returns an untyped object containing widget display data',
     inject([WidgetService], (service: WidgetService) => {
 
-      let widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
+      const widgetConfig = new WidgetConfig('platform-status', 'dev', '/mock/data');
       service.getWidgetData(widgetConfig).subscribe(data => {
         expect(data[0].sourceId).toEqual('status');
         expect(data[1].sourceId).toEqual('version');
