@@ -9,5 +9,6 @@ export enum BuildStatus {
   RED,
   RED_BUILDING,
   ABORTED,
+  ABORTED_BUILDING,
   UNKNOWN
 }
