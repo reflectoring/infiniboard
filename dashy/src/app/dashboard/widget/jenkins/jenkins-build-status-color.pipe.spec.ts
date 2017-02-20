@@ -52,6 +52,10 @@ describe('Pipe: BuildStatusColor', () => {
       expect(pipe.transform(BuildStatus.ABORTED)).toEqual('bg-gray');
     });
 
+    it('transforms ABORTED_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.ABORTED_BUILDING)).toEqual('bg-gray');
+    });
+
     it('transforms UNKNOWN', () => {
       expect(pipe.transform(BuildStatus.UNKNOWN)).toEqual('bg-red');
     });

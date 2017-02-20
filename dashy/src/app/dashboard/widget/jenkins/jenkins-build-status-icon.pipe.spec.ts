@@ -57,5 +57,9 @@ describe('Pipe: BuildStatusIcon', () => {
       expect(pipe.transform(BuildStatus.RED_BUILDING)).toEqual('fa-refresh');
     });
 
+    it('transforms ABORTED_BUILDING', () => {
+      expect(pipe.transform(BuildStatus.ABORTED_BUILDING)).toEqual('fa-refresh');
+    });
+
   }));
 });

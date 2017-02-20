@@ -90,6 +90,9 @@ export class JenkinsWidgetComponent extends Widget {
       case 'aborted':
         return BuildStatus.ABORTED;
 
+      case 'aborted_anime':
+        return BuildStatus.ABORTED_BUILDING;
+
       case 'red':
         return BuildStatus.RED;
 
