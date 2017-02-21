@@ -2,17 +2,12 @@ machine:
   java:
     version: oraclejdk8
   node:
-    version: 6.3.0
+    version: 6.9.5
   python:
     version: 2.7.3
 
   services:
     - docker
-
-general:
-  branches:
-    ignore:
-      - gh-pages
 
 dependencies:
 
@@ -43,7 +38,7 @@ dependencies:
     - docker save openjdk:8-jdk-alpine > ~/docker/java.tar
 
   override:
-    - cd dashy && ./node_modules/.bin/ng build --prod
+    - cd dashy && ./node_modules/.bin/ng build --prod --progress false
 
     # build backend, run integration tests and prepare GitHub pages
     - ./gradlew --stacktrace --console=plain build -x test
@@ -58,11 +53,11 @@ test:
   override:
     # run Angular2 linting and unit tests
     - cd dashy && ./node_modules/.bin/ng lint
-    - cd dashy && ./node_modules/.bin/ng test
+    - cd dashy && ./node_modules/.bin/ng test --code-coverage --single-run --progress false
 
     # archive Angular2 test results
     - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
-    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-istanbul/
+    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-coverage/
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - cp -a dashy/build/junit/*.xml $CIRCLE_TEST_REPORTS/junit/
 

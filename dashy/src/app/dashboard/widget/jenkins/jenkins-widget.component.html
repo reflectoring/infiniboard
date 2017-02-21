@@ -5,7 +5,7 @@
       <span *ngIf="url" class="info-box-text"><a [href]="url" target="_blank">{{name}}</a></span>
       <span *ngIf="!url" class="info-box-text">{{name}}</span>
       <span class="info-box-number">{{lastBuildNo}}</span>
-      <span class="info-box-text">{{description}}</span>
+      <span class="info-box-text">{{this['description']}}</span>
     </div><!-- /.info-box-content -->
   </div><!-- /.info-box -->
 </div>

@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
 import {Dashboard} from './dashboard';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 import {environment} from '../../../environments/environment';
 
 @Injectable()
@@ -12,11 +14,11 @@ export class DashboardService {
 
   private static extractDashboardList(haljson: any): Dashboard[] {
 
-    let result: any[] = [];
-    let dashboards = (haljson._embedded || {}).dashboardResourceList || {};
+    const result: any[] = [];
+    const dashboards = (haljson._embedded || {}).dashboardResourceList || {};
 
-    for (let item of dashboards) {
-      let dashboard = DashboardService.createDashboard(item);
+    for (const item of dashboards) {
+      const dashboard = DashboardService.createDashboard(item);
       result.push(dashboard);
     }
     return result;
@@ -27,12 +29,12 @@ export class DashboardService {
   }
 
   private static handleDashboard(res: Response): Dashboard {
-    let haljson = res.json();
+    const haljson = res.json();
     return DashboardService.createDashboard(haljson);
   }
 
   private static handleDashboardList(res: Response): Dashboard[] {
-    let haljson = res.json();
+    const haljson = res.json();
     return DashboardService.extractDashboardList(haljson);
   }
 
@@ -57,7 +59,7 @@ export class DashboardService {
   }
 
   private handleError(error: any) {
-    let errMsg = ((error.body || {}).message) ? error.message :
+    const errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     console.error(error);

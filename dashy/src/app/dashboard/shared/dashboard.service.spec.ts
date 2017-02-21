@@ -1,7 +1,8 @@
 import {TestBed, inject} from '@angular/core/testing';
 import {DashboardService} from './dashboard.service';
 import {Http} from '@angular/http';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import {Dashboard} from './dashboard';
 
 
@@ -26,7 +27,7 @@ describe('Service: Dashboard', () => {
     expect(service).toBeTruthy();
 
     it('and getDashboards() returns a list of dashboards', () => {
-      let dashboards = service.getDashboards();
+      const dashboards = service.getDashboards();
       expect(dashboards).toBeTruthy();
     });
 
