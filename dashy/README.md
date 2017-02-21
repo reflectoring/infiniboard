@@ -12,6 +12,8 @@ The currently used node version can be determined by taking a look the machine s
 ### Install
 `npm install -g @angular/cli@1.0.0-beta.32.3`
 
+If you have installed an older version please read the [angular-cli upgrade guide](https://github.com/angular/angular-cli#updating-angular-cli) and replace the version `@latest` with `@1.0.0-beta.32.3`. 
+
 ### Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
