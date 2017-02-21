@@ -16,16 +16,18 @@ task resolveDependencies {
     doLast {
         project.rootProject.allprojects.each { subProject ->
             subProject.buildscript.configurations.each { configuration ->
-                if (isResolveableConfiguration(configuration)) {
-                    configuration.resolve()
-                }
+                resolveConfiguration(configuration)
             }
             subProject.configurations.each { configuration ->
-                if (isResolveableConfiguration(configuration)) {
-                    configuration.resolve()
-                }
+                resolveConfiguration(configuration)
             }
         }
+    }
+}
+
+void resolveConfiguration(configuration) {
+    if (isResolveableConfiguration(configuration)) {
+        configuration.resolve()
     }
 }
 
