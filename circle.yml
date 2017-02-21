@@ -2,7 +2,7 @@ machine:
   java:
     version: oraclejdk8
   node:
-    version: 6.3.0
+    version: 6.9.5
   python:
     version: 2.7.3
 
@@ -58,11 +58,11 @@ test:
   override:
     # run Angular2 linting and unit tests
     - cd dashy && ./node_modules/.bin/ng lint
-    - cd dashy && ./node_modules/.bin/ng test
+    - cd dashy && ./node_modules/.bin/ng test --code-coverage --single-run
 
     # archive Angular2 test results
     - mkdir -p $CIRCLE_TEST_REPORTS/ng-coverage/
-    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-istanbul/
+    - cp -a dashy/build/coverage $CIRCLE_TEST_REPORTS/dashy-coverage/
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - cp -a dashy/build/junit/*.xml $CIRCLE_TEST_REPORTS/junit/
 

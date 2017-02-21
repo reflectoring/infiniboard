@@ -2,9 +2,9 @@ import {inject, TestBed} from '@angular/core/testing';
 import {WidgetService} from './widget.service';
 import {Response, ResponseOptions, ResponseType, Http} from '@angular/http';
 import {Dashboard} from './dashboard';
-import {Observable} from 'rxjs/Observable';
 import {WidgetConfig} from './widget-config';
-
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 class FakeWidgetHttp {
 

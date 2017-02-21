@@ -3,6 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {WidgetService} from '../shared/widget.service';
 import {WidgetConfig} from '../shared/widget-config';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 class FakeWidgetService {
   public getWidgetData(widgetConfig: WidgetConfig): Observable<any> {
