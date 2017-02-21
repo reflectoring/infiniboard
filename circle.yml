@@ -9,11 +9,6 @@ machine:
   services:
     - docker
 
-general:
-  branches:
-    ignore:
-      - gh-pages
-
 dependencies:
 
   cache_directories:
