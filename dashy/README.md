@@ -1,6 +1,6 @@
 # dashy
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.11-webpack.8.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-beta.32.3.
 
 ## tooling
 The usage of [nvm](https://github.com/creationix/nvm) is recommended to switch between different versions of node when necessary.
@@ -10,7 +10,7 @@ The currently used node version can be determined by taking a look the machine s
 ## angular-cli
 
 ### Install
-`npm install -g angular-cli@1.0.0-beta.15`
+`npm install -g @angular/cli@1.0.0-beta.32.3`
 
 ### Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -25,7 +25,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ### Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test --code-coverage` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ### Running end-to-end tests
 
