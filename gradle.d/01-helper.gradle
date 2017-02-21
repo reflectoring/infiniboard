@@ -16,13 +16,30 @@ task resolveDependencies {
     doLast {
         project.rootProject.allprojects.each { subProject ->
             subProject.buildscript.configurations.each { configuration ->
-                configuration.resolve()
+                resolveConfiguration(configuration)
             }
             subProject.configurations.each { configuration ->
-                configuration.resolve()
+                resolveConfiguration(configuration)
             }
         }
     }
+}
+
+void resolveConfiguration(configuration) {
+    if (isResolveableConfiguration(configuration)) {
+        configuration.resolve()
+    }
+}
+
+boolean isResolveableConfiguration(configuration) {
+    def nonResolveableConfigurations = ['apiElements', 'implementation',
+                                        'runtimeElements', 'runtimeOnly',
+                                        'testImplementation', 'testRuntimeOnly']
+
+    if (nonResolveableConfigurations.contains(configuration.getName())) {
+        return false
+    }
+    return true
 }
 
 ext {
