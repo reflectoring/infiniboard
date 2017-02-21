@@ -16,13 +16,28 @@ task resolveDependencies {
     doLast {
         project.rootProject.allprojects.each { subProject ->
             subProject.buildscript.configurations.each { configuration ->
-                configuration.resolve()
+                if (isIncludedConfiguration(configuration)) {
+                    configuration.resolve()
+                }
             }
             subProject.configurations.each { configuration ->
-                configuration.resolve()
+                if (isIncludedConfiguration(configuration)) {
+                    configuration.resolve()
+                }
             }
         }
     }
+}
+
+boolean isIncludedConfiguration(configuration) {
+    def disablowedConfigurations = ['apiElements', 'implementation',
+                                    'runtimeElements', 'runtimeOnly',
+                                    'testImplementation', 'testRuntimeOnly']
+
+    if (disablowedConfigurations.contains(configuration.getName())) {
+        return false
+    }
+    return true
 }
 
 ext {
