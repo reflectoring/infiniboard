@@ -32,6 +32,7 @@ export class JenkinsBuildStatusIconPipe implements PipeTransform {
       case BuildStatus.BLUE_BUILDING:
       case BuildStatus.YELLOW_BUILDING:
       case BuildStatus.RED_BUILDING:
+      case BuildStatus.ABORTED_BUILDING:
         return 'fa-refresh';
 
 
