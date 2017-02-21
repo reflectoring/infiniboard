@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
 import {WidgetConfig} from './widget-config';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 import {Dashboard} from './dashboard';
 
 @Injectable()
@@ -28,7 +30,7 @@ export class WidgetService {
   }
 
   private handleError(error: any) {
-    let errMsg = ((error.body || {}).message) ? error.message :
+    const errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     console.error(error);
@@ -42,12 +44,12 @@ export class WidgetService {
   }
 
   private static extractWidgetConfigList(res: Response): WidgetConfig[] {
-    let haljson: any = res.json();
-    let widgetConfigs: any = ((haljson._embedded || {}).widgetConfigResourceList || {});
-    let result: any[] = [];
+    const haljson: any = res.json();
+    const widgetConfigs: any = ((haljson._embedded || {}).widgetConfigResourceList || {});
+    const result: any[] = [];
 
-    for (let item of widgetConfigs) {
-      let widgetConfig = WidgetService.createWidgetConfig(item);
+    for (const item of widgetConfigs) {
+      const widgetConfig = WidgetService.createWidgetConfig(item);
       result.push(widgetConfig);
     }
 
@@ -55,7 +57,7 @@ export class WidgetService {
   }
 
   private static createWidgetConfig(haljson: any): WidgetConfig {
-    let widgetConfig = new WidgetConfig(haljson.type, haljson.title, haljson._links.data.href);
+    const widgetConfig = new WidgetConfig(haljson.type, haljson.title, haljson._links.data.href);
 
     if (haljson.titleUrl) {
       widgetConfig.titleUrl = haljson.titleUrl;

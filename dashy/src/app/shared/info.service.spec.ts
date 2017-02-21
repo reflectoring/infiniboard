@@ -1,9 +1,9 @@
 import {TestBed, inject} from '@angular/core/testing';
 import {InfoService} from './info.service';
 import {Info} from './info';
-import {Observable} from 'rxjs';
 import {Http} from '@angular/http';
-
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 class FakeInfoHttp {
 
