@@ -1,6 +1,5 @@
 package com.github.reflectoring.infiniboard.harvester.scheduling;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -75,19 +74,6 @@ public class SchedulingServiceTest {
     } finally {
       schedulingService.cancelJobs(GROUP_NAME);
     }
-  }
-
-  @Test
-  public void scheduleJobShouldRunAtLeastThreeTimes()
-      throws SchedulerException, InterruptedException {
-    MutableInt mutableInt = new MutableInt(0);
-    HashMap<String, Object> map = new HashMap<>();
-    map.put(TestJob.COUNTER, mutableInt);
-
-    schedulingService.scheduleJob(GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, map));
-    Thread.sleep(500);
-    schedulingService.cancelJobs(GROUP_NAME);
-    assertThat(mutableInt.getValue()).isGreaterThan(3);
   }
 
   @Test
