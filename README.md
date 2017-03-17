@@ -5,9 +5,6 @@
 # infiniboard
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
 
-## building components
-Each components has specific instruction on how it is build defined in its `Readme.md`.
-
 ## Want to contribute?
 See the [contribution guide](https://github.com/reflectoring/infiniboard/blob/master/CONTRIBUTING.md).
 
