@@ -5,11 +5,49 @@
 # infiniboard
 infiniboard is a customizable, general purpose project dashboard to assist you in gathering your most important project metrics in one place.
 
+# getting-started
 
-## development
+## start mongo db
+
+Uncomment the port declaration in `docker-compose.yml`. <br>
+Do NOT commit these changes.
+```sh
+$ docker-compose up -d mongo
+```
+Mongo DB now listens on localhost:27017
+
+## start harvester
+```sh
+$ cd harvester
+$ ../gradlew bootRun
+```
+harvester's Actuator API now listens on http://localhost:9090
+
+## start quartermaster
+```sh
+$ cd quartermaster
+$ ../gradlew bootRun
+```
+quartermaster's REST API now listens on http://localhost:8080/api/dashboards <br/>
+quartermaster's Actuator API now listens on http://localhost:8090
+
+## start dashy
+```sh
+$ cd dashy
+
+# fetch all node dependencies
+$ npm install
+
+# use the local version of angular-cli installed by npm install
+$ ./node_modules/.bin/ng serve
+```
+dashy now listens on http://localhost:4200
+
+
+## setup IDE
 
 Remove all existing IntelliJ project configurations and create the latest one by running:
-```
+```sh
 $ ./gradlew cleanIdea idea
 ```
 
