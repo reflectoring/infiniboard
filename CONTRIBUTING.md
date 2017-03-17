@@ -57,3 +57,53 @@ is made up of the following elements:
 * Javadoc: please provide sensible javadoc of at least public API
 * This contribution guide: this guide is not carved in stone, so when things change,
   change this guide. 
+
+### Setup development environment
+
+#### create IntelliJ project
+Remove all existing IntelliJ project configurations and create the latest one by running:
+```sh
+$ ./gradlew cleanIdea idea
+```
+
+#### start mongo db
+##### standalone
+To store data infiniboard uses mongo db. If you have a local mongo db running which listens on localhost:27017, just make sure it is running before continuing.
+
+##### docker instance 
+If you do not want to setup a local mongo db, you can easily start a Docker instance like described below.
+Therefore you need to install [Docker](https://docs.docker.com/engine/installation/) and
+[Docker Compose](https://docs.docker.com/compose/install/) first.
+
+Uncomment the port declaration in `docker-compose.yml`. <br>
+**Do NOT commit these change.** This change will be rejected in the pull request review process as it breaks the build
+on the build server.
+```sh
+$ docker-compose up -d mongo
+```
+Mongo DB now listens on localhost:27017
+
+#### start harvester
+```sh
+$ ./gradlew :harvester:bootRun
+```
+harvester's Actuator API now listens on http://localhost:9090
+
+#### start quartermaster
+```sh
+$ ./gradlew :quartermaster:bootRun
+```
+quartermaster's REST API now listens on http://localhost:8080/api/dashboards <br/>
+quartermaster's Actuator API now listens on http://localhost:8090
+
+#### start dashy
+```sh
+$ cd dashy
+
+# fetch all node dependencies
+$ npm install
+
+# use the local version of angular-cli installed by npm install to start the development server
+$ ./node_modules/.bin/ng serve
+```
+dashy now listens on http://localhost:4200
