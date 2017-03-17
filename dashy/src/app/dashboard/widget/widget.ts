@@ -8,14 +8,14 @@ export class Widget {
   titleUrl: string;
   description: string;
 
-  public constructor(private widgetService: WidgetService) {
+  constructor(private widgetService: WidgetService) {
   }
 
-  public getTitle(): string {
+  getTitle(): string {
     return this.title;
   }
 
-  public initWidget(widgetConfig: WidgetConfig) {
+  initWidget(widgetConfig: WidgetConfig) {
     this.widgetConfig = widgetConfig;
     this.title = widgetConfig.title;
     this.titleUrl = widgetConfig.titleUrl;
@@ -23,13 +23,13 @@ export class Widget {
     this.triggerUpdate();
   }
 
-  public triggerUpdate() {
+  triggerUpdate() {
     setInterval(() => {
       this.updateWidgetData();
     }, this.updateInterval);
   }
 
-  public updateWidgetData() {
+  updateWidgetData() {
     this.widgetService.getWidgetData(this.widgetConfig).subscribe(
       widgetData => {
         if (widgetData.length > 0) {
@@ -40,7 +40,7 @@ export class Widget {
     );
   }
 
-  public updateData(data: any) {
+  updateData(data: any) {
     // implemented by widgets
   }
 }
