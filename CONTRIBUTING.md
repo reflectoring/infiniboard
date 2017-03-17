@@ -60,17 +60,17 @@ is made up of the following elements:
 
 ### Setup development environment
 
-#### create IntelliJ project
+#### Create IntelliJ project
 Remove all existing IntelliJ project configurations and create the latest one by running:
 ```sh
 $ ./gradlew cleanIdea idea
 ```
 
-#### start mongo db
-##### standalone
+#### Start mongo db
+##### Standalone
 To store data infiniboard uses mongo db. If you have a local mongo db running which listens on localhost:27017, just make sure it is running before continuing.
 
-##### docker instance 
+##### Docker instance 
 If you do not want to setup a local mongo db, you can easily start a Docker instance like described below.
 Therefore you need to install [Docker](https://docs.docker.com/engine/installation/) and
 [Docker Compose](https://docs.docker.com/compose/install/) first.
@@ -83,20 +83,20 @@ $ docker-compose up -d mongo
 ```
 Mongo DB now listens on localhost:27017
 
-#### start harvester
+#### Start harvester
 ```sh
 $ ./gradlew :harvester:bootRun
 ```
 harvester's Actuator API now listens on http://localhost:9090
 
-#### start quartermaster
+#### Start quartermaster
 ```sh
 $ ./gradlew :quartermaster:bootRun
 ```
 quartermaster's REST API now listens on http://localhost:8080/api/dashboards <br/>
 quartermaster's Actuator API now listens on http://localhost:8090
 
-#### start dashy
+#### Start dashy
 ```sh
 $ cd dashy
 
