@@ -1,5 +1,6 @@
-# HOWTO create a static widget
-Lets create a simple static widget.
+# howto create a static widget
+The goal of this tutorial is to show how easy it is to create a new widget for infiniboard.
+Therefore we create a simple static widget, to show the basic widget concepts.
 
 ## prerequisites
 * Node 6.9.5 
@@ -154,25 +155,48 @@ Wow there it is, your first infiniboard widget!
 
 But wait, this doesn't look very nice. Let's polish it a bit. 
 
-## customizing layout and style
+## customizing component layout
 
 As we already saw in the beginning `ng` generated layout and styling files alongside with the component.
-Let's open them up and give our widget a nicer style.
+Let's open them up and give our widget a nicer look and feel.
 
 First let's start with the layout. Open up the layout file `static-widget.component.html` and replace
 the generate content with the one below.
 ```html
-<div class="col-md-12">
- <div class="divider-widget"></div>
+<div class="col-md-3">
+  <div class="box box-success">
+    <div class="box-header with-border">
+      <h3 class="box-title">Static Widget</h3>
+      <div class="box-tools pull-right">
+        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+      </div><!-- /.box-tools -->
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      Look ma, my <span class="highlight">first widget</span>!
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
 </div>
 ```
 
-Now add some styling within the style definition file `static-widget.component.css`.
+Now switch to the browser and watch your change. Notice that you don't have to reload the page,
+as `ng serve` detects changes made to files by it's own, recompiles the app and notifies the browser
+which reloads automatically.
+
+
+## customizing component style
+
+While it's nice to use predefined UI elements, from time to time you will need to write some custom
+CSS to style a component. Angular 2 supports per component styling, meaning you can write CSS which
+only applies to a single type of component. This way you can write loosely coupled components layouts
+in no time.
+
+Let's try this out by adding some CSS within the style file `static-widget.component.css`.
 ```css
-.divider-widget {
-  height: 2px;
-  background-color: black;
+.highlight {
+  border-bottom: 2px dashed #00a65a;
 }
 ```
 
-
+Now you're ready to create working mockups of your widget ideas. So get creative and stay
+tuned on how to add dynamic functionality to your widget. This will be explained in a future guide.
