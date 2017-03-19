@@ -1,3 +1,17 @@
 hr {
-  border: dashed #00ff00 1px;
+  border: solid #d2d6de 1px;
+  clear:both;
+}
+
+h2{
+  width:100%;
+  display: inline;
+  margin:0;
+}
+
+h5{
+  width:100%;
+  display: inline;
+  margin:0;
+  color:#89909e;
 }
