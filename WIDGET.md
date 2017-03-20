@@ -1,4 +1,4 @@
-# howto create a static widget
+# how to create a static widget
 The goal of this tutorial is to show how easy it is to create a new widget for infiniboard.
 Therefore we create a simple static widget, to show the basic widget concepts.
 
