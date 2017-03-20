@@ -10,3 +10,4 @@ curl -X POST -d @widget.jenkins-job-green.json    $ENDPOINT --header "Content-Ty
 curl -X POST -d @widget.jenkins-job-yellow.json   $ENDPOINT --header "Content-Type:application/json"
 curl -X POST -d @widget.jenkins-job-aborted.json  $ENDPOINT --header "Content-Type:application/json"
 curl -X POST -d @widget.jenkins-job-red.json      $ENDPOINT --header "Content-Type:application/json"
+
