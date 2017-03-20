@@ -1,5 +1,5 @@
 {
-  "title": "Jenkins-Widgets",
-  "description": "of all our Testplatforms",
+  "title": "Divider-Widget",
+  "description": "with an optional text",
   "type": "divider"
 }

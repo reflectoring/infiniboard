@@ -1,17 +1,27 @@
-hr {
-  border: solid #d2d6de 1px;
-  clear:both;
+.dividerContainer{
+  height:30px;
 }
 
-h2{
-  width:100%;
+.dividerHeader{
+  background-color: #ecf0f5;
+  padding: 0 10px;
+}
+
+.dividerElement{
+  height: 12px;
+  border-bottom: 1px solid #d2d6de;
+  text-align: left;
+}
+
+h3{
+  font-size:20px;
   display: inline;
   margin:0;
 }
 
 h5{
-  width:100%;
   display: inline;
   margin:0;
   color:#89909e;
+  padding:0 6px;
 }

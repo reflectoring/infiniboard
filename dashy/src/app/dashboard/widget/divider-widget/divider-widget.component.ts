@@ -12,12 +12,4 @@ export class DividerWidgetComponent extends Widget {
   constructor(private wS: WidgetService) {
     super(wS);
   }
-
-  updateData(data: any[]) {
-
-  }
-
-  ngOnInit() {
-  }
-
 }
