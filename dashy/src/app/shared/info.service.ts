@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http, Response} from '@angular/http';
 import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {Info} from './info';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class InfoService {
   }
 
   private static handleInfos(res: Response): Info {
-    let haljson = res.json();
+    const haljson = res.json();
     return InfoService.createInfo(haljson);
   }
 
@@ -34,7 +34,7 @@ export class InfoService {
   }
 
   private handleError(error: any) {
-    let errMsg = ((error.body || {}).message) ? error.message :
+    const errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     console.error(error);

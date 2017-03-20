@@ -6,30 +6,30 @@ describe('Dashboard', () => {
   });
 
   it('constructor() should set dashboard.id', () => {
-    let dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', '/api/dashboards/1');
+    const dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', '/api/dashboards/1');
     expect(dashboard.id).toEqual(1);
   });
 
   it('constructor() should set dashboard.name', () => {
-    let name = 'Testing Dashboard';
-    let dashboard = new Dashboard(1, name, 'Dashboard for testers', '/api/dashboards/1');
+    const name = 'Testing Dashboard';
+    const dashboard = new Dashboard(1, name, 'Dashboard for testers', '/api/dashboards/1');
     expect(dashboard.name).toEqual(name);
   });
 
   it('constructor() should set dashboard.description', () => {
-    let description = 'Dashboard for testers';
-    let dashboard = new Dashboard(1, 'Testing Dashboard', description, '/api/dashboards/1');
+    const description = 'Dashboard for testers';
+    const dashboard = new Dashboard(1, 'Testing Dashboard', description, '/api/dashboards/1');
     expect(dashboard.description).toEqual(description);
   });
 
   it('constructor() should set dashboard.widgetConfigLink', () => {
-    let link = '/api/dashboards/1';
-    let dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', link);
+    const link = '/api/dashboards/1';
+    const dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', link);
     expect(dashboard.widgetConfigsLink).toEqual(link);
   });
 
   it('constructor() should initialize dashboard.widgetConfigs', () => {
-    let dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', '/api/dashboards/1');
+    const dashboard = new Dashboard(1, 'Testing Dashboard', 'Dashboard for testers', '/api/dashboards/1');
     expect(dashboard.widgetConfigs).toEqual([]);
   });
 });

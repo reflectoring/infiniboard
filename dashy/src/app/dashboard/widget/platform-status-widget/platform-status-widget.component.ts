@@ -18,10 +18,10 @@ export class PlatformStatusWidgetComponent extends Widget {
   }
 
   public updateData(data: any[]) {
-    for (let sourceData of data) {
+    for (const sourceData of data) {
 
       if (sourceData.sourceId === 'version') {
-        let versionContent = sourceData.data.content;
+        const versionContent = sourceData.data.content;
         this.setVersionByPlatformStatus(this.status, versionContent);
       }
       if (sourceData.sourceId === 'status') {
@@ -32,7 +32,7 @@ export class PlatformStatusWidgetComponent extends Widget {
 
   private getPlatformStatus(status: number): Status {
 
-    let stringValue: string = String(status);
+    const stringValue: string = String(status);
 
     // 2xx: platform available
     if (stringValue[0] === '2') {

@@ -2,7 +2,8 @@ import {TestBed, inject} from '@angular/core/testing';
 import {JenkinsWidgetComponent} from './jenkins-widget.component';
 import {WidgetService} from '../../shared/widget.service';
 import {WidgetConfig} from '../../shared/widget-config';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 class FakeWidgetService {
 
@@ -26,12 +27,12 @@ class FakeWidgetService {
 describe('Component: Jenkins', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [, {provide: WidgetService, useValue: FakeWidgetService}]
+      providers: [{provide: WidgetService, useClass: FakeWidgetService}]
     });
   });
 
   it('should create an instance', inject([WidgetService], (service: WidgetService) => {
-    let component = new JenkinsWidgetComponent(service);
+    const component = new JenkinsWidgetComponent(service);
     expect(component).toBeTruthy();
   }));
 });
