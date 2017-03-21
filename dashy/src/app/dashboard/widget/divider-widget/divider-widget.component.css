@@ -1,0 +1,27 @@
+.dividerContainer{
+  height:30px;
+}
+
+.dividerHeader{
+  background-color: #ecf0f5;
+  padding: 0 10px;
+}
+
+.dividerElement{
+  height: 12px;
+  border-bottom: 1px solid #d2d6de;
+  text-align: left;
+}
+
+h3{
+  font-size:20px;
+  display: inline;
+  margin:0;
+}
+
+h5{
+  display: inline;
+  margin:0;
+  color:#89909e;
+  padding:0 6px;
+}

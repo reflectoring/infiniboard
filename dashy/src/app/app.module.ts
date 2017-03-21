@@ -19,6 +19,7 @@ import {InfoService} from './shared/info.service';
 import {JenkinsWidgetComponent} from './dashboard/widget/jenkins/jenkins-widget.component';
 import {JenkinsBuildStatusColorPipe} from './dashboard/widget/jenkins/jenkins-build-status-color.pipe';
 import {JenkinsBuildStatusIconPipe} from './dashboard/widget/jenkins/jenkins-build-status-icon.pipe';
+import {DividerWidgetComponent} from './dashboard/widget/divider-widget/divider-widget.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {JenkinsBuildStatusIconPipe} from './dashboard/widget/jenkins/jenkins-bui
     StatusIconPipe,
     JenkinsWidgetComponent,
     JenkinsBuildStatusColorPipe,
-    JenkinsBuildStatusIconPipe
+    JenkinsBuildStatusIconPipe,
+    DividerWidgetComponent
   ],
   imports: [
     BrowserModule,

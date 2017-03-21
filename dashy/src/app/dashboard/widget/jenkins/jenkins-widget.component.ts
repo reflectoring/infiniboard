@@ -17,11 +17,11 @@ export class JenkinsWidgetComponent extends Widget {
   lastBuildNo: string = '';
   type: JobType = JobType.UNKNOWN;
 
-  public constructor(private wS: WidgetService) {
+  constructor(private wS: WidgetService) {
     super(wS);
   }
 
-  public updateData(data: any[]) {
+  updateData(data: any[]) {
     for (const sourceData of data) {
       if (sourceData.sourceId === 'jenkins') {
         if (sourceData.data.status !== 200) {

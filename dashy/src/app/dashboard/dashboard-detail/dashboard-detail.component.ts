@@ -8,13 +8,15 @@ import {Type} from '@angular/core/src/type';
 import 'rxjs/add/operator/mergeMap';
 import {PlatformStatusWidgetComponent} from '../widget/platform-status-widget/platform-status-widget.component';
 import {JenkinsWidgetComponent} from '../widget/jenkins/jenkins-widget.component';
+import {DividerWidgetComponent} from '../widget/divider-widget/divider-widget.component';
 
 
 @Component({
   selector: 'dashboard-detail',
   entryComponents: [
     JenkinsWidgetComponent,
-    PlatformStatusWidgetComponent
+    PlatformStatusWidgetComponent,
+    DividerWidgetComponent
   ],
   templateUrl: './dashboard-detail.component.html',
   styleUrls: ['./dashboard-detail.component.css']
@@ -68,6 +70,9 @@ export class DashboardDetailComponent implements OnInit {
 
       case 'jenkins':
         return JenkinsWidgetComponent;
+
+      case 'divider':
+        return DividerWidgetComponent;
 
       default:
         throw new Error('unknown widget type \'' + widgetType + '\'');
