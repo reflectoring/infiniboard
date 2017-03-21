@@ -1,11 +1,28 @@
 <div class="col-md-3 col-sm-6 col-xs-12">
-  <div class="info-box">
-    <span class="info-box-icon {{status | jenkinsStatusColor }}"><i class="fa {{status | jenkinsStatusIcon}}"></i></span>
-    <div class="info-box-content">
+  <div class="box">
+    <div class="box-header">
+
+      <!-- Box-Title -->
       <span *ngIf="url" class="info-box-text"><a [href]="url" target="_blank">{{name}}</a></span>
       <span *ngIf="!url" class="info-box-text">{{name}}</span>
-      <span class="info-box-number">{{lastBuildNo}}</span>
-      <span class="info-box-text">{{this['description']}}</span>
-    </div><!-- /.info-box-content -->
-  </div><!-- /.info-box -->
+
+      <!-- Widget-Functions-->
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-trash"></i></button>
+      </div>
+
+    </div>
+    <div class="box-body">
+      <span class="status-box-icon {{status | jenkinsStatusColor }}">
+        <i class="fa {{status | jenkinsStatusIcon}}"></i>
+      </span>
+
+      <div class="info-box-content">
+        <span class="info-box-number">{{lastBuildNo}}</span>
+        <span class="info-box-text">{{this['description']}}</span>
+      </div>
+
+    </div>
+  </div>
 </div>

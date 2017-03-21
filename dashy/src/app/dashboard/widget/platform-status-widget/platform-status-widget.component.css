@@ -1,0 +1,38 @@
+.status-box-icon {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+  display: block;
+  float: left;
+  height: 90px;
+  width: 90px;
+  text-align: center;
+  font-size: 25px;
+  line-height: 90px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.status-box-icon > img {
+  max-width: 100%;
+}
+
+.status-box-number {
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.status-box-content {
+  padding: 5px 10px;
+  margin-left: 90px;
+}
+
+.status-box-text {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
