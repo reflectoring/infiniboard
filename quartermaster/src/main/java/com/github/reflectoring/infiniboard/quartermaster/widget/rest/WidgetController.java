@@ -4,6 +4,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -54,6 +55,22 @@ public class WidgetController {
     WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
     WidgetConfigResource resource = assembler.toResource(widgetConfig);
     return new ResponseEntity<>(resource, OK);
+  }
+
+  @RequestMapping(
+    value = "/{widgetId}",
+    method = DELETE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  public ResponseEntity<Void> deleteWidget(@PathVariable String widgetId) {
+    boolean exists = widgetService.exists(widgetId);
+
+    if (!exists) {
+      return new ResponseEntity<>(NOT_FOUND);
+    }
+
+    widgetService.deleteWidget(widgetId);
+    return new ResponseEntity<>(OK);
   }
 
   @RequestMapping(
