@@ -1,28 +1,21 @@
 <div class="col-md-3 col-sm-6 col-xs-12">
-  <div class="box">
-    <div class="box-header">
-
+  <div class="widget">
+    <div class="widget-statusicon-container">
+            <span class="status-box-icon {{status | jenkinsStatusColor }}">
+        <i class="fa {{status | jenkinsStatusIcon}}"></i>
+      </span>
+    </div>
+    <div class="widget-content">
       <!-- Box-Title -->
       <span *ngIf="url" class="info-box-text"><a [href]="url" target="_blank">{{name}}</a></span>
       <span *ngIf="!url" class="info-box-text">{{name}}</span>
-
-      <!-- Widget-Functions-->
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-        <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-trash"></i></button>
-      </div>
-
+      <span class="info-box-number">{{lastBuildNo}}</span>
+      <span class="info-box-text">{{this['description']}}</span>
     </div>
-    <div class="box-body">
-      <span class="status-box-icon {{status | jenkinsStatusColor }}">
-        <i class="fa {{status | jenkinsStatusIcon}}"></i>
-      </span>
-
-      <div class="info-box-content">
-        <span class="info-box-number">{{lastBuildNo}}</span>
-        <span class="info-box-text">{{this['description']}}</span>
-      </div>
-
+    <div class="widget-box-tool">
+      <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-trash"></i></button>
+      <br/>
+      <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-edit"></i></button>
     </div>
   </div>
 </div>
