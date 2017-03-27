@@ -12,6 +12,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,6 +93,30 @@ public class WidgetControllerTest extends ControllerTestTemplate {
     WidgetConfigResource resource =
         fromJson(result.getResponse().getContentAsString(), WidgetConfigResource.class);
     assertThat(resource.getTitle()).isEqualTo("My Little Widget");
+  }
+
+  @Test
+  public void deleteWidget() throws Exception {
+    when(widgetService.exists("2")).thenReturn(true);
+
+    mvc()
+        .perform(delete("/api/dashboards/1/widgets/2").contentType("application/json"))
+        .andExpect(status().isOk())
+        .andDo(document("widgets/delete"))
+        .andReturn();
+  }
+
+  @Test
+  public void deleteNonExistingWidget() throws Exception {
+    WidgetConfigResource widgetConfigResource = widgetConfigResource();
+
+    mvc()
+        .perform(
+            delete("/api/dashboards/1/widgets/3")
+                .contentType("application/json")
+                .content(toJsonWithoutLinks(widgetConfigResource)))
+        .andExpect(status().isNotFound())
+        .andReturn();
   }
 
   @Test

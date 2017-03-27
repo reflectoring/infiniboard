@@ -32,6 +32,14 @@ public class WidgetConfigService {
     return widgetConfigRepository.save(widgetConfig);
   }
 
+  public boolean exists(String widgetId) {
+    return widgetConfigRepository.exists(widgetId);
+  }
+
+  public void deleteWidget(String widgetId) {
+    widgetConfigRepository.delete(widgetId);
+  }
+
   public List<SourceData> getData(String widgetId) {
     return sourceDataRepository.findAllByWidgetId(widgetId);
   }
