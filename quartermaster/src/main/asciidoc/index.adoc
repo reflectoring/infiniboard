@@ -58,7 +58,7 @@ include::{snippets}/widgets/create/request-fields.adoc[]
 
 include::{snippets}/widgets/get/links.adoc[]
 
-==== Creating a Widget within a Dashboard
+==== Creating a Widget
 
 ===== Example Request
 
@@ -78,7 +78,7 @@ include::{snippets}/widgets/list/http-request.adoc[]
 
 include::{snippets}/widgets/list/http-response.adoc[]
 
-==== Loading a single Widget of a Dashboard
+==== Loading a Widget
 
 ===== Example Request
 
@@ -88,7 +88,16 @@ include::{snippets}/widgets/get/http-request.adoc[]
 
 include::{snippets}/widgets/get/http-response.adoc[]
 
-==== Loading the data for a single Widget
+==== Deleting a Widget
+
+===== Example Request
+include::{snippets}/widgets/delete/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/widgets/delete/http-response.adoc[]
+
+==== Loading the Widget data
 
 ===== Example Request
 
