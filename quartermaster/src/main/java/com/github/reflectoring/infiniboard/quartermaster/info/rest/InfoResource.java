@@ -14,6 +14,7 @@ public class InfoResource extends ResourceSupport {
     this.version = version;
   }
 
+  @Override
   public boolean equals(Object that) {
     if (!super.equals(that)) {
       return false;
@@ -24,5 +25,12 @@ public class InfoResource extends ResourceSupport {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (version != null ? version.hashCode() : 0);
+    return result;
   }
 }
