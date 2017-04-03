@@ -1,1 +1,10 @@
 version: 2
+jobs:
+  # Every config file must have a ‘build’ job
+  build:
+    working_directory: ~/infiniboard
+    docker:
+      - image: reflectoring/build-image-java:latest
+    steps:
+      - checkout
+      - run: echo "hello world"
