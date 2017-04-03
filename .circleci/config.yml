@@ -7,4 +7,6 @@ jobs:
       - image: reflectoring/build-image-java:latest
     steps:
       - checkout
-      - run: echo "hello world"
+      - run: java -version
+      - run: git --version
+      - run: bash --version
