@@ -13,14 +13,6 @@ subprojects {
                 && plugins.hasPlugin('com.bmuschko.docker-remote-api')
                 && file("${project.projectDir}/src/main/docker").exists()) {
 
-            if (plugins.hasPlugin("war")) {
-                ext.buildArtifactName = war.baseName
-                ext.buildArtifcatExt = 'war'
-            } else {
-                ext.buildArtifactName = jar.baseName
-                ext.buildArtifcatExt = 'jar'
-            }
-
             docker {
                 registryCredentials {
                     email = System.env.DOCKER_EMAIL
@@ -46,7 +38,7 @@ subprojects {
 
                     copy {
                         from("${project.buildDir}/libs/") {
-                            rename "${project.buildArtifactName}-.*\\.${project.buildArtifcatExt}", "${project.buildArtifactName}.${project.buildArtifcatExt}"
+                            rename "${project.war.baseName}-.*\\.war", "${project.war.baseName}.war"
                         }
                         into dockerStagePath
                         exclude '*.original'
@@ -104,9 +96,9 @@ subprojects {
 }
 
 def getImageNameWithGroup(Project project) {
-    project.dockerGroup + '/' + project.buildArtifactName + ':latest'
+    project.dockerGroup + '/' + project.war.baseName + ':latest'
 }
 
 def getDockerRepository(Project project) {
-    "${project.dockerGroup}/${project.buildArtifactName}"
+    "${project.dockerGroup}/${project.war.baseName}"
 }

@@ -6,10 +6,10 @@ VOLUME /tmp
 
 ADD application.properties application.properties
 
-ADD harvester.jar app.jar
+ADD harvester.war app.war
 
 RUN touch /app.war
 
 EXPOSE 9090
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.war"]
