@@ -8,6 +8,9 @@ jobs:
 
     steps:
       - checkout
+
+      - setup_remote_docker
+
       - run: java -version
       - run: git --version
       - run: bash --version
