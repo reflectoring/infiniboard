@@ -108,7 +108,6 @@ jobs:
             echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
             echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
             echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
-#            echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
 
             echo "Running Docker containers"
             docker ps -a
