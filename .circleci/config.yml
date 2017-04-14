@@ -65,8 +65,8 @@ jobs:
       - store_test_results:
           path: build/angular-junit/
 
-      - run: run Java build, unit tests and integration tests
-          name:
+      - run:
+          name: run Java build, unit tests and integration tests
           command: |
             ./gradlew --stacktrace --console=plain build integrationTest
 
