@@ -71,6 +71,7 @@ jobs:
       - run:
           name: run Java build, unit tests and integration tests
           command: |
+            docker-compose up -d mongo
             ./gradlew --stacktrace --console=plain build integrationTest
 
             mkdir -p build/junit
