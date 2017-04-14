@@ -18,23 +18,23 @@ jobs:
       - run: docker info
       - run: docker-compose version
 
-      - run:
-          name: fetch angular dependencies
-          command: |
-            cd dashy
-            npm install
-            ./node_modules/.bin/ng --version
+#      - run:
+#          name: fetch angular dependencies
+#          command: |
+#            cd dashy
+#            npm install
+#            ./node_modules/.bin/ng --version
 
       - run:
           name: fetch Java dependencies
           command: |
             - ./gradlew --stacktrace --console=plain resolveDependencies
 
-      - run:
-          name: build angular artifact
-          command: |
-            cd dashy
-            ./node_modules/.bin/ng build --prod --progress false
+#      - run:
+#          name: build angular artifact
+#          command: |
+#            cd dashy
+#            ./node_modules/.bin/ng build --prod --progress false
 
       - run:
           name: build java artifacts
@@ -49,24 +49,24 @@ jobs:
           path: build/build-artifacts
           destination: artifacts
 
-      - run:
-          name: run Angular2 linting and unit tests
-          command: |
-            cd dashy
-            ../node_modules/.bin/ng lint
-            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+#      - run:
+#          name: run Angular2 linting and unit tests
+#          command: |
+#            cd dashy
+#            ../node_modules/.bin/ng lint
+#            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+#
+#            mkdir -p build/ng-coverage/
+#            cp -a dashy/build/coverage build/dashy-coverage/
+#            mkdir -p build/angular-junit/
+#            cp -a dashy/build/junit/*.xml build/angular-junit/
 
-            mkdir -p build/ng-coverage/
-            cp -a dashy/build/coverage build/dashy-coverage/
-            mkdir -p build/angular-junit/
-            cp -a dashy/build/junit/*.xml build/angular-junit/
-
-      - store_artifacts:
-          path: build/dashy-coverage/
-          destination: dashy-coverage
-
-      - store_test_results:
-          path: build/angular-junit/
+#      - store_artifacts:
+#          path: build/dashy-coverage/
+#          destination: dashy-coverage
+#
+#      - store_test_results:
+#          path: build/angular-junit/
 
       - run:
           name: run Java build, unit tests and integration tests
@@ -108,7 +108,7 @@ jobs:
             echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
             echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
             echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
-            echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
+#            echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
 
             echo "Running Docker containers"
             docker ps -a
