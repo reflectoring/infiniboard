@@ -5,8 +5,118 @@ jobs:
     working_directory: ~/infiniboard
     docker:
       - image: reflectoring/build-image-java:latest
+
     steps:
       - checkout
       - run: java -version
       - run: git --version
       - run: bash --version
+      - run: docker version
+      - run: docker info
+      - run: docker-compose version
+
+      - run:
+          name: fetch angular dependencies
+          command: |
+            cd dashy
+            npm install
+            ./node_modules/.bin/ng --version
+
+      - run:
+          name: fetch Java dependencies
+          command: |
+            - ./gradlew --stacktrace --console=plain resolveDependencies
+
+      - run:
+          name: build angular artifact
+          command: |
+            cd dashy
+            ./node_modules/.bin/ng build --prod --progress false
+
+      - run:
+          name: build java artifacts
+          command: |
+            ./gradlew --stacktrace --console=plain build -x test
+
+            mkdir -p build/build-artifacts
+            cp -a harvester/build/libs/harvester*.jar build/build-artifacts/
+            cp -a quartermaster/build/libs/quartermaster*.war build/build-artifacts/
+
+      - store_artifacts:
+          path: build/build-artifacts
+          destination: artifacts
+
+      - run:
+          name: run Angular2 linting and unit tests
+          command: |
+            cd dashy
+            ../node_modules/.bin/ng lint
+            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+
+            mkdir -p build/ng-coverage/
+            cp -a dashy/build/coverage build/dashy-coverage/
+            mkdir -p build/angular-junit/
+            cp -a dashy/build/junit/*.xml build/angular-junit/
+
+      - store_artifacts:
+          path: build/dashy-coverage/
+          destination: dashy-coverage
+
+      - store_test_results:
+          path: build/angular-junit/
+
+      - run: run Java build, unit tests and integration tests
+          name:
+          command: |
+            ./gradlew --stacktrace --console=plain build integrationTest
+
+            mkdir -p build/junit
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/junit/ \;
+            mkdir -p build/junit-html/
+            find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} build/junit-html/`echo {} | cut -d / -f2`' \;
+
+      - store_test_results:
+          path: build/junit/
+
+      - run:
+          name: prepare GitHub pages
+          command: |
+            ./gradlew --stacktrace --console=plain preparePages
+
+      - run:
+          name: run sonarqube analysis
+          command: |
+            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+
+      - run:
+          name: build docker images
+          command: |
+            ./gradlew --stacktrace --console=plain buildImage tagImage
+
+      - run:
+          name: run docker integration tests
+          command: |
+            docker-compose up -d harvester
+            docker-compose up -d quartermaster
+            bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+            bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+            bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
+
+            echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
+            echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
+            echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+            echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
+
+            echo "Running Docker containers"
+            docker ps -a
+            echo "Stopping all Docker containers"
+            docker stop $(docker ps -a -q)
+
+            mkdir -p build/docker-logs/
+            docker logs infiniboard_mongo_1         > $CIRCLE_TEST_REPORTS/docker/mongo.log
+            docker logs infiniboard_harvester_1     > $CIRCLE_TEST_REPORTS/docker/harvester.log
+            docker logs infiniboard_quartermaster_1 > $CIRCLE_TEST_REPORTS/docker/quartermaster.log
+
+      - store_artifacts:
+          path: build/docker-logs/
+          destination: docker-logs
