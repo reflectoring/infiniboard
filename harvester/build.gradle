@@ -7,6 +7,7 @@ buildscript {
 }
 
 apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
@@ -44,7 +45,7 @@ bintray {
     filesSpec {
         into '.'
         from('build/libs') {
-            include "${project.name}-${project.version}.jar"
+            include "${project.name}-${project.version}.war"
         }
     }
 
