@@ -2,7 +2,9 @@ package com.github.reflectoring.infiniboard.packrat.source;
 
 import java.util.Map;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "data")
 public class SourceData {
 
   @Id private String id;

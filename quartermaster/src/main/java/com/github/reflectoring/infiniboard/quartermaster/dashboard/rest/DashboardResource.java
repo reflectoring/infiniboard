@@ -5,17 +5,17 @@ import org.springframework.hateoas.ResourceSupport;
 
 public class DashboardResource extends ResourceSupport {
 
-  private int number;
+  private String number;
 
   @NotNull private String name;
 
   @NotNull private String description;
 
-  public int getNumber() {
+  public String getNumber() {
     return number;
   }
 
-  public void setNumber(int number) {
+  public void setNumber(String number) {
     this.number = number;
   }
 
