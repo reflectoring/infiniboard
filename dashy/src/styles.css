@@ -4,3 +4,7 @@
 @import "../node_modules/admin-lte/plugins/iCheck/square/blue.css";
 @import "../node_modules/admin-lte/dist/css/AdminLTE.min.css";
 @import "../node_modules/admin-lte/dist/css/skins/skin-green.min.css";
+
+section.content {
+    display: inline-block;
+}
