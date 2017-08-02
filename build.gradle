@@ -1,6 +1,13 @@
 plugins {
     id 'base'
-    id 'com.bmuschko.docker-remote-api' version '3.0.3' apply false
+    id 'com.diffplug.gradle.spotless' version '3.0.0' apply false
+    id 'org.sonarqube' version '2.2.1' apply false
+    id 'org.springframework.boot' version '1.5.2.RELEASE' apply false
+    id 'com.jfrog.bintray' version '1.7.3' apply false
+    id 'org.ajoberstar.github-pages' version '1.5.1' apply false
+    id 'org.asciidoctor.gradle.asciidoctor' version '1.5.1' apply false
+    id 'com.sourcemuse.mongo' version '0.14.0' apply false
+    id 'com.bmuschko.docker-remote-api' version '3.0.5' apply false
 }
 
 ext {

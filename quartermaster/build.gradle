@@ -3,19 +3,14 @@ import java.text.SimpleDateFormat
 
 buildscript {
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "org.springframework:springloaded:${version_springLoaded}"
-        classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
-        classpath "org.asciidoctor:asciidoctor-gradle-plugin:${version_asciidoctor_plugin}"
-        classpath "org.ajoberstar:gradle-git:${version_gradle_git}"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
     }
 }
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'mongo'
 apply plugin: 'war'
-apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 apply plugin: 'org.ajoberstar.github-pages'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
@@ -23,16 +18,16 @@ apply plugin: 'com.bmuschko.docker-remote-api'
 dependencies {
     compile(
             project(":packrat"),
-            "org.springframework.boot:spring-boot-starter-actuator:${version_springBoot}",
-            "org.springframework.boot:spring-boot-starter-hateoas:${version_springBoot}"
+            "org.springframework.boot:spring-boot-starter-actuator",
+            "org.springframework.boot:spring-boot-starter-hateoas"
     )
 
     compileOnly(
-            "org.springframework.boot:spring-boot-starter-tomcat:${version_springBoot}"
+            "org.springframework.boot:spring-boot-starter-tomcat"
     )
 
     testCompile(
-            "org.springframework.boot:spring-boot-starter-test:${version_springBoot}",
+            "org.springframework.boot:spring-boot-starter-test",
             "org.springframework.restdocs:spring-restdocs-mockmvc:${version_springRestDocs}",
             "org.springframework.restdocs:spring-restdocs-core:${version_springRestDocs}",
             "com.jayway.jsonpath:json-path:${version_jsonPath}",
