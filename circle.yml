@@ -47,7 +47,7 @@ test:
   pre:
     # archive build-artifacts
     - mkdir -p $CIRCLE_ARTIFACTS/build-artifacts
-    - cp -a harvester/build/libs/harvester*.jar $CIRCLE_ARTIFACTS/build-artifacts/
+    - cp -a harvester/build/libs/harvester*.war $CIRCLE_ARTIFACTS/build-artifacts/
     - cp -a quartermaster/build/libs/quartermaster*.war $CIRCLE_ARTIFACTS/build-artifacts/
 
   override:
