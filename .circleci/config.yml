@@ -3,9 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8-jdk
-        environment:
-          GRADLE_OPTS: --stacktrace --console=plain
+      - image: circleci/openjdk:8-jdk-browsers
     working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx3200m
@@ -20,7 +18,7 @@ jobs:
           name: install Docker Compose
           command: |
             set -x
-            sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
 
       - setup_remote_docker
@@ -38,8 +36,9 @@ jobs:
           command: |
             set -x
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+            source ~/.bashrc
             command -v nvm
-            nvm install 6.9.5
+            nvm install v6.9.5
             node --version
             npm --version
 
@@ -71,7 +70,7 @@ jobs:
 
       - run:
           name: resolve java dependencies
-          command: ./gradlew resolveDependencies
+          command: ./gradlew --stacktrace --console=plain resolveDependencies
 
       - save_cache:
           paths:
@@ -114,7 +113,7 @@ jobs:
 
       - run:
           name: build backend
-          command: ./gradlew build -x test
+          command: ./gradlew --stacktrace --console=plain build -x test
 
       - run:
           name: archive build-artifacts
@@ -148,7 +147,7 @@ jobs:
 
       - run:
           name: test backend
-          command: ./gradlew build integrationTest
+          command: ./gradlew --stacktrace --console=plain build integrationTest
 
       - run:
           name: archive backend test results
@@ -164,14 +163,14 @@ jobs:
 
       - run:
           name: generate GitHub Pages
-          command: ./gradlew preparePages
+          command: ./gradlew --stacktrace --console=plain preparePages
 
       - run:
           name: analyse Java code using sonarqube.com
           command: |
-            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
             # sonar.login and sonar.github.oauth is needed even for PR analysis
-            # ./gradlew  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+            # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
 
       - run:
           name: testing the docker images
