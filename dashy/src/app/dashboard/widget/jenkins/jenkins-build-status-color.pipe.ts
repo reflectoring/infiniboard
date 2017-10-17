@@ -13,6 +13,7 @@ export class JenkinsBuildStatusColorPipe implements PipeTransform {
       case BuildStatus.NOT_BUILT:
       case BuildStatus.NOT_BUILT_BUILDING:
       case BuildStatus.DISABLED:
+      case BuildStatus.DISABLED_BUILDING:
       case BuildStatus.ABORTED:
       case BuildStatus.ABORTED_BUILDING:
         return 'bg-gray';

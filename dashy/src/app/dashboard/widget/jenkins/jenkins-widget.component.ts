@@ -63,7 +63,7 @@ export class JenkinsWidgetComponent extends Widget {
     return JobType.JOB;
   }
 
-  private  getBuildStatus(colorCode: string): BuildStatus {
+  private getBuildStatus(colorCode: string): BuildStatus {
     switch (colorCode) {
 
       case 'notbuilt':
@@ -74,6 +74,9 @@ export class JenkinsWidgetComponent extends Widget {
 
       case 'disabled':
         return BuildStatus.DISABLED;
+
+      case 'disabled_anime':
+        return BuildStatus.DISABLED_BUILDING;
 
       case 'blue':
         return BuildStatus.BLUE;
