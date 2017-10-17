@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  full_build:
+  build:
     docker:
       - image: circleci/openjdk:8-jdk
         environment:
