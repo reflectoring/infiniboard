@@ -2,6 +2,7 @@ export enum BuildStatus {
   NOT_BUILT,
   NOT_BUILT_BUILDING,
   DISABLED,
+  DISABLED_BUILDING,
   BLUE,
   BLUE_BUILDING,
   YELLOW,
