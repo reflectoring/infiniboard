@@ -1,0 +1,216 @@
+version: 2
+jobs:
+  full_build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+        environment:
+          GRADLE_OPTS: --stacktrace --console=plain
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+      #
+      # prepare env
+      #
+      - run:
+          name: install Docker Compose
+          command: |
+            set -x
+            curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+
+      - setup_remote_docker
+
+      - run:
+          name: verify Docker / Docker Compose Versions
+          command: |
+            set -x
+            docker version
+            docker info
+            docker-compose version
+
+      - run:
+          name: install Node
+          command: |
+            set -x
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+            command -v nvm
+            nvm install 6.9.5
+            node --version
+            npm --version
+
+      #
+      # Cache
+      #
+
+      # node cache
+      - restore_cache:
+          keys:
+            - node-dependencies-{{ checksum "dashy/package.json" }}
+
+      - run:
+          name: npm install
+          command: cd dashy && npm install
+
+      - save_cache:
+          paths:
+            - dashy/node_modules
+          key:  node-dependencies-{{ checksum "dashy/package.json" }}
+
+      # gradle cache
+      - restore_cache:
+          keys:
+          - gradle-dependencies-{{ checksum "gradle.properties" }}
+      - restore_cache:
+          keys:
+          - gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - run:
+          name: resolve java dependencies
+          command: ./gradlew resolveDependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: gradle-dependencies-{{ checksum "gradle.properties" }}
+
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      # docker cache
+      - restore_cache:
+          keys:
+          - docker-pull
+
+      - run:
+        name: pull docker images
+        command: |
+          if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
+          if [[ -e ~/docker/openjdk.tar ]]; then docker load --input ~/docker/openjdk.tar; fi
+
+          # pull image here to cache it and speed up the test
+          docker pull mongo:3.2
+          docker pull openjdk:8-jdk-alpine
+          docker images
+
+          mkdir -p ~/docker
+          docker save mongo > ~/docker/mongo.tar
+          docker save openjdk:8-jdk-alpine > ~/docker/openjdk.tar
+
+      - save_cache:
+          paths:
+            - ~/docker
+          key: docker-pull
+
+      - run:
+          name: build angular app
+          command: cd dashy && ./node_modules/.bin/ng build --prod --progress false
+
+      - run:
+          name: build backend
+          command: ./gradlew build -x test
+
+      - run:
+          name: archive build-artifacts
+          command: |
+          mkdir -p /tmp/build-artifacts
+          cp -a harvester/build/libs/harvester*.war /tmp/build-artifacts/
+          cp -a quartermaster/build/libs/quartermaster*.war /tmp/build-artifacts/
+
+      - store_artifacts:
+          path: /tmp/build-artifacts
+
+      - run:
+          name: test angular app
+          command: |
+          cd dashy
+          ./node_modules/.bin/ng lint
+          ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+
+      - run:
+          name: archive Angular2 test results
+          command: |
+          mkdir -p /tmp/ng-coverage/
+          cp -a dashy/build/coverage /tmp/ng-coverage/
+          mkdir -p /tmp/ng-junit/
+          cp -a dashy/build/junit/*.xml /tmp/ng-junit/
+
+      - store_test_results:
+          path: /tmp/ng-junit
+      - store_artifacts:
+          path: /tmp/ng-coverage
+
+      - run:
+          name: test backend
+          command: ./gradlew build integrationTest
+
+      - run:
+          name: archive backend test results
+          command: |
+          find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} /tmp/junit/ \;
+          mkdir -p /tmp/junit-html/
+          find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} /tmp/junit-html/`echo {} | cut -d / -f2`' \;
+
+       - store_test_results:
+           path: /tmp/junit
+       - store_artifacts:
+           path: /tmp/junit-html
+
+      - run:
+          name: generate GitHub Pages
+          command: ./gradlew preparePages
+
+      - run:
+          name: analyse Java code using sonarqube.com
+          command: |
+          if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+          # sonar.login and sonar.github.oauth is needed even for PR analysis
+          # ./gradlew  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+      - run:
+          name: testing the docker images
+          command: |
+          docker-compose up -d harvester
+          docker-compose up -d quartermaster
+          bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+          bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+          bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
+
+          echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
+          echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
+          echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
+          echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
+
+          echo "Running Docker containers"; docker ps -a
+          echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+          mkdir -p /tmp/docker/
+          docker logs infiniboard_mongo_1         > /tmp/docker/mongo.log
+          docker logs infiniboard_harvester_1     > /tmp/docker/harvester.log
+          docker logs infiniboard_quartermaster_1 > /tmp/docker/quartermaster.log
+
+      - store_artifacts:
+          path: /tmp/docker
+
+      - deploy:
+          name: deploy build artifacts
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              # set git author info
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then git config --global user.name "reflectoring bot" && git config --global user.email $BOT_EMAIL; else echo 'Skipping Git config for PRs!'; fi
+
+              # update GitHub pages
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew --stacktrace --console=plain publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
+
+              # upload artifacts to bintray
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
+
+              # upload docker images to Docker Hub
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi
+            fi
