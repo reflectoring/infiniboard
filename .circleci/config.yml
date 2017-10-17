@@ -1,4 +1,5 @@
 version: 2
+
 jobs:
   build:
     docker:
@@ -214,3 +215,12 @@ jobs:
               if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
               if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi
             fi
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
