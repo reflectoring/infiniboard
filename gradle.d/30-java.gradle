@@ -48,7 +48,7 @@ subprojects {
             reports {
                 xml.enabled false
                 csv.enabled false
-                html.destination "${buildDir}/jacoco/html"
+                html.destination file("${buildDir}/jacoco/html")
             }
         }
 
