@@ -89,19 +89,19 @@ jobs:
           - docker-pull
 
       - run:
-        name: pull docker images
-        command: |
-          if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
-          if [[ -e ~/docker/openjdk.tar ]]; then docker load --input ~/docker/openjdk.tar; fi
+          name: pull docker images
+          command: |
+            if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
+            if [[ -e ~/docker/openjdk.tar ]]; then docker load --input ~/docker/openjdk.tar; fi
 
-          # pull image here to cache it and speed up the test
-          docker pull mongo:3.2
-          docker pull openjdk:8-jdk-alpine
-          docker images
+            # pull image here to cache it and speed up the test
+            docker pull mongo:3.2
+            docker pull openjdk:8-jdk-alpine
+            docker images
 
-          mkdir -p ~/docker
-          docker save mongo > ~/docker/mongo.tar
-          docker save openjdk:8-jdk-alpine > ~/docker/openjdk.tar
+            mkdir -p ~/docker
+            docker save mongo > ~/docker/mongo.tar
+            docker save openjdk:8-jdk-alpine > ~/docker/openjdk.tar
 
       - save_cache:
           paths:
