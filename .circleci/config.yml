@@ -156,10 +156,10 @@ jobs:
             mkdir -p /tmp/junit-html/
             find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} /tmp/junit-html/`echo {} | cut -d / -f2`' \;
 
-       - store_test_results:
-           path: /tmp/junit
-       - store_artifacts:
-           path: /tmp/junit-html
+      - store_test_results:
+          path: /tmp/junit
+      - store_artifacts:
+          path: /tmp/junit-html
 
       - run:
           name: generate GitHub Pages
