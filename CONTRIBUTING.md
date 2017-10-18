@@ -66,22 +66,53 @@ Remove all existing IntelliJ project configurations and create the latest one by
 $ ./gradlew cleanIdea idea
 ```
 
-#### Start mongo db
+#### Start MongoDB
 ##### Standalone
-To store data infiniboard uses mongo db. If you have a local mongo db running which listens on localhost:27017, just make sure it is running before continuing.
+To store data infiniboard uses [MongoDB](https://github.com/mongodb/mongo). If you have a local MongoDB running which listens on localhost:27017, just make sure it is running before continuing.
 
 ##### Docker instance 
-If you do not want to setup a local mongo db, you can easily start a Docker instance like described below.
-Therefore you need to install [Docker](https://docs.docker.com/engine/installation/) and
-[Docker Compose](https://docs.docker.com/compose/install/) first.
+If you do not want to setup a local MongoDB, you can easily start a Docker instance like described below.
+Therefore you need to install [Docker 17.06.0+](https://docs.docker.com/engine/installation/) and
+[Docker Compose 1.14.0+](https://docs.docker.com/compose/install/) first.
 
-Uncomment the port declaration in `docker-compose.yml`. <br>
+Afterwards uncomment the port declaration in `docker-compose.yml` of service `mongo`. <br>
 **Do NOT commit these change.** This change will be rejected in the pull request review process as it breaks the build
 on the build server.
 ```sh
 $ docker-compose up -d mongo
 ```
 Mongo DB now listens on localhost:27017
+
+##### clear MongoDB data
+The MongoDB data gets stored in an seperate docker volume, so even if you destroy the mongo container using
+`docker-compose down` for example you won't loose your data.  From time to time however it might be necessary to
+clear the data. 
+
+Make sure no container is using mongodb
+```sh
+$ docker-compose down
+```
+
+figure out the volume name
+```sh
+$ docker volume ls
+DRIVER              VOLUME NAME
+local               infiniboard_db-data
+```
+
+**Hint:** The name of the volume depends on the directory the `docker-compose.yml` file lives in.
+
+After getting the volume name, erase the volume
+```sh
+$ docker volume rm <name of volume>
+```
+
+#### Start mongo-express
+To browse the local docker MongoDB, you can start an pre configured [mongo-express](https://github.com/mongo-express/mongo-express) instance.
+```sh
+$ docker-compose up -d mongoExpress
+```
+The mongo-express UI now listens on http://localhost:8081
 
 #### Start harvester
 ```sh
