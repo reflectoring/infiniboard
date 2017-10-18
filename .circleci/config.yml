@@ -51,10 +51,10 @@ jobs:
 
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
-          root: dashy
+          root: ./dashy
           # Must be relative path from root
           paths:
-            - build
+            - dist/*
 
   backend:
     docker:
@@ -88,13 +88,12 @@ jobs:
 
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: frontend-build/dashy
+          at: /tmp/frontend-build
 
       - run:
           name: copy frontend
           command: |
-            mkdir dashy/build
-            cp -a frontend-build/dashy/* dashy/build/
+            cp -a /tmp/frontend-build/dist dashy/
 
       # gradle cache
       - restore_cache:
