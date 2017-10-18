@@ -224,19 +224,26 @@ jobs:
           name: deploy build artifacts
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              # set git author info
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then git config --global user.name "reflectoring bot" && git config --global user.email $BOT_EMAIL; else echo 'Skipping Git config for PRs!'; fi
+              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then
+                # set git author info
+                git config --global user.name "reflectoring bot"
+                git config --global user.email $BOT_EMAIL
 
-              # update GitHub pages
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then cd quartermaster && ../gradlew --stacktrace --console=plain publishGhPages; else echo 'Skipping GitHub pages deployment for PRs!'; fi
+                # update GitHub pages
+                cd quartermaster && ../gradlew --stacktrace --console=plain publishGhPages && cd ..
 
-              # upload artifacts to bintray
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain bintrayUpload; else echo 'Skipping Bintray artifact deployment for PRs!'; fi
+                # upload artifacts to bintray
+                ./gradlew --stacktrace --console=plain bintrayUpload
 
-              # upload docker images to Docker Hub
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS; fi
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/quartermaster; fi
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then docker push reflectoring/harvester; else echo 'Skipping Docker deployment for PRs!'; fi
+                # upload docker images to Docker Hub
+                docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+                docker push reflectoring/quartermaster
+                docker push reflectoring/harvester
+              else
+                echo 'Skipping deployment for PRs!'
+              fi
+            else
+              echo 'Skipping deployment for non master branches!'
             fi
 
 workflows:
@@ -247,6 +254,3 @@ workflows:
       - backend:
           requires:
             - frontend
-      - deploy:
-          requires:
-            - backend
