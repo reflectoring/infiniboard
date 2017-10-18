@@ -32,11 +32,15 @@ jobs:
             docker-compose version
 
       - run:
-          name: install Node
+          name: install nvm
           command: |
             set -x
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
-            source ~/.bashrc
+
+      - run:
+          name: install Node
+          command: |
+            set -x
             command -v nvm
             nvm install v6.9.5
             node --version
