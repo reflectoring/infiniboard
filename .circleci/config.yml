@@ -1,7 +1,63 @@
 version: 2
 
 jobs:
-  build:
+
+  frontend:
+    docker:
+      - image: circleci/node:6.11.1-browsers
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - node-dependencies-{{ checksum "dashy/package.json" }}
+
+      - run:
+          name: npm install
+          command: cd dashy && npm install
+
+      - save_cache:
+          paths:
+            - dashy/node_modules
+          key:  node-dependencies-{{ checksum "dashy/package.json" }}
+
+      - run:
+          name: build angular app
+          command: cd dashy && ./node_modules/.bin/ng build --prod --progress false
+
+      - run:
+          name: test angular app
+          command: |
+            cd dashy
+            ./node_modules/.bin/ng lint
+            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+
+      - run:
+          name: archive Angular2 test results
+          command: |
+            mkdir -p /tmp/ng-coverage/
+            cp -a dashy/build/coverage /tmp/ng-coverage/
+            mkdir -p /tmp/ng-junit/
+            cp -a dashy/build/junit/*.xml /tmp/ng-junit/
+
+      - store_test_results:
+          path: /tmp/ng-junit
+      - store_artifacts:
+          path: /tmp/ng-coverage
+
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: dashy
+          # Must be relative path from root
+          paths:
+            - build
+
+  backend:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
     working_directory: ~/repo
@@ -31,41 +87,15 @@ jobs:
             docker info
             docker-compose version
 
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: frontend-build/dashy
+
       - run:
-          name: install nvm
+          name: copy frontend
           command: |
-            set -x
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
-
-      - run:
-          name: install Node
-          command: |
-            set -x
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-            command -v nvm
-            nvm install v6.9.5
-            node --version
-            npm --version
-
-      #
-      # Cache
-      #
-
-      # node cache
-      - restore_cache:
-          keys:
-            - node-dependencies-{{ checksum "dashy/package.json" }}
-
-      - run:
-          name: npm install
-          command: cd dashy && npm install
-
-      - save_cache:
-          paths:
-            - dashy/node_modules
-          key:  node-dependencies-{{ checksum "dashy/package.json" }}
+            mkdir dashy/build
+            cp -a frontend-build/dashy/* dashy/build/
 
       # gradle cache
       - restore_cache:
@@ -115,10 +145,6 @@ jobs:
           key: docker-pull
 
       - run:
-          name: build angular app
-          command: cd dashy && ./node_modules/.bin/ng build --prod --progress false
-
-      - run:
           name: build backend
           command: ./gradlew --stacktrace --console=plain build -x test
 
@@ -131,26 +157,6 @@ jobs:
 
       - store_artifacts:
           path: /tmp/build-artifacts
-
-      - run:
-          name: test angular app
-          command: |
-            cd dashy
-            ./node_modules/.bin/ng lint
-            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
-
-      - run:
-          name: archive Angular2 test results
-          command: |
-            mkdir -p /tmp/ng-coverage/
-            cp -a dashy/build/coverage /tmp/ng-coverage/
-            mkdir -p /tmp/ng-junit/
-            cp -a dashy/build/junit/*.xml /tmp/ng-junit/
-
-      - store_test_results:
-          path: /tmp/ng-junit
-      - store_artifacts:
-          path: /tmp/ng-coverage
 
       - run:
           name: test backend
@@ -226,7 +232,10 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - frontend
+      - backend:
+          required:
+            - frontend
       - deploy:
           requires:
-            - build
+            - backend
