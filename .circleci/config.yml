@@ -5,7 +5,7 @@ jobs:
   frontend:
     docker:
       - image: circleci/node:6.11.1-browsers
-    working_directory: ~/repo
+    working_directory: ~/infiniboard
     environment:
       TERM: dumb
 
@@ -59,7 +59,7 @@ jobs:
   backend:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
-    working_directory: ~/repo
+    working_directory: ~/infiniboard
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
@@ -164,6 +164,7 @@ jobs:
       - run:
           name: archive backend test results
           command: |
+            mkdir -p /tmp/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} /tmp/junit/ \;
             mkdir -p /tmp/junit-html/
             find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} /tmp/junit-html/`echo {} | cut -d / -f2`' \;
@@ -183,6 +184,10 @@ jobs:
             if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
             # sonar.login and sonar.github.oauth is needed even for PR analysis
             # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+      - run:
+          name: build docker images
+          command: ./gradlew --stacktrace --console=plain buildImage tagImage
 
       - run:
           name: testing the docker images
