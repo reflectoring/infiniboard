@@ -127,15 +127,19 @@ jobs:
           command: |
             if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
             if [[ -e ~/docker/openjdk.tar ]]; then docker load --input ~/docker/openjdk.tar; fi
+            if [[ -e ~/docker/appropriate_curl.tar ]]; then docker load --input ~/docker/appropriate_curl.tar; fi
+
 
             # pull image here to cache it and speed up the test
             docker pull mongo:3.2
             docker pull openjdk:8-jdk-alpine
+            docker pull appropriate/curl
             docker images
 
             mkdir -p ~/docker
             docker save mongo > ~/docker/mongo.tar
             docker save openjdk:8-jdk-alpine > ~/docker/openjdk.tar
+            docker save appropriate/curl > ~/docker/appropriate_curl.tar
 
       - save_cache:
           paths:
@@ -197,10 +201,14 @@ jobs:
             bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
             bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
 
-            echo ">> quartermaster <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8090/health
-            echo ">> harvester <<"; curl --retry 10 --retry-delay 5 -v http://localhost:9090/health
-            echo ">> REST API <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/api/dashboards
-            echo ">> Frontend <<"; curl --retry 10 --retry-delay 5 -v http://localhost:8080/#/dashboards
+            echo ">> quartermaster <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8090/health
+            echo ">> harvester <<"
+            docker run --network container:infiniboard_harvester_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9090/health
+            echo ">> REST API <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/api/dashboards
+            echo ">> Frontend <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/#/dashboards
 
             echo "Running Docker containers"; docker ps -a
             echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
