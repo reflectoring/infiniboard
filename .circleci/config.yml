@@ -220,6 +220,10 @@ jobs:
       - store_artifacts:
           path: /tmp/docker
 
+      - add_ssh_keys:
+          fingerprints:
+            - "0c:3c:4f:44:ac:64:f9:a2:8e:ab:6f:8d:18:7c:94:71"
+
       - deploy:
           name: deploy build artifacts
           command: |
