@@ -234,7 +234,7 @@ jobs:
                 git config --global user.email $BOT_EMAIL
 
                 # update GitHub pages
-                cd quartermaster && ../gradlew --stacktrace --console=plain publishGhPages && cd ..
+                ./gradlew --stacktrace --console=plain gitPublishPush
 
                 # upload artifacts to bintray
                 ./gradlew --stacktrace --console=plain bintrayUpload
