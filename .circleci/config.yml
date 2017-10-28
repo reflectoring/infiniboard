@@ -1,0 +1,261 @@
+version: 2
+
+jobs:
+
+  frontend:
+    docker:
+      - image: circleci/node:6.11.1-browsers
+    working_directory: ~/infiniboard
+    environment:
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - node-dependencies-{{ checksum "dashy/package.json" }}
+
+      - run:
+          name: npm install
+          command: cd dashy && npm install
+
+      - save_cache:
+          paths:
+            - dashy/node_modules
+          key:  node-dependencies-{{ checksum "dashy/package.json" }}
+
+      - run:
+          name: build angular app
+          command: cd dashy && ./node_modules/.bin/ng build --prod --progress false
+
+      - run:
+          name: test angular app
+          command: |
+            cd dashy
+            ./node_modules/.bin/ng lint
+            ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+
+      - run:
+          name: archive Angular2 test results
+          command: |
+            mkdir -p /tmp/ng-coverage/
+            cp -a dashy/build/coverage /tmp/ng-coverage/
+            mkdir -p /tmp/ng-junit/
+            cp -a dashy/build/junit/*.xml /tmp/ng-junit/
+
+      - store_test_results:
+          path: /tmp/ng-junit
+      - store_artifacts:
+          path: /tmp/ng-coverage
+
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: ./dashy
+          # Must be relative path from root
+          paths:
+            - dist/*
+
+  backend:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    working_directory: ~/infiniboard
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+      #
+      # prepare env
+      #
+      - run:
+          name: install Docker Compose
+          command: |
+            set -x
+            sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+
+      - setup_remote_docker
+
+      - run:
+          name: verify Docker / Docker Compose Versions
+          command: |
+            set -x
+            docker version
+            docker info
+            docker-compose version
+
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/frontend-build
+
+      - run:
+          name: copy frontend
+          command: |
+            cp -a /tmp/frontend-build/dist dashy/
+
+      # gradle cache
+      - restore_cache:
+          keys:
+          - gradle-dependencies-{{ checksum "gradle.properties" }}
+      - restore_cache:
+          keys:
+          - gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - run:
+          name: resolve java dependencies
+          command: ./gradlew --stacktrace --console=plain resolveDependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: gradle-dependencies-{{ checksum "gradle.properties" }}
+
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      # docker cache
+      - restore_cache:
+          keys:
+          - docker-pull
+
+      - run:
+          name: pull docker images
+          command: |
+            if [[ -e ~/docker/mongo.tar ]]; then docker load --input ~/docker/mongo.tar; fi
+            if [[ -e ~/docker/openjdk.tar ]]; then docker load --input ~/docker/openjdk.tar; fi
+            if [[ -e ~/docker/appropriate_curl.tar ]]; then docker load --input ~/docker/appropriate_curl.tar; fi
+
+
+            # pull image here to cache it and speed up the test
+            docker pull mongo:3.2
+            docker pull openjdk:8-jdk-alpine
+            docker pull appropriate/curl
+            docker images
+
+            mkdir -p ~/docker
+            docker save mongo > ~/docker/mongo.tar
+            docker save openjdk:8-jdk-alpine > ~/docker/openjdk.tar
+            docker save appropriate/curl > ~/docker/appropriate_curl.tar
+
+      - save_cache:
+          paths:
+            - ~/docker
+          key: docker-pull
+
+      - run:
+          name: build backend
+          command: ./gradlew --stacktrace --console=plain build -x test
+
+      - run:
+          name: archive build-artifacts
+          command: |
+            mkdir -p /tmp/build-artifacts
+            cp -a harvester/build/libs/harvester*.war /tmp/build-artifacts/
+            cp -a quartermaster/build/libs/quartermaster*.war /tmp/build-artifacts/
+
+      - store_artifacts:
+          path: /tmp/build-artifacts
+
+      - run:
+          name: test backend
+          command: ./gradlew --stacktrace --console=plain build integrationTest
+
+      - run:
+          name: archive backend test results
+          command: |
+            mkdir -p /tmp/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} /tmp/junit/ \;
+            mkdir -p /tmp/junit-html/
+            find . -type d -regex ".**/build/reports/tests" -exec sh -c 'cp -a {} /tmp/junit-html/`echo {} | cut -d / -f2`' \;
+
+      - store_test_results:
+          path: /tmp/junit
+      - store_artifacts:
+          path: /tmp/junit-html
+
+      - run:
+          name: generate GitHub Pages
+          command: ./gradlew --stacktrace --console=plain preparePages
+
+      - run:
+          name: analyse Java code using sonarqube.com
+          command: |
+            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+            # sonar.login and sonar.github.oauth is needed even for PR analysis
+            # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+      - run:
+          name: build docker images
+          command: ./gradlew --stacktrace --console=plain buildImage tagImage
+
+      - run:
+          name: testing the docker images
+          command: |
+            docker-compose up -d harvester
+            docker-compose up -d quartermaster
+            bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+            bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+            bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
+
+            echo ">> quartermaster <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8090/health
+            echo ">> harvester <<"
+            docker run --network container:infiniboard_harvester_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9090/health
+            echo ">> REST API <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/api/dashboards
+            echo ">> Frontend <<"
+            docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/#/dashboards
+
+            echo "Running Docker containers"; docker ps -a
+            echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+            mkdir -p /tmp/docker/
+            docker logs infiniboard_mongo_1         > /tmp/docker/mongo.log
+            docker logs infiniboard_harvester_1     > /tmp/docker/harvester.log
+            docker logs infiniboard_quartermaster_1 > /tmp/docker/quartermaster.log
+
+      - store_artifacts:
+          path: /tmp/docker
+
+      - add_ssh_keys:
+          fingerprints:
+            - "c4:9b:79:fa:67:04:f3:7d:f7:2a:82:0b:7a:8d:d9:75"
+
+      - deploy:
+          name: deploy build artifacts
+          command: |
+            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
+                # set git author info
+                git config --global user.name "reflectoring bot"
+                git config --global user.email $BOT_EMAIL
+
+                # update GitHub pages
+                ./gradlew --stacktrace --console=plain gitPublishPush
+
+                # upload artifacts to bintray
+                ./gradlew --stacktrace --console=plain bintrayUpload
+
+                # upload docker images to Docker Hub
+                docker login -u $DOCKER_USER -p $DOCKER_PASS
+                docker push reflectoring/quartermaster
+                docker push reflectoring/harvester
+              else
+                echo 'Skipping deployment for non master branches!'
+              fi
+            else
+              echo 'Skipping deployment for PRs!'
+            fi
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - frontend
+      - backend:
+          requires:
+            - frontend

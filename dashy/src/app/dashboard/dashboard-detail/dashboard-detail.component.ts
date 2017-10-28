@@ -27,7 +27,7 @@ export class DashboardDetailComponent implements OnInit {
   public dashboard: Dashboard;
 
   @ViewChild('widgets', {read: ViewContainerRef})
-  private viewContainer: ViewContainerRef;
+  public viewContainer: ViewContainerRef;
 
   constructor(private dashboardService: DashboardService,
               private widgetService: WidgetService,

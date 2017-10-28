@@ -31,8 +31,7 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true
     },
     angularCli: {
-      config: './.angular-cli.json',
-      environment: 'dev'
+      config: './.angular-cli.json'
     },
     junitReporter: {
       outputDir: 'build/junit', // results will be saved as $outputDir/$browserName.xml

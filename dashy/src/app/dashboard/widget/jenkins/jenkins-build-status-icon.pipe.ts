@@ -29,6 +29,7 @@ export class JenkinsBuildStatusIconPipe implements PipeTransform {
         return 'fa-question';
 
       case BuildStatus.NOT_BUILT_BUILDING:
+      case BuildStatus.DISABLED_BUILDING:
       case BuildStatus.BLUE_BUILDING:
       case BuildStatus.YELLOW_BUILDING:
       case BuildStatus.RED_BUILDING:
