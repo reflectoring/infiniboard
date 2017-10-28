@@ -227,8 +227,9 @@ jobs:
       - deploy:
           name: deploy build artifacts
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              if [ "$CIRCLE_PR_NUMBER" = ""  ]; then
+            if [ "$CIRCLE_PR_NUMBER" = ""  ]; then
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
                 # set git author info
                 git config --global user.name "reflectoring bot"
                 git config --global user.email $BOT_EMAIL
@@ -240,14 +241,14 @@ jobs:
                 ./gradlew --stacktrace --console=plain bintrayUpload
 
                 # upload docker images to Docker Hub
-                docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+                docker login -u $DOCKER_USER -p $DOCKER_PASS
                 docker push reflectoring/quartermaster
                 docker push reflectoring/harvester
               else
-                echo 'Skipping deployment for PRs!'
+                echo 'Skipping deployment for non master branches!'
               fi
             else
-              echo 'Skipping deployment for non master branches!'
+              echo 'Skipping deployment for PRs!'
             fi
 
 workflows:
