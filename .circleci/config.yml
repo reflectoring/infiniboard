@@ -222,7 +222,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "0c:3c:4f:44:ac:64:f9:a2:8e:ab:6f:8d:18:7c:94:71"
+            - "c4:9b:79:fa:67:04:f3:7d:f7:2a:82:0b:7a:8d:d9:75"
 
       - deploy:
           name: deploy build artifacts
