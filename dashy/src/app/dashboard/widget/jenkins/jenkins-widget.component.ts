@@ -34,11 +34,9 @@ export class JenkinsWidgetComponent extends Widget {
         this.name = json.displayName;
         this.url = json.url;
         this.type = this.getJobType(json);
-        console.debug('jenkins job "' + this.name + '" with type "' + JobType[this.type] + '"');
 
         if (this.type === JobType.JOB) {
           this.status = this.getBuildStatus(json.color);
-          console.debug('jenkins job "' + this.name + '" with status "' + BuildStatus[this.status] + '"');
 
           if (json.lastBuild) {
             this.lastBuildNo = '#' + json.lastBuild.number;
