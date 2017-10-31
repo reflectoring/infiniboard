@@ -162,7 +162,9 @@ jobs:
 
       - run:
           name: test backend
-          command: ./gradlew --stacktrace --console=plain build integrationTest
+          command: |
+            docker-compose up -d mongo
+            ./gradlew --stacktrace --console=plain build integrationTest
 
       - run:
           name: archive backend test results
@@ -210,8 +212,11 @@ jobs:
             echo ">> Frontend <<"
             docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/#/dashboards
 
-            echo "Running Docker containers"; docker ps -a
-            echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+            echo "Running Docker containers"
+            docker ps -a
+            echo "Stopping all Docker containers"
+            docker stop $(docker ps -a -q)
+
             mkdir -p /tmp/docker/
             docker logs infiniboard_mongo_1         > /tmp/docker/mongo.log
             docker logs infiniboard_harvester_1     > /tmp/docker/harvester.log
