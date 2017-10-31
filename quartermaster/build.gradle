@@ -111,7 +111,7 @@ gitPublish {
 
     preserve { include '**/*' }
 
-    commitMessage "updated docs for ${baseVersion}"
+    commitMessage "[skip ci] updated docs for ${baseVersion}"
 }
 
 gitPublishCopy.dependsOn preparePages
