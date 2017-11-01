@@ -10,8 +10,6 @@ class FakeWidgetHttp {
 
   public get(url: string): Observable<Response> {
 
-    console.log(url);
-
     switch (url) {
       case '/mock/api/dashboards/1/widgets/all':
         return this.getUnpagedWidgets();
