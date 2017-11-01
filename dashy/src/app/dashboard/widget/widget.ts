@@ -1,5 +1,6 @@
 import {WidgetConfig} from '../shared/widget-config';
 import {WidgetService} from '../shared/widget.service';
+
 export class Widget {
 
   title: string;
@@ -41,7 +42,14 @@ export class Widget {
   }
 
   updateData(data: any) {
-    // implemented by widgets
+    // log backend errors
+    for (const sourceData of data) {
+      if ((sourceData.data || {}).errors) {
+        sourceData.data.errors.forEach(error => console.error(error));
+      }
+    }
+
+    // custom logic is implemented by widgets
   }
 }
 
