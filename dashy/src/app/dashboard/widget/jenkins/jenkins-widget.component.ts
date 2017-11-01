@@ -22,11 +22,11 @@ export class JenkinsWidgetComponent extends Widget {
   }
 
   updateData(data: any[]) {
+    super.updateData(data);
+
     for (const sourceData of data) {
       if (sourceData.sourceId === 'jenkins') {
         if (sourceData.data.status !== 200) {
-          console.error('Cannot fetch URL of configured Jenkins job');
-          console.error(sourceData.data.content);
           return;
         }
         const json = JSON.parse(sourceData.data.content);

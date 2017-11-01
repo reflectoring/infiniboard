@@ -10,7 +10,9 @@ import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
@@ -26,7 +28,10 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.quartz.JobKey;
 import org.slf4j.Logger;
@@ -45,6 +50,7 @@ public class UrlSourceJob extends SourceJob {
 
   static final String PARAM_STATUS = "status";
   static final String PARAM_CONTENT = "content";
+  static final String PARAM_ERRORS = "errors";
   static final String PARAM_URL = "url";
   static final String PARAM_USERNAME = "username";
   static final String PARAM_PASSWORD = "password";
@@ -58,6 +64,8 @@ public class UrlSourceJob extends SourceJob {
     CredentialsProvider credentialsProvider = configureBasicAuthentication(configuration);
     HttpClientContext clientContext = configureContext(credentialsProvider, url);
 
+    HashMap<String, Object> data = new HashMap<>();
+    List<String> errors = new ArrayList<>();
     try (CloseableHttpClient httpClient = configureHttpClient(enableSslVerify)) {
       HttpGet httpGet = new HttpGet(url);
 
@@ -68,27 +76,44 @@ public class UrlSourceJob extends SourceJob {
         response = httpClient.execute(httpGet);
       }
 
-      HashMap<String, Object> results = new HashMap<>();
-      results.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
+      data.put(PARAM_STATUS, response.getStatusLine().getStatusCode());
       if (response.getEntity() != null) {
-        results.put(PARAM_CONTENT, IOUtils.toString(response.getEntity().getContent()));
+        data.put(PARAM_CONTENT, IOUtils.toString(response.getEntity().getContent()));
       } else {
-        results.put(PARAM_CONTENT, response.getStatusLine().getReasonPhrase());
+        data.put(PARAM_CONTENT, response.getStatusLine().getReasonPhrase());
       }
 
-      upsertResults(context, jobKey, results);
-
     } catch (SSLHandshakeException e) {
-      String msg = "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
-      logConnectionError(msg, url, enableSslVerify, e);
+      String msg =
+          logConnectionError(
+              "Could not establish SSL connection to '%s'. '%s' is set to '%s'. Cause: '%s'",
+              url, enableSslVerify, e);
+      errors.add(msg);
+
     } catch (HttpHostConnectException e) {
-      String msg = "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'";
-      logConnectionError(msg, url, enableSslVerify, e);
+      String msg =
+          logConnectionError(
+              "Could not establish connection to '%s'. '%s' is set to '%s'. Cause: '%s'",
+              url, enableSslVerify, e);
+      errors.add(msg);
+
     } catch (UnknownHostException e) {
-      LOG.error("Could not establish connection to unknown host '{}'", e.getMessage());
+      String msg =
+          String.format("Could not establish connection to unknown host '%s'", e.getMessage());
+      errors.add(msg);
+      LOG.error(msg);
+
     } catch (IOException e) {
-      LOG.error("could not fetch url '{}'", url, e);
+      String msg = String.format("could not fetch url '%s'", url);
+      errors.add(msg);
+      LOG.error(msg, e);
     }
+
+    if (!errors.isEmpty()) {
+      data.put(PARAM_ERRORS, errors);
+    }
+
+    upsertResults(context, jobKey, data);
   }
 
   private boolean isSslVerificationEnabled(Map<String, Object> configuration) {
@@ -100,7 +125,8 @@ public class UrlSourceJob extends SourceJob {
     return Boolean.valueOf(o.toString());
   }
 
-  private void logConnectionError(String msg, String url, boolean enableSslVerify, IOException e) {
+  private String logConnectionError(
+      String msg, String url, boolean enableSslVerify, IOException e) {
     String message =
         String.format(msg, url, PARAM_ENABLE_SSL_VERIFY, enableSslVerify, e.getMessage());
     if (enableSslVerify) {
@@ -108,17 +134,19 @@ public class UrlSourceJob extends SourceJob {
     } else {
       LOG.warn(message);
     }
+
+    return message;
   }
 
   private void upsertResults(
-      ApplicationContext context, JobKey jobKey, HashMap<String, Object> results) {
+      ApplicationContext context, JobKey jobKey, HashMap<String, Object> data) {
     SourceDataRepository repository = context.getBean(SourceDataRepository.class);
     SourceData existingData =
         repository.findByWidgetIdAndSourceId(jobKey.getGroup(), jobKey.getName());
     if (existingData != null) {
-      existingData.setData(results);
+      existingData.setData(data);
     } else {
-      existingData = new SourceData(jobKey.getGroup(), jobKey.getName(), results);
+      existingData = new SourceData(jobKey.getGroup(), jobKey.getName(), data);
     }
     repository.save(existingData);
   }

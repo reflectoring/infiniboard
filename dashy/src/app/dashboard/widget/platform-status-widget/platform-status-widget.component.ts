@@ -18,6 +18,8 @@ export class PlatformStatusWidgetComponent extends Widget {
   }
 
   public updateData(data: any[]) {
+    super.updateData(data);
+
     for (const sourceData of data) {
 
       if (sourceData.sourceId === 'version') {
