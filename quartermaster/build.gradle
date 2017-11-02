@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+
 import java.text.SimpleDateFormat
 
 buildscript {
@@ -66,25 +67,11 @@ processResources {
     ]
 }
 
-task cleanWebappDir(type: Delete) {
-    delete 'src/main/webapp'
+war {
+    // include AngularJS client into war,
+    // if it has been already build
+    from('../dashy/dist')
 }
-
-task copyClient(type: Copy) {
-    from '../dashy/dist'
-    into 'src/main/webapp'
-}
-
-// clean should also clean webapp dir
-clean.dependsOn cleanWebappDir
-
-// clean old webapp first
-copyClient.dependsOn cleanWebappDir
-
-// der client muss kopiert werden, bevor die quartermaster WAR gebaut wird
-processResources.mustRunAfter copyClient
-
-build.dependsOn copyClient
 
 ext {
     snippetsDir = file('build/generated-snippets')
@@ -124,7 +111,7 @@ gitPublish {
 
     preserve { include '**/*' }
 
-    commitMessage "updated docs for ${baseVersion}"
+    commitMessage "[skip ci] updated docs for ${baseVersion}"
 }
 
 gitPublishCopy.dependsOn preparePages

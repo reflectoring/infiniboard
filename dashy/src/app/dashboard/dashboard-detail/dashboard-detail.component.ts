@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewContainerRef, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Dashboard} from '../shared/dashboard';
 import {DashboardService} from '../shared/dashboard.service';
 import {WidgetConfig} from '../shared/widget-config';
@@ -51,6 +51,7 @@ export class DashboardDetailComponent implements OnInit {
   }
 
   private initializeWidgets(widgetConfigs: WidgetConfig[]) {
+    this.viewContainer.clear();
     widgetConfigs.forEach(widget => this.initializeWidget(widget));
   }
 

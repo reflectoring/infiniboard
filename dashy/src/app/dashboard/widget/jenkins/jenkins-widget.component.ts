@@ -22,11 +22,11 @@ export class JenkinsWidgetComponent extends Widget {
   }
 
   updateData(data: any[]) {
+    super.updateData(data);
+
     for (const sourceData of data) {
       if (sourceData.sourceId === 'jenkins') {
         if (sourceData.data.status !== 200) {
-          console.error('Cannot fetch URL of configured Jenkins job');
-          console.error(sourceData.data.content);
           return;
         }
         const json = JSON.parse(sourceData.data.content);
@@ -34,11 +34,9 @@ export class JenkinsWidgetComponent extends Widget {
         this.name = json.displayName;
         this.url = json.url;
         this.type = this.getJobType(json);
-        console.log('jenkins job "' + this.name + '" with type "' + JobType[this.type] + '"');
 
         if (this.type === JobType.JOB) {
           this.status = this.getBuildStatus(json.color);
-          console.log('jenkins job "' + this.name + '" with status "' + BuildStatus[this.status] + '"');
 
           if (json.lastBuild) {
             this.lastBuildNo = '#' + json.lastBuild.number;
