@@ -8,6 +8,21 @@ infiniboard is a customizable, general purpose project dashboard to assist you i
 ## Want to contribute?
 See the [contribution guide](https://github.com/reflectoring/infiniboard/blob/master/CONTRIBUTING.md).
 
+## release
+To release infiniboard follow these steps:
+1. make sure all needed changes are pushed to `master` and the CircleCI build passed
+1. create an [GitHub personal access token](https://github.com/settings/tokens) with `public_repo` privileges
+1. export your personal access token as environment variable `GITHUB_TOKEN`
+1. execute `github-promote-release.sh`
+
+### example 
+```bash
+$ export GITHUB_TOKEN=...
+$ ./github-promote-release.sh 632 0.2.1
+```
+
+***Note:** currently the windows version of [aktau/github-release](https://github.com/aktau/github-release) is broken (version 0.7.2). Mac OS X version seems to be working fine.*
+
 ## license
 
 > The MIT License (MIT)
