@@ -66,6 +66,7 @@ public class WidgetConfigResourceAssembler
     entity.setSourceConfigs(resource.getSourceConfigs());
     entity.setTitleUrl(resource.getTitleUrl());
     entity.setDescription(resource.getDescription());
+    entity.setDashboardId(dashboardId);
     return entity;
   }
 }

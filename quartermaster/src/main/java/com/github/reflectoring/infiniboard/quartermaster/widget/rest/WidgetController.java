@@ -116,7 +116,7 @@ public class WidgetController {
   @RequestMapping(value = "/all", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
   public Resources<WidgetConfigResource> getAllWidgets(@PathVariable String dashboardId) {
 
-    List<WidgetConfig> widgetConfigs = widgetConfigRepository.findAll();
+    List<WidgetConfig> widgetConfigs = widgetConfigRepository.findAllByDashboardId(dashboardId);
     WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
     List<WidgetConfigResource> resources = assembler.toResources(widgetConfigs);
 

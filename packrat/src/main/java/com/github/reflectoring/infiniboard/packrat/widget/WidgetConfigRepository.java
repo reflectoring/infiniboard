@@ -14,4 +14,6 @@ public interface WidgetConfigRepository extends MongoRepository<WidgetConfig, St
 
   @Override
   Page<WidgetConfig> findAll(Pageable pageable);
+
+  List<WidgetConfig> findAllByDashboardId(String dashboardId);
 }

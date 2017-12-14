@@ -20,6 +20,8 @@ public class WidgetConfig {
 
   private String description;
 
+  private String dashboardId;
+
   private LocalDateTime lastModified = LocalDateTime.now();
 
   private List<SourceConfig> sourceConfigs = new ArrayList<>();
@@ -68,6 +70,14 @@ public class WidgetConfig {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getDashboardId() {
+    return dashboardId;
+  }
+
+  public void setDashboardId(String dashboardId) {
+    this.dashboardId = dashboardId;
   }
 
   public LocalDateTime getLastModified() {
