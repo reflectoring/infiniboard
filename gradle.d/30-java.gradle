@@ -36,8 +36,44 @@ subprojects {
 
         spotless {
             java {
+                lineEndings 'UNIX'
+
+                removeUnusedImports()
+                endWithNewline()
+
                 googleJavaFormat()
             }
+
+            format 'properties', {
+                target '**/*.properties'
+
+                lineEndings 'UNIX'
+
+                encoding 'ISO-8859-1'
+            }
+
+            format 'unix', {
+                target 'gradlew', 'gradle/**/*.sh'
+
+                lineEndings 'UNIX'
+                endWithNewline()
+            }
+
+            groovyGradle {
+                target '**/*.gradle'
+
+                lineEndings 'UNIX'
+                endWithNewline()
+            }
+
+            groovy {
+                target '**/*.groovy'
+
+                lineEndings 'UNIX'
+                endWithNewline()
+            }
+
+            encoding 'UTF-8'
         }
 
         jacoco {

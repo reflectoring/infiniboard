@@ -29,4 +29,3 @@ task integrationTest(type: Test) {
 bootRepackage {
     enabled = false
 }
-
