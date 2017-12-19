@@ -32,7 +32,7 @@ public class WidgetConfigResourceAssemblerTest {
   }
 
   private WidgetConfigResourceAssembler createAssembler() {
-    return new WidgetConfigResourceAssembler(1);
+    return new WidgetConfigResourceAssembler("test-dashboard");
   }
 
   private WidgetConfig createWidgetWithConfiguredUsername() {

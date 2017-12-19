@@ -5,6 +5,7 @@ import static com.github.reflectoring.infiniboard.quartermaster.testframework.Re
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsResource;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.SourceDataFactory.sourceDataList;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfig;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfigList;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfigResource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -21,7 +22,6 @@ import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
 import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
-import java.util.Arrays;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -138,7 +138,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
   @Test
   public void getWidgets() throws Exception {
     when(widgetConfigRepository.findAll(any(Pageable.class)))
-        .thenReturn(new PageImpl<>(Arrays.asList(widgetConfig())));
+        .thenReturn(new PageImpl<>(widgetConfigList()));
     MvcResult result =
         mvc()
             .perform(get("/api/dashboards/1/widgets"))

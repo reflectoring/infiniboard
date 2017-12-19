@@ -45,7 +45,7 @@ public class WidgetController {
 
   @RequestMapping(value = "/{widgetId}", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<WidgetConfigResource> getWidget(
-      @PathVariable Integer dashboardId, @PathVariable String widgetId) {
+      @PathVariable String dashboardId, @PathVariable String widgetId) {
     WidgetConfig widgetConfig = widgetService.loadWidget(widgetId);
 
     if (widgetConfig == null) {
@@ -79,7 +79,7 @@ public class WidgetController {
     consumes = MediaType.APPLICATION_JSON_VALUE
   )
   public ResponseEntity<WidgetConfigResource> createWidget(
-      @PathVariable Integer dashboardId, @RequestBody WidgetConfigResource widgetConfigResource) {
+      @PathVariable String dashboardId, @RequestBody WidgetConfigResource widgetConfigResource) {
     WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
     WidgetConfig createdWidgetConfig =
         widgetService.saveWidget(assembler.toEntity(widgetConfigResource));
@@ -93,7 +93,7 @@ public class WidgetController {
     produces = MediaType.APPLICATION_JSON_VALUE
   )
   public ResponseEntity<SourceDataResource> getData(
-      @PathVariable Integer dashboardId, @PathVariable String widgetId) {
+      @PathVariable String dashboardId, @PathVariable String widgetId) {
     SourceDataResourceAssembler assembler = new SourceDataResourceAssembler(dashboardId, widgetId);
     List<SourceData> data = widgetService.getData(widgetId);
     SourceDataResource resource = assembler.toResource(data);
@@ -103,7 +103,7 @@ public class WidgetController {
   @SuppressWarnings("unchecked")
   @RequestMapping(method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<PagedResources<WidgetConfigResource>> getWidgets(
-      @PathVariable Integer dashboardId,
+      @PathVariable String dashboardId,
       @PageableDefault Pageable pageable,
       PagedResourcesAssembler pagedResourcesAssembler) {
     Page<WidgetConfig> widgetConfigPage = widgetConfigRepository.findAll(pageable);
@@ -114,9 +114,9 @@ public class WidgetController {
   }
 
   @RequestMapping(value = "/all", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public Resources<WidgetConfigResource> getAllWidgets(@PathVariable Integer dashboardId) {
+  public Resources<WidgetConfigResource> getAllWidgets(@PathVariable String dashboardId) {
 
-    List<WidgetConfig> widgetConfigs = widgetConfigRepository.findAll();
+    List<WidgetConfig> widgetConfigs = widgetConfigRepository.findAllByDashboardId(dashboardId);
     WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
     List<WidgetConfigResource> resources = assembler.toResources(widgetConfigs);
 

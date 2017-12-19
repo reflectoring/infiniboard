@@ -4,20 +4,32 @@ import static com.github.reflectoring.infiniboard.quartermaster.testframework.Js
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.fromPagedResourceJson;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsPagedResources;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsResource;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.DashboardFactory.dashboard;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.DashboardFactory.dashboardList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardService;
 import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.MvcResult;
 
 public class DashboardControllerTest extends ControllerTestTemplate {
 
+  @Autowired private DashboardService dashboardService;
+
   @Test
   public void getAllDashboards() throws Exception {
+    when(dashboardService.loadAll(any(Pageable.class))).thenReturn(new PageImpl<>(dashboardList()));
+
     MvcResult result =
         mvc()
             .perform(get("/api/dashboards"))
@@ -33,6 +45,8 @@ public class DashboardControllerTest extends ControllerTestTemplate {
 
   @Test
   public void getDashboard() throws Exception {
+    when(dashboardService.load("1")).thenReturn(dashboard());
+
     MvcResult result =
         mvc()
             .perform(get("/api/dashboards/1"))
