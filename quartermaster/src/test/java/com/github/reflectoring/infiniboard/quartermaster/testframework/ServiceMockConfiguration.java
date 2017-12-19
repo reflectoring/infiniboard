@@ -1,6 +1,7 @@
 package com.github.reflectoring.infiniboard.quartermaster.testframework;
 
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardService;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ServiceMockConfiguration {
+
+  @Bean
+  public DashboardService dashboardService() {
+    return Mockito.mock(DashboardService.class);
+  }
 
   @Bean
   public WidgetConfigService widgetConfigService() {

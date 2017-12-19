@@ -15,9 +15,9 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 public class WidgetConfigResourceAssembler
     extends ResourceAssemblerSupport<WidgetConfig, WidgetConfigResource> {
 
-  private Integer dashboardId;
+  private String dashboardId;
 
-  public WidgetConfigResourceAssembler(Integer dashboardId) {
+  public WidgetConfigResourceAssembler(String dashboardId) {
     super(WidgetController.class, WidgetConfigResource.class);
     this.dashboardId = dashboardId;
   }
@@ -66,6 +66,7 @@ public class WidgetConfigResourceAssembler
     entity.setSourceConfigs(resource.getSourceConfigs());
     entity.setTitleUrl(resource.getTitleUrl());
     entity.setDescription(resource.getDescription());
+    entity.setDashboardId(dashboardId);
     return entity;
   }
 }
