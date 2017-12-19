@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<meta name="author" content="v0.3.0.657, 2017-11-28">
+<meta name="author" content="v0.3.0.678, 2017-12-19">
 <title>infiniboard REST API</title>
 <style>
 /*! normalize.css v2.1.2 | MIT License | git.io/normalize */
@@ -718,7 +718,7 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <div id="header">
 <h1>infiniboard REST API</h1>
 <div class="details">
-<span id="author" class="author">v0.3.0.657, 2017-11-28</span><br>
+<span id="author" class="author">v0.3.0.678, 2017-12-19</span><br>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -823,23 +823,23 @@ Host: localhost</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 680
+Content-Length: 748
 
 {
   "_embedded" : {
     "dashboardResourceList" : [ {
-      "number" : 1,
-      "name" : "Development",
-      "description" : "Just what you need",
+      "number" : "test-dashboard-id",
+      "name" : "Test Dashboard",
+      "description" : "Testing Dashboard",
       "_links" : {
         "self" : {
-          "href" : "http://localhost:8080/api/dashboards/1"
+          "href" : "http://localhost:8080/api/dashboards/test-dashboard-id"
         },
         "widgets" : {
-          "href" : "http://localhost:8080/api/dashboards/1/widgets"
+          "href" : "http://localhost:8080/api/dashboards/test-dashboard-id/widgets"
         },
         "all-widgets" : {
-          "href" : "http://localhost:8080/api/dashboards/1/widgets/all"
+          "href" : "http://localhost:8080/api/dashboards/test-dashboard-id/widgets/all"
         }
       }
     } ]
@@ -877,21 +877,21 @@ Host: localhost</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 367
+Content-Length: 435
 
 {
-  "number" : 1,
-  "name" : "Development",
-  "description" : "Just what you need",
+  "number" : "test-dashboard-id",
+  "name" : "Test Dashboard",
+  "description" : "Testing Dashboard",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/dashboards/1"
+      "href" : "http://localhost:8080/api/dashboards/test-dashboard-id"
     },
     "widgets" : {
-      "href" : "http://localhost:8080/api/dashboards/1/widgets"
+      "href" : "http://localhost:8080/api/dashboards/test-dashboard-id/widgets"
     },
     "all-widgets" : {
-      "href" : "http://localhost:8080/api/dashboards/1/widgets/all"
+      "href" : "http://localhost:8080/api/dashboards/test-dashboard-id/widgets/all"
     }
   }
 }</code></pre>
@@ -984,7 +984,7 @@ Content-Length: 123
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1511861955778,
+  "lastModified" : 1513668307057,
   "sourceConfigs" : [ ]
 }</code></pre>
 </div>
@@ -1001,7 +1001,7 @@ Content-Length: 436
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1511861955778,
+  "lastModified" : 1513668307057,
   "sourceConfigs" : [ ],
   "_links" : {
     "self" : {
@@ -1043,7 +1043,7 @@ Content-Length: 766
     "widgetConfigResourceList" : [ {
       "title" : "My Little Widget",
       "type" : "platform-status",
-      "lastModified" : 1511861955264,
+      "lastModified" : 1513668306925,
       "sourceConfigs" : [ ],
       "_links" : {
         "self" : {
@@ -1096,7 +1096,7 @@ Content-Length: 436
 {
   "title" : "My Little Widget",
   "type" : "platform-status",
-  "lastModified" : 1511861955714,
+  "lastModified" : 1513668307003,
   "sourceConfigs" : [ ],
   "_links" : {
     "self" : {
@@ -1216,7 +1216,7 @@ Content-Type: application/json;charset=UTF-8
 Content-Length: 29
 
 {
-  "version" : "0.3.0.657"
+  "version" : "0.3.0.678"
 }</code></pre>
 </div>
 </div>
@@ -1228,7 +1228,7 @@ Content-Length: 29
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-28 09:36:20 +00:00
+Last updated 2017-12-19 07:23:30 +00:00
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/darkula.min.css">
