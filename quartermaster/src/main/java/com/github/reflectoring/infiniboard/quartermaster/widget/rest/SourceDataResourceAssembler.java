@@ -10,10 +10,10 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 public class SourceDataResourceAssembler
     extends ResourceAssemblerSupport<List<SourceData>, SourceDataResource> {
 
-  private Integer dashboardId;
+  private String dashboardId;
   private String widgetId;
 
-  public SourceDataResourceAssembler(Integer dashboardId, String widgetId) {
+  public SourceDataResourceAssembler(String dashboardId, String widgetId) {
     super(WidgetController.class, SourceDataResource.class);
     this.dashboardId = dashboardId;
     this.widgetId = widgetId;

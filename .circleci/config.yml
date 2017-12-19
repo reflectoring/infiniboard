@@ -147,6 +147,10 @@ jobs:
           key: docker-pull
 
       - run:
+          name: check formatting
+          command: ./gradlew --stacktrace --console=plain spotlessCheck
+
+      - run:
           name: build backend
           command: ./gradlew --stacktrace --console=plain build -x test
 

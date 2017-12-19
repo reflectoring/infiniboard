@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "widget")
 public class WidgetConfig {
 
   @Id private String id;
@@ -17,6 +19,8 @@ public class WidgetConfig {
   private String titleUrl;
 
   private String description;
+
+  private String dashboardId;
 
   private LocalDateTime lastModified = LocalDateTime.now();
 
@@ -66,6 +70,14 @@ public class WidgetConfig {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getDashboardId() {
+    return dashboardId;
+  }
+
+  public void setDashboardId(String dashboardId) {
+    this.dashboardId = dashboardId;
   }
 
   public LocalDateTime getLastModified() {
