@@ -4,3 +4,79 @@
 @import "../node_modules/admin-lte/plugins/iCheck/square/blue.css";
 @import "../node_modules/admin-lte/dist/css/AdminLTE.min.css";
 @import "../node_modules/admin-lte/dist/css/skins/skin-green.min.css";
+
+.widget {
+  position: relative;
+  display: flex;
+  border-radius: 3px;
+  background: #ffffff;
+  margin-bottom: 20px;
+  width: 100%;
+  min-height: 90px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.widget-content {
+  color: #444;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.widget-box-tool {
+  color: #444;
+  width: 30px;
+  text-align: center;
+}
+
+.widget-statusicon-container {
+  color: #444;
+  padding: 0;
+  display: inline-block;
+  position: relative;
+}
+
+.status-box-icon {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+  display: block;
+  float: left;
+  height: 90px;
+  width: 90px;
+  text-align: center;
+  font-size: 45px;
+  line-height: 90px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.status-box-icon > img {
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.status-box-number {
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.status-box-content {
+  padding: 5px 10px;
+  margin-left: 0;
+}
+
+.status-box-text {
+  display: block;
+  font-size: 14px;
+}

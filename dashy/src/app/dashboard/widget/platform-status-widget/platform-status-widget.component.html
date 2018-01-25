@@ -1,11 +1,19 @@
 <div class="col-md-3 col-sm-6 col-xs-12">
-  <div class="info-box">
-    <span class="info-box-icon {{status | statusColor }}"><i class="fa {{status | statusIcon}}"></i></span>
-    <div class="info-box-content">
-      <span *ngIf="titleUrl" class="info-box-text"><a [href]="this['titleUrl']" target="_blank">{{this['title']}}</a></span>
+  <div class="widget">
+    <div class="widget-statusicon-container">
+      <span class="status-box-icon {{status | statusColor }}"><i class="fa {{status | statusIcon}}"></i></span>
+    </div>
+    <div class="widget-content">
+      <span *ngIf="titleUrl" class="info-box-text"><a [href]="this['titleUrl']"
+                                                      target="_blank">{{this['title']}}</a></span>
       <span *ngIf="!titleUrl" class="info-box-text">{{this['title']}}</span>
-      <span class="info-box-number">{{version}}</span>
-      <span class="info-box-text">{{this['description']}}</span>
-    </div><!-- /.info-box-content -->
-  </div><!-- /.info-box -->
+      <span class="status-box-number">{{version}}</span>
+      <span class="status-box-text">{{this['description']}}</span>
+    </div>
+    <div class="widget-box-tool"><!--
+      <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-trash"></i></button>
+      <br/>
+      <button type="button" class="btn btn-box-tool" data-widget=""><i class="fa fa-edit"></i></button>-->
+    </div>
+  </div>
 </div>
