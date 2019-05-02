@@ -22,6 +22,7 @@ variables:
 stages:
   - frontend
   - backend
+  - deploy
 
 node:
   image: circleci/node:6.11.1-browsers
@@ -116,23 +117,27 @@ java:
       - .gradle
 
 deploy:
+  stage: deploy
+  image: circleci/openjdk:8-jdk-browsers
+  services:
+    - docker:dind
   only:
     - master
   when: manual
-  script:
+  script: |
     if [ "$CI_MERGE_REQUEST_IID" = ""  ]; then
       if [ "${CI_COMMIT_REF_NAME}" == "master" ]; then
-  
+
         # set git author info
         git config --global user.name "reflectoring bot"
         git config --global user.email $BOT_EMAIL
-    
+
         # update GitHub pages
         ./gradlew --stacktrace --console=plain gitPublishPush
-    
+
         # upload artifacts to bintray
         ./gradlew --stacktrace --console=plain bintrayUpload
-    
+
         # upload docker images to Docker Hub
         docker login -u $DOCKER_USER -p $DOCKER_PASS
         docker push reflectoring/quartermaster
