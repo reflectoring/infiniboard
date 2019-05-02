@@ -11,18 +11,24 @@ node:
     ./node_modules/.bin/ng build --prod --progress false
     ./node_modules/.bin/ng lint
     ./node_modules/.bin/ng test --code-coverage --single-run --progress false
-  artifacts: 
+  artifacts:
     reports:
       junit: dashy/build/junit/*.xml
     paths:
       - dashy/build/coverage
       - dashy/dist
+  cache:
+    key: "frontend-$CI_COMMIT_REF_NAME"
+    paths:
+      - dashy/node_modules
 
 java:
   image: circleci/openjdk:8-jdk-browsers
   stage: backend
   services:
     - docker:dind
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
   script: |
 
     # setup docker-compose
@@ -34,7 +40,7 @@ java:
     docker version
     docker info
     docker-compose version
-  
+
     ./gradlew --stacktrace --console=plain resolveDependencies
     ./gradlew --stacktrace --console=plain spotlessCheck
     ./gradlew --stacktrace --console=plain build -x test
@@ -83,3 +89,7 @@ java:
       - packrat/reports/tests
       - harvester/reports/tests
       - quartermaster/reports/tests
+  cache:
+    key: "backend-$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
