@@ -1,0 +1,85 @@
+stages:
+  - frontend
+  - backend
+
+node:
+  image: circleci/node:6.11.1-browsers
+  stage: frontend
+  script: |
+    cd dashy
+    npm install
+    ./node_modules/.bin/ng build --prod --progress false
+    ./node_modules/.bin/ng lint
+    ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+  artifacts: 
+    reports:
+      junit: dashy/build/junit/*.xml
+    paths:
+      - dashy/build/coverage
+      - dashy/dist
+
+java:
+  image: circleci/openjdk:8-jdk-browsers
+  stage: backend
+  services:
+    - docker:dind
+  script: |
+
+    # setup docker-compose
+    set -x
+    sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    # verify docker
+    docker version
+    docker info
+    docker-compose version
+  
+    ./gradlew --stacktrace --console=plain resolveDependencies
+    ./gradlew --stacktrace --console=plain spotlessCheck
+    ./gradlew --stacktrace --console=plain build -x test
+    ./gradlew --stacktrace --console=plain build integrationTest
+    ./gradlew --stacktrace --console=plain preparePages
+
+    # if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+    # sonar.login and sonar.github.oauth is needed even for PR analysis
+    # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+    ./gradlew --stacktrace --console=plain buildImage tagImage
+
+    docker pull mongo:3.2
+    docker pull openjdk:8-jdk-alpine
+    docker pull appropriate/curl
+    docker images
+
+    docker-compose up -d harvester
+    docker-compose up -d quartermaster
+    bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+    bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+    bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
+
+    echo ">> quartermaster <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8090/health
+    echo ">> harvester <<"
+    docker run --network container:infiniboard_harvester_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9090/health
+    echo ">> REST API <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/api/dashboards
+    echo ">> Frontend <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/#/dashboards
+
+    echo "Running Docker containers"; docker ps -a
+    echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+    mkdir -p /tmp/docker/
+    docker logs infiniboard_mongo_1         > /tmp/docker/mongo.log
+    docker logs infiniboard_harvester_1     > /tmp/docker/harvester.log
+    docker logs infiniboard_quartermaster_1 > /tmp/docker/quartermaster.log
+  artifacts:
+    reports:
+      junit: [harvester/build/test-results/*.xml, quartermaster/build/test-results/*.xml, packrat/build/test-results/*.xml]
+    paths:
+      - harvester/build/libs/harvester*.war
+      - quartermaster/build/libs/quartermaster*.war
+      - quartermaster/build/pages
+      - packrat/reports/tests
+      - harvester/reports/tests
+      - quartermaster/reports/tests
