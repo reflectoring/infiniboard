@@ -114,3 +114,32 @@ java:
     key: "backend-$CI_COMMIT_REF_NAME"
     paths:
       - .gradle
+
+deploy:
+  only:
+    - master
+  when: manual
+  script:
+    if [ "$CI_MERGE_REQUEST_IID" = ""  ]; then
+      if [ "${CI_COMMIT_REF_NAME}" == "master" ]; then
+  
+        # set git author info
+        git config --global user.name "reflectoring bot"
+        git config --global user.email $BOT_EMAIL
+    
+        # update GitHub pages
+        ./gradlew --stacktrace --console=plain gitPublishPush
+    
+        # upload artifacts to bintray
+        ./gradlew --stacktrace --console=plain bintrayUpload
+    
+        # upload docker images to Docker Hub
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker push reflectoring/quartermaster
+        docker push reflectoring/harvester
+      else
+        echo 'Skipping deployment for non master branches!'
+      fi
+    else
+      echo 'Skipping deployment for PRs!'
+    fi
