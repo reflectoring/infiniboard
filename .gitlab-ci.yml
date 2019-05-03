@@ -121,6 +121,8 @@ deploy:
   image: circleci/openjdk:8-jdk-browsers
   services:
     - docker:dind
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
   only:
     - master
   when: manual
@@ -148,3 +150,7 @@ deploy:
     else
       echo 'Skipping deployment for PRs!'
     fi
+  cache:
+    key: "deploy-$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
