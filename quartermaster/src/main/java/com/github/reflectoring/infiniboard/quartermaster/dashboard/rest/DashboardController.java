@@ -36,10 +36,9 @@ public class DashboardController {
   }
 
   @RequestMapping(
-    method = POST,
-    produces = MediaType.APPLICATION_JSON_VALUE,
-    consumes = MediaType.APPLICATION_JSON_VALUE
-  )
+      method = POST,
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<DashboardResource> create(
       @RequestBody DashboardResource dashboardResource) {
 
