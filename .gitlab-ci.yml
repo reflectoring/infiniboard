@@ -120,7 +120,7 @@ java:
       - harvester/reports/tests
       - quartermaster/reports/tests
   cache:
-    key: "backend-$CI_COMMIT_REF_NAME"
+    key: "gradle-$CI_COMMIT_REF_NAME"
     paths:
       - .gradle
 
@@ -163,6 +163,6 @@ deploy:
       echo 'Skipping deployment for PRs!'
     fi
   cache:
-    key: "deploy-$CI_COMMIT_REF_NAME"
+    key: "gradle-$CI_COMMIT_REF_NAME"
     paths:
       - .gradle
