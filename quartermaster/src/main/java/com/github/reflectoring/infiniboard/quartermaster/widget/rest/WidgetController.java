@@ -58,10 +58,9 @@ public class WidgetController {
   }
 
   @RequestMapping(
-    value = "/{widgetId}",
-    method = DELETE,
-    produces = MediaType.APPLICATION_JSON_VALUE
-  )
+      value = "/{widgetId}",
+      method = DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> deleteWidget(@PathVariable String widgetId) {
     boolean exists = widgetService.exists(widgetId);
 
@@ -74,10 +73,9 @@ public class WidgetController {
   }
 
   @RequestMapping(
-    method = POST,
-    produces = MediaType.APPLICATION_JSON_VALUE,
-    consumes = MediaType.APPLICATION_JSON_VALUE
-  )
+      method = POST,
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<WidgetConfigResource> createWidget(
       @PathVariable String dashboardId, @RequestBody WidgetConfigResource widgetConfigResource) {
     WidgetConfigResourceAssembler assembler = new WidgetConfigResourceAssembler(dashboardId);
@@ -88,10 +86,9 @@ public class WidgetController {
   }
 
   @RequestMapping(
-    value = "/{widgetId}/data",
-    method = GET,
-    produces = MediaType.APPLICATION_JSON_VALUE
-  )
+      value = "/{widgetId}/data",
+      method = GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<SourceDataResource> getData(
       @PathVariable String dashboardId, @PathVariable String widgetId) {
     SourceDataResourceAssembler assembler = new SourceDataResourceAssembler(dashboardId, widgetId);

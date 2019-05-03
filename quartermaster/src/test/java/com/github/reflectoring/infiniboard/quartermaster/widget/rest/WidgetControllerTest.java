@@ -25,6 +25,7 @@ import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetCon
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.MvcResult;
@@ -138,7 +139,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
   @Test
   public void getWidgets() throws Exception {
     when(widgetConfigRepository.findAll(any(Pageable.class)))
-        .thenReturn(new PageImpl<>(widgetConfigList()));
+        .thenReturn(new PageImpl<>(widgetConfigList(), new PageRequest(0, 1), 1));
     MvcResult result =
         mvc()
             .perform(get("/api/dashboards/1/widgets"))

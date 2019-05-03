@@ -36,7 +36,7 @@ public class SchedulingServiceTest {
   public void setup() throws SchedulerException {
     ApplicationContext applicationContext = mock(ApplicationContext.class);
 
-    //introduce repositorys
+    // introduce repositorys
     widgetConfigRepository = mock(WidgetConfigRepository.class);
     when(widgetConfigRepository.exists(GROUP_NAME)).thenReturn(true);
     when(applicationContext.getBean(WidgetConfigRepository.class))
@@ -96,7 +96,7 @@ public class SchedulingServiceTest {
 
     schedulingService.scheduleJob(
         GROUP_NAME, new SourceConfig(TEST_JOB, TEST_JOB, 100, Collections.emptyMap()));
-    Thread.sleep(200); //time for scheduling service to cancel the job
+    Thread.sleep(200); // time for scheduling service to cancel the job
 
     assertFalse(schedulingService.checkJobExists(TEST_JOB, GROUP_NAME));
     verify(sourceDataRepository).deleteByWidgetId(eq(GROUP_NAME));
