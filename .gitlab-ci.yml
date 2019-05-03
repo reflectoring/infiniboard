@@ -103,7 +103,7 @@ java:
     docker logs infiniboard_quartermaster_1 > /tmp/docker/quartermaster.log
   artifacts:
     reports:
-      junit: [harvester/build/test-results/*.xml, quartermaster/build/test-results/*.xml, packrat/build/test-results/*.xml]
+      junit: [harvester/build/test-results/test/*.xml, quartermaster/build/test-results/test/*.xml, packrat/build/test-results/test/*.xml]
     paths:
       - harvester/build/libs/harvester*.war
       - quartermaster/build/libs/quartermaster*.war
