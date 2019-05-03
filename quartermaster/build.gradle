@@ -100,7 +100,7 @@ task preparePages() {
 preparePages.dependsOn asciidoctor
 
 gitPublish {
-    repoUri = 'git@github.com:reflectoring/infiniboard.git'
+    repoUri = "https://github.com/reflectoring/infiniboard.git"
 
     branch = 'gh-pages'
 
