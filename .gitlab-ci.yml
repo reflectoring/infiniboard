@@ -102,10 +102,10 @@ java:
 
     echo "Running Docker containers"; docker ps -a
     echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
-    mkdir -p /tmp/docker/
-    docker logs infiniboard_mongo_1         > /tmp/docker/mongo.log
-    docker logs infiniboard_harvester_1     > /tmp/docker/harvester.log
-    docker logs infiniboard_quartermaster_1 > /tmp/docker/quartermaster.log
+    mkdir -p build/docker-integration-test/
+    docker logs infiniboard_mongo_1         > build/docker-integration-test/mongo.log
+    docker logs infiniboard_harvester_1     > build/docker-integration-test/harvester.log
+    docker logs infiniboard_quartermaster_1 > build/docker-integration-test/quartermaster.log
   artifacts:
     reports:
       junit: [harvester/build/test-results/test/*.xml, quartermaster/build/test-results/test/*.xml, packrat/build/test-results/test/*.xml]
@@ -115,6 +115,7 @@ java:
       - quartermaster/build/pages
       - build/docker/harvester.tar
       - build/docker/quartermaster.tar
+      - build/docker-integration-test/*.log
       - packrat/reports/tests
       - harvester/reports/tests
       - quartermaster/reports/tests
