@@ -18,6 +18,7 @@ import com.github.reflectoring.infiniboard.quartermaster.testframework.Controlle
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.test.web.servlet.MvcResult;
@@ -28,7 +29,8 @@ public class DashboardControllerTest extends ControllerTestTemplate {
 
   @Test
   public void getAllDashboards() throws Exception {
-    when(dashboardService.loadAll(any(Pageable.class))).thenReturn(new PageImpl<>(dashboardList()));
+    when(dashboardService.loadAll(any(Pageable.class)))
+        .thenReturn(new PageImpl<>(dashboardList(), new PageRequest(0, 1), 1));
 
     MvcResult result =
         mvc()
