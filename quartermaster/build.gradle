@@ -100,6 +100,8 @@ task preparePages() {
 preparePages.dependsOn asciidoctor
 
 gitPublish {
+    // username must be stored in environment variable  GRGIT_USER
+    // api token must be stored in environment variable GRGIT_PASS
     repoUri = "https://github.com/reflectoring/infiniboard.git"
 
     branch = 'gh-pages'
