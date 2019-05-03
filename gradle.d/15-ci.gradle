@@ -20,9 +20,9 @@ ext {
 // reads environment variables when running on snap-ci.com
     isCiBuild = getBoolEnv('CI', false)
 
-    buildNumber = getEnv('CIRCLE_BUILD_NUM', null)
-    gitCommit = getEnv('CIRCLE_SHA1', null)
-    pullRequestNumber = getEnv('CIRCLE_PR_NUMBER', null)
+    buildNumber = getEnv('CI_PIPELINE_IID', null)
+    gitCommit = getEnv('CI_COMMIT_SHORT_SHA', null)
+    pullRequestNumber = getEnv('CI_MERGE_REQUEST_IID', null)
     isPullRequest = pullRequestNumber != null
 
     // export method as closure to make it available for all projects

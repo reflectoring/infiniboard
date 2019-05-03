@@ -1,0 +1,168 @@
+variables:
+  # Disable the Gradle daemon for Continuous Integration servers as correctness
+  # is usually a priority over speed in CI environments. Using a fresh
+  # runtime for each build is more reliable since the runtime is completely
+  # isolated from any previous builds.
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  # When using dind service we need to instruct docker, to talk with the
+  # daemon started inside of the service. The daemon is available with
+  # a network connection instead of the default /var/run/docker.sock socket.
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+  #
+  # Note that if you're using Kubernetes executor, the variable should be set to
+  # tcp://localhost:2375 because of how Kubernetes executor connects services
+  # to the job container
+  DOCKER_HOST: tcp://docker:2375/
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - frontend
+  - backend
+  - deploy
+
+node:
+  image: circleci/node:6.11.1-browsers
+  stage: frontend
+  script: |
+    cd dashy
+    npm install
+    ./node_modules/.bin/ng build --prod --progress false
+    ./node_modules/.bin/ng lint
+    ./node_modules/.bin/ng test --code-coverage --single-run --progress false
+  artifacts:
+    reports:
+      junit: dashy/build/junit/*.xml
+    paths:
+      - dashy/build/coverage
+      - dashy/dist
+  cache:
+    key: "frontend-$CI_COMMIT_REF_NAME"
+    paths:
+      - dashy/node_modules
+
+java:
+  image: circleci/openjdk:8-jdk-browsers
+  stage: backend
+  services:
+    - docker:dind
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+  script: |
+
+    # setup docker-compose
+    set -x
+    sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    # verify docker
+    docker version
+    docker info
+    docker-compose version
+
+    ./gradlew --stacktrace --console=plain resolveDependencies
+    ./gradlew --stacktrace --console=plain spotlessCheck
+    ./gradlew --stacktrace --console=plain build -x test
+    ./gradlew --stacktrace --console=plain build integrationTest
+    ./gradlew --stacktrace --console=plain preparePages
+
+    # if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
+    # sonar.login and sonar.github.oauth is needed even for PR analysis
+    # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
+
+    ./gradlew --stacktrace --console=plain buildImage tagImage
+
+    # export build docker images 
+    mkdir -p build/docker
+    docker save --output build/docker/harvester.tar reflectoring/harvester
+    docker save --output build/docker/quartermaster.tar reflectoring/quartermaster
+
+    docker pull mongo:3.2
+    docker pull openjdk:8-jdk-alpine
+    docker pull appropriate/curl
+    docker images
+
+    docker-compose up -d harvester
+    docker-compose up -d quartermaster
+    bash -c 'timeout -k 5 120 fgrep -q "waiting for connections on port" <(docker logs -f infiniboard_mongo_1)'
+    bash -c 'timeout -k 5 120 fgrep -q "Started HarvesterApplication in" <(docker logs -f infiniboard_harvester_1)'
+    bash -c 'timeout -k 5 120 fgrep -q "Started Quartermaster in" <(docker logs -f infiniboard_quartermaster_1)'
+
+    echo ">> quartermaster <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8090/health
+    echo ">> harvester <<"
+    docker run --network container:infiniboard_harvester_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:9090/health
+    echo ">> REST API <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/api/dashboards
+    echo ">> Frontend <<"
+    docker run --network container:infiniboard_quartermaster_1 appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080/#/dashboards
+
+    echo "Running Docker containers"; docker ps -a
+    echo "Stopping all Docker containers"; docker stop $(docker ps -a -q)
+    mkdir -p build/docker-integration-test/
+    docker logs infiniboard_mongo_1         > build/docker-integration-test/mongo.log
+    docker logs infiniboard_harvester_1     > build/docker-integration-test/harvester.log
+    docker logs infiniboard_quartermaster_1 > build/docker-integration-test/quartermaster.log
+  artifacts:
+    reports:
+      junit: [harvester/build/test-results/test/*.xml, quartermaster/build/test-results/test/*.xml, packrat/build/test-results/test/*.xml]
+    paths:
+      - harvester/build/libs/harvester*.war
+      - quartermaster/build/libs/quartermaster*.war
+      - quartermaster/build/pages
+      - build/docker/harvester.tar
+      - build/docker/quartermaster.tar
+      - build/docker-integration-test/*.log
+      - packrat/reports/tests
+      - harvester/reports/tests
+      - quartermaster/reports/tests
+  cache:
+    key: "gradle-$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
+
+deploy:
+  stage: deploy
+  image: circleci/openjdk:8-jdk-browsers
+  services:
+    - docker:dind
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+  only:
+    - master
+  when: manual
+  script: |
+    if [ "$CI_MERGE_REQUEST_IID" = ""  ]; then
+      if [ "${CI_COMMIT_REF_NAME}" == "master" ]; then
+
+        # set git author info
+        git config --global user.name "reflectoring bot"
+        git config --global user.email $BOT_EMAIL
+
+        # update GitHub pages
+        ./gradlew --stacktrace --console=plain gitPublishPush
+
+        # upload artifacts to bintray
+        ./gradlew --stacktrace --console=plain bintrayUpload
+
+        # import build docker images
+        docker load --input build/docker/harvester.tar
+        docker load --input build/docker/quartermaster.tar
+
+        # upload docker images to Docker Hub
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker push reflectoring/harvester
+        docker push reflectoring/quartermaster
+      else
+        echo 'Skipping deployment for non master branches!'
+      fi
+    else
+      echo 'Skipping deployment for PRs!'
+    fi
+  cache:
+    key: "gradle-$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
