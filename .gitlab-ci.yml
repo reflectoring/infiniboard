@@ -75,6 +75,11 @@ java:
 
     ./gradlew --stacktrace --console=plain buildImage tagImage
 
+    # export build docker images 
+    mkdir -p build/docker
+    docker save --output build/docker/harvester.tar reflectoring/harvester
+    docker save --output build/docker/quartermaster.tar reflectoring/quartermaster
+
     docker pull mongo:3.2
     docker pull openjdk:8-jdk-alpine
     docker pull appropriate/curl
@@ -108,6 +113,8 @@ java:
       - harvester/build/libs/harvester*.war
       - quartermaster/build/libs/quartermaster*.war
       - quartermaster/build/pages
+      - build/docker/harvester.tar
+      - build/docker/quartermaster.tar
       - packrat/reports/tests
       - harvester/reports/tests
       - quartermaster/reports/tests
@@ -140,10 +147,14 @@ deploy:
         # upload artifacts to bintray
         ./gradlew --stacktrace --console=plain bintrayUpload
 
+        # import build docker images
+        docker load --input build/docker/harvester.tar
+        docker load --input build/docker/quartermaster.tar
+
         # upload docker images to Docker Hub
         docker login -u $DOCKER_USER -p $DOCKER_PASS
-        docker push reflectoring/quartermaster
         docker push reflectoring/harvester
+        docker push reflectoring/quartermaster
       else
         echo 'Skipping deployment for non master branches!'
       fi
