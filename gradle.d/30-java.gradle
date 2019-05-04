@@ -75,6 +75,8 @@ subprojects {
 
             encoding 'UTF-8'
         }
+        
+        build.dependsOn "spotlessApply"
 
         jacoco {
             toolVersion = version_jacoco
