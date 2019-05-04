@@ -1,4 +1,5 @@
 {
-  "name": "dev",
-  "description": "Dashboard created using REST API"
+  "name": "Development Dashboard",
+  "slug": "development",
+  "description": "Project metrics aggregated for development teams"
 }

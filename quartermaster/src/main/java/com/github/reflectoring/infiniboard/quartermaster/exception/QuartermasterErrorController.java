@@ -31,7 +31,7 @@ public class QuartermasterErrorController implements ErrorController {
 
     Object error = attributes.get("error");
     String errorMessage = error != null ? (String) error : null;
-    ErrorResource errorResource = new ErrorResource(errorMessage, status.value());
+    ErrorResource errorResource = new ErrorResource(errorMessage);
 
     return new ResponseEntity<>(errorResource, status);
   }

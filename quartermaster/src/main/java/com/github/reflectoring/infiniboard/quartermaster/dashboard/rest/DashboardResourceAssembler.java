@@ -21,6 +21,7 @@ public class DashboardResourceAssembler
     DashboardResource resource = new DashboardResource();
     resource.setNumber(entity.getId());
     resource.setName(entity.getTitle());
+    resource.setSlug(entity.getSlug());
     resource.setDescription(entity.getDescription());
     resource.add(
         linkTo(methodOn(DashboardController.class).getDashboard(entity.getId())).withSelfRel());
@@ -35,6 +36,7 @@ public class DashboardResourceAssembler
 
   public Dashboard toEntity(DashboardResource resource) {
     Dashboard entity = new Dashboard(resource.getName());
+    entity.setSlug(resource.getSlug());
     entity.setDescription(resource.getDescription());
     return entity;
   }

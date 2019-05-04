@@ -1,25 +1,17 @@
 package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
 
-import com.github.reflectoring.Quartermaster;
 import com.github.reflectoring.infiniboard.packrat.source.SourceConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
+import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = MOCK, classes = Quartermaster.class)
-@WebAppConfiguration
-public class WidgetConfigResourceAssemblerTest {
+public class WidgetConfigResourceAssemblerTest extends ControllerTestTemplate {
 
   @Test
   public void toResourceMasksUsername() {
