@@ -63,11 +63,8 @@ java:
     docker info
     docker-compose version
 
-    ./gradlew --stacktrace --console=plain resolveDependencies
     ./gradlew --stacktrace --console=plain spotlessCheck
-    ./gradlew --stacktrace --console=plain build -x test
     ./gradlew --stacktrace --console=plain build integrationTest
-    ./gradlew --stacktrace --console=plain preparePages
 
     # if [ "$CIRCLE_PR_NUMBER" = ""  ]; then ./gradlew --stacktrace --console=plain  sonarqube; else echo 'sonarqube analysis for PRs not available ATM'; fi
     # sonar.login and sonar.github.oauth is needed even for PR analysis

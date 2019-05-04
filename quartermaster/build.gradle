@@ -98,6 +98,7 @@ task preparePages() {
 }
 
 preparePages.dependsOn asciidoctor
+build.dependsOn preparePages
 
 gitPublish {
     // username must be stored in environment variable  GRGIT_USER
