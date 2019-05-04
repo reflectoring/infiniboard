@@ -52,9 +52,13 @@ public class JsonHelper {
    * are expected in response payloads.
    */
   public static <T> String toJsonWithoutLinks(T object) {
+    return toJsonWithoutLinks(object, IgnoreLinksMixin.class);
+  }
+
+  public static <T> String toJsonWithoutLinks(T object, Class mixin) {
     try {
       ObjectMapper mapper = new ObjectMapper();
-      mapper.addMixIn(object.getClass(), IgnoreLinksMixin.class);
+      mapper.addMixIn(object.getClass(), mixin);
       return mapper.writeValueAsString(object);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);

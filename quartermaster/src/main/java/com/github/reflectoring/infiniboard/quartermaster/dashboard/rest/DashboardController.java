@@ -1,20 +1,23 @@
 package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import com.github.reflectoring.infiniboard.packrat.dashboard.Dashboard;
 import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardService;
+import com.github.reflectoring.infiniboard.quartermaster.exception.ErrorResource;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +42,12 @@ public class DashboardController {
       method = POST,
       produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<DashboardResource> create(
-      @RequestBody DashboardResource dashboardResource) {
+  public ResponseEntity<ResourceSupport> create(
+      @RequestBody @Valid DashboardResource dashboardResource, Errors errors) {
+
+    if (errors.hasErrors()) {
+      return new ResponseEntity<>(new ErrorResource(errors), BAD_REQUEST);
+    }
 
     Dashboard savedDashboard = service.save(dashboardResourceAssembler.toEntity(dashboardResource));
     DashboardResource resource = dashboardResourceAssembler.toResource(savedDashboard);

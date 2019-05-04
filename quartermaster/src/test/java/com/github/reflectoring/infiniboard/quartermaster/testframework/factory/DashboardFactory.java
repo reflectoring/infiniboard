@@ -14,7 +14,8 @@ public class DashboardFactory {
 
   public static Dashboard dashboard() {
     Dashboard dashboard = new Dashboard("Test Dashboard");
-    dashboard.setId("test-dashboard-id");
+    dashboard.setId("5ccd9d3b410df800012301ac");
+    dashboard.setSlug("test");
     dashboard.setDescription("Testing Dashboard");
     return dashboard;
   }

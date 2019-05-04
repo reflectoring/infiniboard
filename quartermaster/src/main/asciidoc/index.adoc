@@ -24,9 +24,23 @@ an example request and example response are given.
 === Dashboard
 The dashboard resource represents a dashboard consisting of a collection of widgets.
 
+==== Structure
+
+include::{snippets}/dashboards/create/request-fields.adoc[]
+
 ==== Hypermedia Links
 
 include::{snippets}/dashboards/get/links.adoc[]
+
+==== Creating a Dashboard
+
+===== Example Request
+
+include::{snippets}/dashboards/create/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/dashboards/create/http-response.adoc[]
 
 ==== Listing all Dashboards
 
