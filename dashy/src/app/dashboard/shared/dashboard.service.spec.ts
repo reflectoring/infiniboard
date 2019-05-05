@@ -11,7 +11,7 @@ class FakeDashboardHttp {
   public getDashboards(): Observable<Dashboard[]> {
     return Observable.of([
       new Dashboard(1, 'Development', 'development', 'dev stuff', '/mock/widgets/1'),
-      new Dashboard(3, 'Testing', 'test','test reports', '/mock/widgets/2')]);
+      new Dashboard(3, 'Testing', 'test', 'test reports', '/mock/widgets/2')]);
   }
 
 }

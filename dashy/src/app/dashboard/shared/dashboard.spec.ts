@@ -6,13 +6,13 @@ describe('Dashboard', () => {
   });
 
   it('constructor() should set dashboard.id', () => {
-    const dashboard = new Dashboard(1, 'Testing Dashboard', 'test','Dashboard for testers', '/api/dashboards/test');
+    const dashboard = new Dashboard(1, 'Testing Dashboard', 'test', 'Dashboard for testers', '/api/dashboards/test');
     expect(dashboard.id).toEqual(1);
   });
 
   it('constructor() should set dashboard.name', () => {
     const name = 'Testing Dashboard';
-    const dashboard = new Dashboard(1, name, 'test','Dashboard for testers', '/api/dashboards/test');
+    const dashboard = new Dashboard(1, name, 'test', 'Dashboard for testers', '/api/dashboards/test');
     expect(dashboard.name).toEqual(name);
   });
 
@@ -29,7 +29,7 @@ describe('Dashboard', () => {
   });
 
   it('constructor() should initialize dashboard.widgetConfigs', () => {
-    const dashboard = new Dashboard(1, 'Testing Dashboard', 'test','Dashboard for testers', '/api/dashboards/test');
+    const dashboard = new Dashboard(1, 'Testing Dashboard', 'test', 'Dashboard for testers', '/api/dashboards/test');
     expect(dashboard.widgetConfigs).toEqual([]);
   });
 });
