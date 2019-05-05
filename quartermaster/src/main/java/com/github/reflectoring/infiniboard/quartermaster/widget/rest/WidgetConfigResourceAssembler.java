@@ -16,9 +16,11 @@ public class WidgetConfigResourceAssembler
     extends ResourceAssemblerSupport<WidgetConfig, WidgetConfigResource> {
 
   private String dashboardId;
+  private String dashboardSlug;
 
-  public WidgetConfigResourceAssembler(String dashboardId) {
+  public WidgetConfigResourceAssembler(String dashboardSlug, String dashboardId) {
     super(WidgetController.class, WidgetConfigResource.class);
+    this.dashboardSlug = dashboardSlug;
     this.dashboardId = dashboardId;
   }
 
@@ -35,12 +37,13 @@ public class WidgetConfigResourceAssembler
       resource.getSourceConfigs().add(removeCredentials(config));
     }
     resource.add(
-        linkTo(methodOn(WidgetController.class).getWidget(dashboardId, entity.getId()))
+        linkTo(methodOn(WidgetController.class).getWidget(dashboardSlug, entity.getId()))
             .withRel("self"));
     resource.add(
-        linkTo(methodOn(DashboardController.class).getDashboard(dashboardId)).withRel("dashboard"));
+        linkTo(methodOn(DashboardController.class).getDashboard(dashboardSlug))
+            .withRel("dashboard"));
     resource.add(
-        linkTo(methodOn(WidgetController.class).getData(dashboardId, entity.getId()))
+        linkTo(methodOn(WidgetController.class).getData(dashboardSlug, entity.getId()))
             .withRel("data"));
     return resource;
   }

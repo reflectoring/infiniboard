@@ -4,6 +4,7 @@ import com.github.reflectoring.infiniboard.packrat.source.SourceData;
 import com.github.reflectoring.infiniboard.packrat.source.SourceDataRepository;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import com.github.reflectoring.infiniboard.quartermaster.exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,13 @@ public class WidgetConfigService {
   }
 
   public WidgetConfig loadWidget(String widgetId) {
-    return widgetConfigRepository.findOne(widgetId);
+    WidgetConfig widgetConfig = widgetConfigRepository.findOne(widgetId);
+
+    if (widgetConfig == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    return widgetConfig;
   }
 
   public WidgetConfig saveWidget(WidgetConfig widgetConfig) {
@@ -37,14 +44,22 @@ public class WidgetConfigService {
   }
 
   public void deleteWidget(String widgetId) {
+    WidgetConfig widgetConfig = widgetConfigRepository.findOne(widgetId);
+
+    if (widgetConfig == null) {
+      throw new ResourceNotFoundException();
+    }
+
     widgetConfigRepository.delete(widgetId);
   }
 
   public List<SourceData> getData(String widgetId) {
-    return sourceDataRepository.findAllByWidgetId(widgetId);
-  }
+    WidgetConfig widgetConfig = widgetConfigRepository.findOne(widgetId);
 
-  public List<WidgetConfig> loadWidgets() {
-    return this.widgetConfigRepository.findAll();
+    if (widgetConfig == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    return sourceDataRepository.findAllByWidgetId(widgetId);
   }
 }

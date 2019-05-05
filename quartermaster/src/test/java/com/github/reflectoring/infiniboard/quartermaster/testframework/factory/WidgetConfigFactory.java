@@ -18,15 +18,15 @@ public class WidgetConfigFactory {
   public static WidgetConfig widgetConfig() {
     WidgetConfig widgetConfig = new WidgetConfig();
     widgetConfig.setLastModified(LocalDateTime.now());
-    widgetConfig.setTitle("My Little Widget");
-    widgetConfig.setId("my_little_widget");
+    widgetConfig.setTitle("Production");
+    widgetConfig.setId("5ccdc0902cd52814f0a0858b");
     widgetConfig.setType("platform-status");
     return widgetConfig;
   }
 
   public static WidgetConfigResource widgetConfigResource() {
     WidgetConfigResource widgetConfigResource = new WidgetConfigResource();
-    widgetConfigResource.setTitle("My Little Widget");
+    widgetConfigResource.setTitle("Production");
     widgetConfigResource.setLastModified(new Date());
     widgetConfigResource.setType("platform-status");
     return widgetConfigResource;

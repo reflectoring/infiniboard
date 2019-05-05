@@ -11,7 +11,7 @@ class FakeWidgetHttp {
   public get(url: string): Observable<Response> {
 
     switch (url) {
-      case '/mock/api/dashboards/1/widgets/all':
+      case '/mock/api/dashboards/test/widgets/all':
         return this.getUnpagedWidgets();
       case '/mock/widgets/error':
         return this.getWidgetsWithError();
@@ -45,9 +45,9 @@ class FakeWidgetHttp {
             'configData': {'url': 'https://putsreq.com/eT3fqDqHnnNKureYOuOf'}
           }],
           '_links': {
-            'self': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be6'},
-            'dashboard': {'href': '/mock/api/dashboards/1'},
-            'data': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be6/data'}
+            'self': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be6'},
+            'dashboard': {'href': '/mock/api/dashboards/test'},
+            'data': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be6/data'}
           }
         }, {
           'title': 'test',
@@ -65,9 +65,9 @@ class FakeWidgetHttp {
             'configData': {'url': 'https://putsreq.com/uh7LA812il8FBDXBjTaB'}
           }],
           '_links': {
-            'self': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be7'},
-            'dashboard': {'href': '/mock/api/dashboards/1'},
-            'data': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be7/data'}
+            'self': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be7'},
+            'dashboard': {'href': '/mock/api/dashboards/test'},
+            'data': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be7/data'}
           }
         }, {
           'title': 'prod',
@@ -85,18 +85,18 @@ class FakeWidgetHttp {
             'configData': {'url': 'https://putsreq.com/eT3fqDqHnnNKureYOuOe'}
           }],
           '_links': {
-            'self': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be5'},
-            'dashboard': {'href': '/mock/api/dashboards/1'},
-            'data': {'href': '/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be5/data'}
+            'self': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be5'},
+            'dashboard': {'href': '/mock/api/dashboards/test'},
+            'data': {'href': '/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be5/data'}
           }
         }]
       },
       '_links': {
-        'self': {'href': '/mock/api/dashboards/1/widgets/all'}
+        'self': {'href': '/mock/api/dashboards/test/widgets/all'}
 
       }
     };
-    return this.createFakeResponse('/mock/api/dashboards/1/widgets/all', body);
+    return this.createFakeResponse('/mock/api/dashboards/test/widgets/all', body);
   }
 
   private createFakeResponse(url: string, body: any, status = 200): Observable<Response> {
@@ -127,7 +127,7 @@ class FakeWidgetHttp {
         'widgetId': '57dd98a27e21e57c76718bed',
         'sourceId': 'version',
         'data': {'content': '1.0.3', 'status': 200}
-      }], '_links': {'widget': {'href': '/mock/api/dashboards/1/widgets/57dd98a27e21e57c76718bed'}}
+      }], '_links': {'widget': {'href': '/mock/api/dashboards/test/widgets/57dd98a27e21e57c76718bed'}}
     };
     return this.createFakeResponse('/mock/widgets/data', body);
   }
@@ -137,7 +137,7 @@ class FakeWidgetHttp {
   }
 }
 
-const dashboard = new Dashboard(3, 'Testing', 'test reports', '/mock/api/dashboards/1/widgets/all');
+const dashboard = new Dashboard(3, 'Testing', 'test', 'test reports', '/mock/api/dashboards/test/widgets/all');
 
 describe('Service: Widget', () => {
   beforeEach(() => {
@@ -169,7 +169,7 @@ describe('Service: Widget', () => {
     service.getWidgets(dashboard).subscribe(widgetConfigs => {
       expect(widgetConfigs[0].title).toEqual('dev');
       expect(widgetConfigs[0].type).toEqual('platform-status');
-      expect(widgetConfigs[0].dataLink).toEqual('/mock/api/dashboards/1/widgets/57dd98597e21e57c76718be6/data');
+      expect(widgetConfigs[0].dataLink).toEqual('/mock/api/dashboards/test/widgets/57dd98597e21e57c76718be6/data');
     });
   }));
 

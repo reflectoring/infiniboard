@@ -1,7 +1,6 @@
 package com.github.reflectoring.infiniboard.quartermaster.exception;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +25,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     String message = "Resource already exists";
 
     return new ResponseEntity<>(new ErrorResource(message), new HttpHeaders(), BAD_REQUEST);
+  }
+
+  @ExceptionHandler(value = {ResourceNotFoundException.class})
+  protected ResponseEntity<ErrorResource> handleResourceNotFound(ResourceNotFoundException ex) {
+    String message = "Resource not found";
+
+    return new ResponseEntity<>(new ErrorResource(message), new HttpHeaders(), NOT_FOUND);
   }
 }
