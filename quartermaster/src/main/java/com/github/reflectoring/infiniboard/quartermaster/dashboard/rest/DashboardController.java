@@ -65,13 +65,9 @@ public class DashboardController {
     return new ResponseEntity<>(pagedResources, OK);
   }
 
-  @RequestMapping(value = "/{id}", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<DashboardResource> getDashboard(@PathVariable String id) {
-    Dashboard dashboard = service.load(id);
-
-    if (dashboard == null) {
-      return new ResponseEntity<>(NOT_FOUND);
-    }
+  @RequestMapping(value = "/{slug}", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<DashboardResource> getDashboard(@PathVariable String slug) {
+    Dashboard dashboard = service.load(slug);
 
     DashboardResource resource = dashboardResourceAssembler.toResource(dashboard);
     return new ResponseEntity<>(resource, OK);

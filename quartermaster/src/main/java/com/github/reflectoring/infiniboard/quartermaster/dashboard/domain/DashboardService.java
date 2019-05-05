@@ -3,6 +3,7 @@ package com.github.reflectoring.infiniboard.quartermaster.dashboard.domain;
 import com.github.reflectoring.infiniboard.packrat.dashboard.Dashboard;
 import com.github.reflectoring.infiniboard.packrat.dashboard.DashboardRepository;
 import com.github.reflectoring.infiniboard.quartermaster.exception.ResourceAlreadyExistsException;
+import com.github.reflectoring.infiniboard.quartermaster.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
@@ -27,16 +28,25 @@ public class DashboardService {
     }
   }
 
-  public boolean exists(String dashboardId) {
-    return this.dashboardConfigRepository.exists(dashboardId);
+  public void delete(String slug) {
+
+    Dashboard dashboard = load(slug);
+
+    if (dashboard == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    this.dashboardConfigRepository.delete(dashboard.getId());
   }
 
-  public void delete(String dashboardId) {
-    this.dashboardConfigRepository.delete(dashboardId);
-  }
+  public Dashboard load(String slug) {
+    Dashboard dashboard = this.dashboardConfigRepository.findOneBySlugOrId(slug, slug);
 
-  public Dashboard load(String dashboardId) {
-    return this.dashboardConfigRepository.findOne(dashboardId);
+    if (dashboard == null) {
+      throw new ResourceNotFoundException();
+    }
+
+    return dashboard;
   }
 
   public Page<Dashboard> loadAll(Pageable pageable) {

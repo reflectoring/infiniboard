@@ -21,16 +21,20 @@ public class DashboardResourceAssembler
     DashboardResource resource = new DashboardResource();
     resource.setNumber(entity.getId());
     resource.setName(entity.getTitle());
-    resource.setSlug(entity.getSlug());
+
+    // slug was introduced in version 0.3.0
+    String slug = entity.getSlug();
+    if (slug == null) {
+      slug = entity.getId();
+    }
+    resource.setSlug(slug);
+
     resource.setDescription(entity.getDescription());
+    resource.add(linkTo(methodOn(DashboardController.class).getDashboard(slug)).withSelfRel());
     resource.add(
-        linkTo(methodOn(DashboardController.class).getDashboard(entity.getId())).withSelfRel());
+        linkTo(methodOn(WidgetController.class).getWidgets(slug, null, null)).withRel("widgets"));
     resource.add(
-        linkTo(methodOn(WidgetController.class).getWidgets(entity.getId(), null, null))
-            .withRel("widgets"));
-    resource.add(
-        linkTo(methodOn(WidgetController.class).getAllWidgets(entity.getId()))
-            .withRel("all-widgets"));
+        linkTo(methodOn(WidgetController.class).getAllWidgets(slug)).withRel("all-widgets"));
     return resource;
   }
 

@@ -12,8 +12,7 @@ public interface WidgetConfigRepository extends MongoRepository<WidgetConfig, St
 
   List<WidgetConfig> findAllByLastModifiedAfter(LocalDateTime date);
 
-  @Override
-  Page<WidgetConfig> findAll(Pageable pageable);
+  Page<WidgetConfig> findAllByDashboardId(String dashboardId, Pageable pageable);
 
   List<WidgetConfig> findAllByDashboardId(String dashboardId);
 }

@@ -18,7 +18,7 @@ class FakeWidgetService {
         'widgetId': '57dd98a27e21e57c76718bed',
         'sourceId': 'version',
         'data': {'content': '1.0.3', 'status': 200}
-      }], '_links': {'widget': {'href': 'http://localhost:8080/api/dashboards/1/widgets/57dd98a27e21e57c76718bed'}}
+      }], '_links': {'widget': {'href': 'http://localhost:8080/api/dashboards/test/widgets/57dd98a27e21e57c76718bed'}}
     });
   }
 }

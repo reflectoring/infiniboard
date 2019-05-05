@@ -24,7 +24,7 @@ public class WidgetConfigResourceAssemblerTest extends ControllerTestTemplate {
   }
 
   private WidgetConfigResourceAssembler createAssembler() {
-    return new WidgetConfigResourceAssembler("test-dashboard");
+    return new WidgetConfigResourceAssembler("test-dashboard", "5ccdc0902cd52814f0a0858b");
   }
 
   private WidgetConfig createWidgetWithConfiguredUsername() {

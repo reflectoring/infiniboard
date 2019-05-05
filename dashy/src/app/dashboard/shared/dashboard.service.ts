@@ -25,7 +25,7 @@ export class DashboardService {
   }
 
   private static createDashboard(haljson: any): Dashboard {
-    return new Dashboard(haljson.number, haljson.name, haljson.description, haljson._links['all-widgets'].href);
+    return new Dashboard(haljson.number, haljson.name, haljson.slug, haljson.description, haljson._links['all-widgets'].href);
   }
 
   private static handleDashboard(res: Response): Dashboard {

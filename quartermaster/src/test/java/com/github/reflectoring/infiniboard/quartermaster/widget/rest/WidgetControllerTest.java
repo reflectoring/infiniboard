@@ -3,6 +3,7 @@ package com.github.reflectoring.infiniboard.quartermaster.widget.rest;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.JsonHelper.*;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsPagedResources;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.ResultMatchers.containsResource;
+import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.DashboardFactory.dashboard;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.SourceDataFactory.sourceDataList;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfig;
 import static com.github.reflectoring.infiniboard.quartermaster.testframework.factory.WidgetConfigFactory.widgetConfigList;
@@ -18,8 +19,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.github.reflectoring.infiniboard.packrat.dashboard.Dashboard;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfig;
 import com.github.reflectoring.infiniboard.packrat.widget.WidgetConfigRepository;
+import com.github.reflectoring.infiniboard.quartermaster.dashboard.domain.DashboardService;
 import com.github.reflectoring.infiniboard.quartermaster.testframework.ControllerTestTemplate;
 import com.github.reflectoring.infiniboard.quartermaster.widget.domain.WidgetConfigService;
 import org.junit.Test;
@@ -36,12 +39,14 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
   @Autowired private WidgetConfigRepository widgetConfigRepository;
 
+  @Autowired private DashboardService dashboardService;
+
   @Test
   public void getWidget() throws Exception {
     when(widgetService.loadWidget("my_little_widget")).thenReturn(widgetConfig());
     MvcResult result =
         mvc()
-            .perform(get("/api/dashboards/1/widgets/my_little_widget"))
+            .perform(get("/api/dashboards/test/widgets/my_little_widget"))
             .andExpect(status().isOk())
             .andExpect(containsResource(WidgetConfigResource.class))
             .andDo(
@@ -58,7 +63,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
     WidgetConfigResource resource =
         fromJson(result.getResponse().getContentAsString(), WidgetConfigResource.class);
-    assertThat(resource.getTitle()).isEqualTo("My Little Widget");
+    assertThat(resource.getTitle()).isEqualTo("Production");
   }
 
   @Test
@@ -66,11 +71,14 @@ public class WidgetControllerTest extends ControllerTestTemplate {
     ConstrainedFields fields = fields(WidgetConfigResource.class);
     WidgetConfig widgetConfig = widgetConfig();
     WidgetConfigResource widgetConfigResource = widgetConfigResource();
+
+    when(dashboardService.load(any())).thenReturn(dashboard());
     when(widgetService.saveWidget(any(WidgetConfig.class))).thenReturn(widgetConfig);
+
     MvcResult result =
         mvc()
             .perform(
-                post("/api/dashboards/1/widgets")
+                post("/api/dashboards/test/widgets")
                     .contentType("application/json")
                     .content(toJsonWithoutLinks(widgetConfigResource)))
             .andExpect(status().isOk())
@@ -93,7 +101,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
     WidgetConfigResource resource =
         fromJson(result.getResponse().getContentAsString(), WidgetConfigResource.class);
-    assertThat(resource.getTitle()).isEqualTo("My Little Widget");
+    assertThat(resource.getTitle()).isEqualTo("Production");
   }
 
   @Test
@@ -101,7 +109,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
     when(widgetService.exists("2")).thenReturn(true);
 
     mvc()
-        .perform(delete("/api/dashboards/1/widgets/2").contentType("application/json"))
+        .perform(delete("/api/dashboards/test/widgets/2").contentType("application/json"))
         .andExpect(status().isOk())
         .andDo(document("widgets/delete"))
         .andReturn();
@@ -113,7 +121,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
     mvc()
         .perform(
-            delete("/api/dashboards/1/widgets/3")
+            delete("/api/dashboards/test/widgets/3")
                 .contentType("application/json")
                 .content(toJsonWithoutLinks(widgetConfigResource)))
         .andExpect(status().isNotFound())
@@ -125,7 +133,7 @@ public class WidgetControllerTest extends ControllerTestTemplate {
     when(widgetService.getData(eq("my_little_widget"))).thenReturn(sourceDataList());
     MvcResult result =
         mvc()
-            .perform(get("/api/dashboards/1/widgets/my_little_widget/data"))
+            .perform(get("/api/dashboards/test/widgets/my_little_widget/data"))
             .andExpect(status().isOk())
             .andExpect(containsResource(SourceDataResource.class))
             .andDo(document("widgets/data/list"))
@@ -138,11 +146,15 @@ public class WidgetControllerTest extends ControllerTestTemplate {
 
   @Test
   public void getWidgets() throws Exception {
-    when(widgetConfigRepository.findAll(any(Pageable.class)))
+
+    Dashboard dashboard = dashboard();
+    when(dashboardService.load(any())).thenReturn(dashboard);
+    when(widgetConfigRepository.findAllByDashboardId(any(String.class), any(Pageable.class)))
         .thenReturn(new PageImpl<>(widgetConfigList(), new PageRequest(0, 1), 1));
+
     MvcResult result =
         mvc()
-            .perform(get("/api/dashboards/1/widgets"))
+            .perform(get("/api/dashboards/test/widgets"))
             .andExpect(status().isOk())
             .andExpect(containsPagedResources(WidgetConfigResource.class))
             .andDo(document("widgets/list"))
