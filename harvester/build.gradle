@@ -7,6 +7,7 @@ buildscript {
 }
 
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.bmuschko.docker-remote-api'
@@ -25,9 +26,9 @@ dependencies {
     )
 }
 
-bootRepackage {
-    mainClass = 'com.github.reflectoring.infiniboard.harvester.HarvesterApplication'
-    executable = true
+//https://content.pivotal.io/springone-platform-2017/whats-new-in-spring-boot-2-0-phillip-webb-madhura-bhave
+bootWar {
+    mainClassName = 'com.github.reflectoring.infiniboard.harvester.HarvesterApplication'
 }
 
 bootRun {

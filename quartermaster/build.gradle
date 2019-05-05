@@ -14,6 +14,7 @@ buildscript {
 }
 
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'mongo'
 apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
@@ -48,9 +49,17 @@ task integrationTest(type: Test) {
     }
 }
 
-bootRepackage {
-    mainClass = 'com.github.reflectoring.Quartermaster'
-    executable = true
+bootWar {
+    mainClassName = 'com.github.reflectoring.Quartermaster'
+}
+
+// add build angular app to war and bootrun resources
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["../dashy/dist", "src/main/resources"]
+        }
+    }
 }
 
 bootRun {
@@ -65,12 +74,6 @@ processResources {
     filter ReplaceTokens, tokens: [
             "infiniboard.version": version
     ]
-}
-
-war {
-    // include AngularJS client into war,
-    // if it has been already build
-    from('../dashy/dist')
 }
 
 ext {
