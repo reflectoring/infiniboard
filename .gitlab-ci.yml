@@ -113,9 +113,9 @@ java:
       - build/docker/harvester.tar
       - build/docker/quartermaster.tar
       - build/docker-integration-test/*.log
-      - packrat/reports/tests
-      - harvester/reports/tests
-      - quartermaster/reports/tests
+      - packrat/build/reports/tests
+      - harvester/build/reports/tests
+      - quartermaster/build/reports/tests
   cache:
     key: "gradle-$CI_COMMIT_REF_NAME"
     paths:
@@ -133,8 +133,6 @@ deploy:
   when: manual
   script: |
     if [ "$CI_MERGE_REQUEST_IID" = ""  ]; then
-      if [ "${CI_COMMIT_REF_NAME}" == "master" ]; then
-
         # set git author info
         git config --global user.name "reflectoring bot"
         git config --global user.email $BOT_EMAIL
@@ -143,7 +141,7 @@ deploy:
         ./gradlew --stacktrace --console=plain gitPublishPush
 
         # upload artifacts to bintray
-        ./gradlew --stacktrace --console=plain bintrayUpload
+        ./gradlew --stacktrace --console=plain :harvester:bintrayUpload :quartermaster:bintrayUpload
 
         # import build docker images
         docker load --input build/docker/harvester.tar
@@ -159,9 +157,6 @@ deploy:
         
         # tag and publish the release on GitHub
         ./github-promote-release.sh $BASE_VERSION
-      else
-        echo 'Skipping deployment for non master branches!'
-      fi
     else
       echo 'Skipping deployment for PRs!'
     fi

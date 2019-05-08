@@ -149,7 +149,7 @@ bintray {
         publicDownloadNumbers = true
 
         version {
-            name = project.version
+            name = project.baseVersion
             released = new Date()
         }
     }
