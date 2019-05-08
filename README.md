@@ -13,18 +13,8 @@ See the [contribution guide](https://github.com/reflectoring/infiniboard/blob/ma
 
 ## release
 To release infiniboard follow these steps:
-1. make sure all needed changes are pushed to `master` and the build passed
-1. create an [GitHub personal access token](https://github.com/settings/tokens) with `public_repo` privileges
-1. export your personal access token as environment variable `GITHUB_TOKEN`
-1. execute `github-promote-release.sh`
-
-### example 
-```bash
-$ export GITHUB_TOKEN=...
-$ ./github-promote-release.sh 632 0.2.1
-```
-
-***Note:** currently the windows version of [aktau/github-release](https://github.com/aktau/github-release) is broken (version 0.7.2). Mac OS X version seems to be working fine.*
+1. make sure all needed changes are pushed to `master` and the [GitLab CI build](https://gitlab.com/reflectoring/infiniboard/pipelines) passed
+1. trigger deploy job on [GitLab CI](https://gitlab.com/reflectoring/infiniboard/pipelines)
 
 ## license
 
