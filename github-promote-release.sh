@@ -4,6 +4,7 @@ shopt -s extglob
 
 USERNAME=reflectoring
 REPOSITORY=infiniboard
+GITHUB_PUSH_USER=matthiasbalke
 
 if [ $# -ne 1 ];
 then
@@ -43,13 +44,14 @@ command -v github-release >/dev/null 2>&1 || {
   tar --strip-components=3 -C ~/bin -jxf ~/github-release.tar.bz2
   echo ""
 
-  command -v github-release >/dev/null 2>&1 || {
-    echo "adding ~/bin to PATH using ~/.bashrc..."
-    echo export PATH=~/bin:"$PATH" >> ~/.bashrc 
-    source ~/.bashrc
-    echo ""
+  command -v ~/bin/github-release >/dev/null 2>&1 || {
+    echo "installation of github-release failed. Aborting!"
+    exit 4;
   }
 }
+
+echo "adding github remote ..."
+git remote add github https://$GITHUB_PUSH_USER:$GITHUB_TOKEN@github.com/$USERNAME/$REPOSITORY.git
 
 echo "creating git tag '$TAG_VERSION' ..."
 # create git tag
@@ -57,12 +59,12 @@ git tag -a $TAG_VERSION $CI_COMMIT_SHA -m "released version $TAG_VERSION"
 echo ""
 
 echo "pushing git tag $TAG_VERSION ..."
-git push origin $TAG_VERSION
+git push github $TAG_VERSION
 echo ""
 
 echo "creating github release draft $TAG_VERSION ..."
 # create github release
-github-release release \
+~/bin/github-release release \
   --user $USERNAME \
   --repo $REPOSITORY \
   --tag "$TAG_VERSION" \
@@ -76,7 +78,7 @@ for artifact in {quartermaster/build/libs/quartermaster*.war,harvester/build/lib
     echo "> $(basename $artifact)"
 
     # upload artifacts
-    github-release upload \
+    ~/bin/github-release upload \
       --user $USERNAME \
       --repo $REPOSITORY \
       --tag "$TAG_VERSION" \
@@ -86,7 +88,7 @@ done
 echo ""
 
 echo "publishing github release ..."
-github-release edit \
+~/bin/github-release edit \
   --user $USERNAME \
   --repo $REPOSITORY \
   --tag "$TAG_VERSION" \
