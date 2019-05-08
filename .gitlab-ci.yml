@@ -122,7 +122,7 @@ java:
       - .gradle
 
 deploy:
-  stage: deploy
+  stage: release
   image: circleci/openjdk:8-jdk-browsers
   services:
     - docker:dind
@@ -153,6 +153,12 @@ deploy:
         docker login -u $DOCKER_USER -p $DOCKER_PASS
         docker push reflectoring/harvester
         docker push reflectoring/quartermaster
+
+        # extract release version and trim the output using awk
+        BASE_VERSION=$(./gradlew properties | grep -i baseVersion | cut -f 2 -d ':'|awk '{$1=$1};1')
+        
+        # tag and publish the release on GitHub
+        ./github-promote-release.sh $BASE_VERSION
       else
         echo 'Skipping deployment for non master branches!'
       fi
