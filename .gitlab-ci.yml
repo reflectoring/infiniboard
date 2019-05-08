@@ -22,7 +22,7 @@ variables:
 stages:
   - frontend
   - backend
-  - deploy
+  - release
 
 node:
   image: circleci/node:6.11.1-browsers
