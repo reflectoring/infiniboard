@@ -3,11 +3,12 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${version_springBoot}"
         classpath "com.sourcemuse.gradle.plugin:gradle-mongo-plugin:${version_mongo_plugin}"
     }
-
 }
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'mongo'
+
+apply from: '../gradle.d/30-java.gradle'
 
 dependencies {
     compile (

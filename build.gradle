@@ -1,6 +1,10 @@
-plugins {
-    id 'base'
-    id 'com.bmuschko.docker-remote-api' version '3.2.1' apply false
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${version_bintray_plugin}"
+    }
 }
 
 ext {
@@ -10,12 +14,13 @@ ext {
     baseVersion = "${majorVersion}.${minorVersion}.${patchVersion}"
 }
 
-// alle Skripte aus ./gradle.d in sortierter Reihenfolge einbinden
-file('gradle.d').listFiles().sort().each {
-    if (it =~ /.*\.gradle$/) {
-        apply from: relativePath(it)
-    }
-}
+apply plugin: 'base'
+apply plugin: 'com.jfrog.bintray'
+
+apply from: 'gradle.d/01-helper.gradle'
+apply from: 'gradle.d/15-ci.gradle'
+apply from: 'gradle.d/60-idea.gradle'
+apply from: 'gradle.d/70-sonarqube.gradle'
 
 allprojects {
     group = 'com.github.reflectoring.infiniboard'
@@ -28,4 +33,8 @@ allprojects {
             jcenter()
         }
     }
+}
+
+project(":dashy") {
+    apply plugin: 'base'
 }

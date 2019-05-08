@@ -1,3 +1,5 @@
+apply from: '../gradle.d/30-java.gradle'
+
 dependencies {
     compile(
             "org.assertj:assertj-core:${version_assertj}",

@@ -19,7 +19,9 @@ apply plugin: 'war'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'org.ajoberstar.git-publish'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.bmuschko.docker-remote-api'
+
+apply from: '../gradle.d/02-docker.gradle'
+apply from: '../gradle.d/30-java.gradle'
 
 dependencies {
     compile(
@@ -63,7 +65,10 @@ bootRun {
 
 processResources {
     filter ReplaceTokens, tokens: [
-            "infiniboard.version": version
+            "infiniboard.version": version,
+            "infiniboard.majorVersion": majorVersion,
+            "infiniboard.minorVersion": minorVersion,
+            "infiniboard.patchVersion": patchVersion
     ]
 }
 

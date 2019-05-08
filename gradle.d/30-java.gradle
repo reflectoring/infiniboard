@@ -13,111 +13,102 @@ buildscript {
     }
 }
 
-subprojects {
+apply plugin: 'jacoco'
+apply plugin: 'java'
+apply plugin: com.diffplug.gradle.spotless.SpotlessPlugin
 
-    if (file('src/main/java').exists()) {
-        apply plugin: 'jacoco'
-        apply plugin: 'java'
-        apply plugin: com.diffplug.gradle.spotless.SpotlessPlugin
+repositories {
+    jcenter()
+}
 
-        repositories {
-            jcenter()
-        }
+dependencies {
+    compile(
+            "org.apache.commons:commons-lang3:${version_commons_lang}",
+            "commons-io:commons-io:${version_commons_io}",
+    )
+    testCompile(
+            project(':test-base'),
+    )
+}
 
-        dependencies {
-            compile(
-                    "org.apache.commons:commons-lang3:${version_commons_lang}",
-                    "commons-io:commons-io:${version_commons_io}",
-            )
-            testCompile(
-                    project(':test-base'),
-            )
-        }
+spotless {
+    java {
+        lineEndings 'UNIX'
 
-        spotless {
-            java {
-                lineEndings 'UNIX'
+        removeUnusedImports()
+        endWithNewline()
 
-                removeUnusedImports()
-                endWithNewline()
-
-                googleJavaFormat()
-            }
-
-            format 'properties', {
-                target '**/*.properties'
-
-                lineEndings 'UNIX'
-
-                encoding 'ISO-8859-1'
-            }
-
-            format 'unix', {
-                target 'gradlew', 'gradle/**/*.sh'
-
-                lineEndings 'UNIX'
-                endWithNewline()
-            }
-
-            groovyGradle {
-                target '**/*.gradle'
-
-                lineEndings 'UNIX'
-                endWithNewline()
-            }
-
-            groovy {
-                target '**/*.groovy'
-
-                lineEndings 'UNIX'
-                endWithNewline()
-            }
-
-            encoding 'UTF-8'
-        }
-        
-        build.dependsOn "spotlessApply"
-
-        jacoco {
-            toolVersion = version_jacoco
-        }
-
-        jacocoTestReport {
-            reports {
-                xml.enabled false
-                csv.enabled false
-                html.destination file("${buildDir}/jacoco/html")
-            }
-        }
-
-        build.dependsOn jacocoTestReport
-
-        compileJava {
-            sourceCompatibility = version_java
-            targetCompatibility = version_java
-
-            options.fork = true
-        }
-
-        test {
-            useJUnit {
-                // exclude all categories as default
-                excludeCategories project.MongoIntegrationTests
-            }
-
-            // set heap size for the test JVM(s)
-            minHeapSize = "128m"
-            maxHeapSize = "1024m"
-
-            jacoco {
-                includes = [
-                        "com/github/**/*"
-                ]
-            }
-        }
-
-    } else {
-        apply plugin: 'base'
+        googleJavaFormat()
     }
 
+    format 'properties', {
+        target '**/*.properties'
+
+        lineEndings 'UNIX'
+
+        encoding 'ISO-8859-1'
+    }
+
+    format 'unix', {
+        target 'gradlew', 'gradle/**/*.sh'
+
+        lineEndings 'UNIX'
+        endWithNewline()
+    }
+
+    groovyGradle {
+        target '**/*.gradle'
+
+        lineEndings 'UNIX'
+        endWithNewline()
+    }
+
+    groovy {
+        target '**/*.groovy'
+
+        lineEndings 'UNIX'
+        endWithNewline()
+    }
+
+    encoding 'UTF-8'
+}
+
+build.dependsOn "spotlessApply"
+
+jacoco {
+    toolVersion = version_jacoco
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacoco/html")
+    }
+}
+
+build.dependsOn jacocoTestReport
+
+compileJava {
+    sourceCompatibility = version_java
+    targetCompatibility = version_java
+
+    options.fork = true
+}
+
+test {
+    useJUnit {
+        // exclude all categories as default
+        excludeCategories project.MongoIntegrationTests
+    }
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "1024m"
+
+    jacoco {
+        includes = [
+                "com/github/**/*"
+        ]
+    }
 }

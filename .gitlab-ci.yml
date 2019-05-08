@@ -70,7 +70,7 @@ java:
     # sonar.login and sonar.github.oauth is needed even for PR analysis
     # ./gradlew --stacktrace --console=plain  sonarqube -Dsonar.analysis.mode=issues -Dsonar.github.pullRequest=$CIRCLE_PR_NUMBER -Dsonar.github.repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -Dsonar.github.oauth=$SONAR_GITHUB_OAUTH; fi
 
-    ./gradlew --stacktrace --console=plain buildImage tagImage
+    ./gradlew --stacktrace --console=plain buildImage
 
     # export build docker images 
     mkdir -p build/docker
