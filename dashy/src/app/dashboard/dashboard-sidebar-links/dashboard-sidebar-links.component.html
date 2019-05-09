@@ -1,9 +1,49 @@
-<!-- Sidebar Menu -->
-<ul class="sidebar-menu">
-  <li class="header">Dashboards</li>
-  <!-- Optionally, you can add icons to the links -->
-  <li *ngFor="let dashboard of dashboards"
-      [class.active]="dashboard.active"><a [routerLink]="['/dashboards', dashboard.slug]"><i
-    class="fa fa-circle-o text-red"></i>
-    <span>{{dashboard.name}}</span></a></li>
-</ul><!-- /.sidebar-menu -->
+<aside class="main-sidebar">
+
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu">
+      <li class="header">Dashboards</li>
+      <li><a href="#" data-toggle="modal" data-target="#dashboard-edit-modal"><i class="fa fa-circle-o text-green"></i> <span>Create Dashboard</span></a></li>
+      <!-- Optionally, you can add icons to the links -->
+      <li *ngFor="let dashboard of dashboards"
+          [class.active]="dashboard.active"><a [routerLink]="['/dashboards', dashboard.slug]"><i
+        class="fa fa-circle-o text-red"></i>
+        <span>{{dashboard.name}}</span></a></li>
+    </ul><!-- /.sidebar-menu -->
+  </section>
+  <!-- /.sidebar -->
+</aside>
+
+<!-- Modal -->
+<div class="modal fade" id="dashboard-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">New Dashboard</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="name" class="control-label">Name:</label>
+            <input type="text" class="form-control" id="name">
+          </div>
+          <div class="form-group">
+            <label for="slug" class="control-label">Slug:</label>
+            <input type="text" class="form-control" id="slug">
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label">Description:</label>
+            <input type="text" class="form-control" id="description">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
