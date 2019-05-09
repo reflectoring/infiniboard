@@ -145,11 +145,13 @@ bintray {
         licenses = ['MIT']
         vcsUrl = 'https://github.com/reflectoring/infiniboard.git'
         websiteUrl = 'http://reflectoring.github.io/infiniboard/'
+        githubRepo = 'reflectoring/infiniboard'
 
         publicDownloadNumbers = true
 
         version {
             name = project.baseVersion
+            vcsTag = project.baseVersion
             released = new Date()
         }
     }
