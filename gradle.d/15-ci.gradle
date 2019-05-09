@@ -28,10 +28,3 @@ ext {
     // export method as closure to make it available for all projects
     getBuildVersion = this.&getBuildVersion
 }
-
-logger.lifecycle "isCiBuild        : ${isCiBuild}"
-logger.lifecycle "buildNumber      : ${buildNumber}"
-logger.lifecycle "gitCommit        : ${gitCommit}"
-logger.lifecycle "isPullRequest    : ${isPullRequest}"
-logger.lifecycle "pullRequestNumber: ${pullRequestNumber}"
-logger.lifecycle ""
