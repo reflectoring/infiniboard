@@ -9,7 +9,7 @@ buildscript {
 
 ext {
     majorVersion = '0'
-    minorVersion = '3'
+    minorVersion = '4'
     patchVersion = '0'
     baseVersion = "${majorVersion}.${minorVersion}.${patchVersion}"
 }
