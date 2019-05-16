@@ -59,10 +59,10 @@ export class DashboardService {
       .catch(this.handleError);
   }
 
-  public createDashboard(name: string, slug: string, description: string) : Observable<Response> {
+  public createDashboard(name: string, slug: string, description: string): Observable<Response> {
 
-    let options = new RequestOptions({ headers: this.headers });
-    let dashboard = {name: name, slug: slug, description: description};
+    const options = new RequestOptions({ headers: this.headers });
+    const dashboard = {name: name, slug: slug, description: description};
 
     return this.http.post(this.actionUrl, dashboard, options)
       .catch(this.handleError);

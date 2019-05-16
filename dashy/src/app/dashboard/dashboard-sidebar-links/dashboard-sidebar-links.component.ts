@@ -38,18 +38,17 @@ export class DashboardSidebarLinksComponent implements OnInit {
   }
 
   public createDashboard() {
-    let request = this.dashboardService.createDashboard(this.name.value, this.slug.value, this.description.value);
+    const request = this.dashboardService.createDashboard(this.name.value, this.slug.value, this.description.value);
     request
     .map(this.extractData)
     .subscribe();
   }
 
   private extractData(res: Response) {
-    let body = res.json();
-    let error = ((body || {}).errors || {})
+    const body = res.json();
+    const error = ((body || {}).errors || {});
     console.error(body || {});
     this.error.setValue(body);
-    console.log(error);
     return body || {};
   }
 }
