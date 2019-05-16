@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../shared/dashboard.service';
 import {Dashboard} from '../shared/dashboard';
+import {FormControl} from '@angular/forms';
+import {Response} from '@angular/http';
 
 @Component({
   selector: 'dashboard-sidebar-links',
@@ -8,6 +10,14 @@ import {Dashboard} from '../shared/dashboard';
   styleUrls: ['./dashboard-sidebar-links.component.css']
 })
 export class DashboardSidebarLinksComponent implements OnInit {
+
+  public name = new FormControl('');
+
+  public slug = new FormControl('');
+
+  public description = new FormControl('');
+
+  public error = new FormControl('');
 
   public dashboards: Dashboard[];
 
@@ -25,5 +35,21 @@ export class DashboardSidebarLinksComponent implements OnInit {
       },
       error => console.error(error)
     );
+  }
+
+  public createDashboard() {
+    let request = this.dashboardService.createDashboard(this.name.value, this.slug.value, this.description.value);
+    request
+    .map(this.extractData)
+    .subscribe();
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    let error = ((body || {}).errors || {})
+    console.error(body || {});
+    this.error.setValue(body);
+    console.log(error);
+    return body || {};
   }
 }

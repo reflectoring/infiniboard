@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
+import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Dashboard} from './dashboard';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {environment} from '../../../environments/environment';
@@ -58,11 +59,20 @@ export class DashboardService {
       .catch(this.handleError);
   }
 
+  public createDashboard(name: string, slug: string, description: string) : Observable<Response> {
+
+    let options = new RequestOptions({ headers: this.headers });
+    let dashboard = {name: name, slug: slug, description: description};
+
+    return this.http.post(this.actionUrl, dashboard, options)
+      .catch(this.handleError);
+  }
+
   private handleError(error: any) {
     const errMsg = ((error.body || {}).message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg);
     console.error(error);
-    return Observable.throw(errMsg);
+    return ErrorObservable.create(new Error(errMsg));
   }
 }

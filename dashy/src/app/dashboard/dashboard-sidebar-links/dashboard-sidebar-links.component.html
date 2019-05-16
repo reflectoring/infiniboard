@@ -25,24 +25,28 @@
         <h4 class="modal-title" id="exampleModalLabel">New Dashboard</h4>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="createDashboard()">
           <div class="form-group">
-            <label for="name" class="control-label">Name:</label>
-            <input type="text" class="form-control" id="name">
+            <label for="new-dashboard-name" class="control-label">Name:</label>
+            <input type="text" class="form-control" id="new-dashboard-name" [formControl]="name">
           </div>
           <div class="form-group">
-            <label for="slug" class="control-label">Slug:</label>
-            <input type="text" class="form-control" id="slug">
+            <label for="new-dashboard-slug" class="control-label">Slug:</label>
+            <input type="text" class="form-control" id="new-dashboard-slug" [formControl]="slug">
           </div>
           <div class="form-group">
-            <label for="description" class="control-label">Description:</label>
-            <input type="text" class="form-control" id="description">
+            <label for="new-dashboard-description" class="control-label">Description:</label>
+            <input type="text" class="form-control" id="new-dashboard-description" [formControl]="description">
+          </div>
+          <div class="form-group">
+            <label for="new-dashboard-error" class="control-label">Error:</label>
+            <input type="text" class="form-control" id="new-dashboard-error" [formControl]="error">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" (click)="this.createDashboard()">Save</button>
       </div>
     </div>
   </div>
