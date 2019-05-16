@@ -1,6 +1,7 @@
 package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -43,10 +44,10 @@ public class DashboardController {
       produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResourceSupport> create(
-      @RequestBody @Valid DashboardResource dashboardResource, Errors errors) {
+      @RequestBody @Valid DashboardResource dashboardResource, Errors result) {
 
-    if (errors.hasErrors()) {
-      return new ResponseEntity<>(new ErrorResource(errors), BAD_REQUEST);
+    if (result.hasErrors()) {
+      return new ResponseEntity<>(new ErrorResource(result), BAD_REQUEST);
     }
 
     Dashboard savedDashboard = service.save(dashboardResourceAssembler.toEntity(dashboardResource));

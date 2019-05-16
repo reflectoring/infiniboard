@@ -2,6 +2,7 @@ package com.github.reflectoring.infiniboard.quartermaster.dashboard.rest;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.ResourceSupport;
 
 public class DashboardResource extends ResourceSupport {
@@ -10,11 +11,12 @@ public class DashboardResource extends ResourceSupport {
 
   @Pattern(regexp = "[a-z0-9-_]+", message = "must only contain characters: a-z0-9-_")
   @NotNull
+  @NotEmpty
   private String slug;
 
-  @NotNull private String name;
+  @NotNull @NotEmpty private String name;
 
-  @NotNull private String description;
+  @NotNull @NotEmpty private String description;
 
   public String getNumber() {
     return number;

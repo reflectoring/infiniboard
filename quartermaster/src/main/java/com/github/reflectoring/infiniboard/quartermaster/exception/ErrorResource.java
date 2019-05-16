@@ -1,33 +1,34 @@
 package com.github.reflectoring.infiniboard.quartermaster.exception;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 public class ErrorResource extends ResourceSupport {
-  List<String> errors = new ArrayList<>();
+  Map<String, String> errors = new HashMap<>();
 
   protected ErrorResource() {}
 
   public ErrorResource(Errors errors) {
     for (FieldError error : errors.getFieldErrors()) {
-      this.errors.add(error.getField() + ": " + error.getDefaultMessage());
+      this.errors.put(error.getField(), error.getDefaultMessage());
     }
   }
 
   public ErrorResource(String errors) {
-    this.errors.add(errors);
+    this.errors.put("exception", errors);
   }
 
-  public List<String> getErrors() {
+  public Map<String, String> getErrors() {
     return errors;
   }
 
-  public void setErrors(List<String> errors) {
+  public void setErrors(Map<String, String> errors) {
     this.errors = errors;
   }
 
